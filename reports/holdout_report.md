@@ -10,10 +10,12 @@ The final model (LightGBM with the parameter set from fold 3, Platt calibration)
 | PR-AUC | 0.2928 | 0.2806 to 0.3069 | 0.2782 |
 | Brier | 0.06536 | 0.06396 to 0.06691 | 0.06597 |
 | ECE | 0.0015 | 0.0018 to 0.0045 | 0.0028 |
+| Calibration slope (ideal 1) | 1.0077 | 0.9787 to 1.0381 | 0.9994 |
+| Calibration intercept (ideal 0) | 0.0015 | -0.0286 to 0.0294 | 0.0001 |
 
 The development column scores each development applicant with the fold model that didn't see them, after Platt calibration. Across folds the AUC varied by ± 0.0016 (standard deviation), so the hold-out AUC is in line with cross-validation.
 
-The ECE point estimate sits below its bootstrap interval. That isn't an error: ECE is biased upward by sampling noise (any random wobble in a bin counts as miscalibration), and each bootstrap resample adds more noise, so the resampled values run high. I read the interval as an upper range: hold-out calibration error is at most about half a percentage point.
+The ECE point estimate sits below its bootstrap interval. That isn't an error: ECE is biased upward by sampling noise (any random wobble in a bin counts as miscalibration), and each bootstrap resample adds more noise, so the resampled values run high. I read the interval as an upper range: hold-out calibration error is at most about half a percentage point. The calibration slope and intercept don't have this problem, because they are fitted parameters rather than averaged absolute gaps: their intervals are centred on the estimate, and both include the ideal values (slope 1, intercept 0).
 
 ## Choosing the final parameters
 

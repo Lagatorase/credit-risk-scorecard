@@ -54,3 +54,37 @@ def fold_summary(y, fold_preds) -> dict[str, float]:
         out[f"{name}_mean"] = float(vals.mean())
         out[f"{name}_std"] = float(vals.std(ddof=1))
     return out
+
+
+def _logit(p):
+    p = np.clip(np.asarray(p, dtype=float), 1e-6, 1 - 1e-6)
+    return np.log(p / (1 - p))
+
+
+def calibration_slope_intercept(y, p, iterations: int = 25) -> dict[str, float]:
+    """Calibration slope and intercept, fitted with a few Newton steps.
+
+    Slope: the coefficient from a logistic regression of the outcome on the model's log-odds. 1 is ideal;
+    below 1 means the predictions are too spread out, above 1 too squashed together.
+    Intercept (calibration-in-the-large): the shift needed with the slope fixed at 1. 0 is ideal;
+    negative means the model predicts too much default overall, positive too little.
+    """
+    y = np.asarray(y, dtype=float)
+    lp = _logit(p)
+
+    # slope: logistic regression of y on [1, lp] by Newton's method (iteratively reweighted least squares)
+    X = np.column_stack([np.ones_like(lp), lp])
+    # starting from the base rate with no slope is the usual safe start for Newton on a logistic model
+    base = np.clip(y.mean(), 1e-6, 1 - 1e-6)
+    beta = np.array([np.log(base / (1 - base)), 0.0])
+    for _ in range(iterations):
+        mu = 1 / (1 + np.exp(-np.clip(X @ beta, -30, 30)))
+        w = mu * (1 - mu)
+        beta += np.linalg.solve(X.T @ (X * w[:, None]), X.T @ (y - mu))
+
+    # intercept with lp as a fixed offset: one parameter, same Newton idea
+    a = 0.0
+    for _ in range(iterations):
+        mu = 1 / (1 + np.exp(-np.clip(a + lp, -30, 30)))
+        a += np.sum(y - mu) / np.sum(mu * (1 - mu))
+    return {"cal_slope": float(beta[1]), "cal_intercept": float(a)}

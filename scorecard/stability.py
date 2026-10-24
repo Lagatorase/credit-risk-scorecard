@@ -9,16 +9,19 @@ from .config import SEED
 from .metrics import all_metrics
 
 
-def bootstrap_ci(y, p, n_boot: int = 1000, alpha: float = 0.05, seed: int = SEED) -> pd.DataFrame:
-    """Point estimate and percentile 95% interval for every metric, resampling applicants with replacement."""
+def bootstrap_ci(y, p, n_boot: int = 1000, alpha: float = 0.05, seed: int = SEED, metric_fn=all_metrics) -> pd.DataFrame:
+    """Point estimate and percentile 95% interval for every metric, resampling applicants with replacement.
+
+    metric_fn returns a dict of metrics for one sample; by default the ranking and calibration metrics.
+    """
     y = np.asarray(y)
     p = np.asarray(p)
     rng = np.random.default_rng(seed)
-    point = all_metrics(y, p)
+    point = metric_fn(y, p)
     draws = {name: [] for name in point}
     for _ in range(n_boot):
         idx = rng.integers(0, len(y), len(y))
-        for name, value in all_metrics(y[idx], p[idx]).items():
+        for name, value in metric_fn(y[idx], p[idx]).items():
             draws[name].append(value)
     rows = []
     for name, value in point.items():

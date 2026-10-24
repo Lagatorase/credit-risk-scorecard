@@ -46,3 +46,22 @@ def test_fold_summary_reports_mean_and_std():
     assert out["auc_mean"] == pytest.approx(np.mean(per))
     assert out["auc_std"] == pytest.approx(np.std(per, ddof=1))
     assert set(all_metrics(y, p)) == {"auc", "gini", "ks", "pr_auc", "brier", "ece"}
+
+
+def test_calibration_slope_and_intercept_detect_known_miscalibration():
+    from scorecard.metrics import calibration_slope_intercept
+
+    rng = np.random.default_rng(3)
+    lp = rng.normal(-2.5, 1.0, 200_000)
+    p_true = 1 / (1 + np.exp(-lp))
+    y = (rng.random(len(lp)) < p_true).astype(int)
+    # labels drawn from the predictions themselves: slope 1, intercept 0
+    good = calibration_slope_intercept(y, p_true)
+    assert good["cal_slope"] == pytest.approx(1.0, abs=0.03)
+    assert good["cal_intercept"] == pytest.approx(0.0, abs=0.03)
+    # predictions twice as spread out in log-odds: slope about 0.5
+    spread = 1 / (1 + np.exp(-2 * lp))
+    assert calibration_slope_intercept(y, spread)["cal_slope"] == pytest.approx(0.5, abs=0.03)
+    # every prediction shifted up by 0.5 in log-odds: intercept about -0.5
+    shifted = 1 / (1 + np.exp(-(lp + 0.5)))
+    assert calibration_slope_intercept(y, shifted)["cal_intercept"] == pytest.approx(-0.5, abs=0.03)

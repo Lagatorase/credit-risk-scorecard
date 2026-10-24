@@ -20,11 +20,12 @@ import pandas as pd  # noqa: E402
 from experiments.plots import REFERENCE, SERIES, TEXT_MUTED, new_figure, save, style_axes  # noqa: E402
 from scorecard.config import get_settings  # noqa: E402
 from scorecard.final_model import FinalModel  # noqa: E402
-from scorecard.metrics import all_metrics  # noqa: E402
+from scorecard.metrics import all_metrics, calibration_slope_intercept  # noqa: E402
 from scorecard.splits import load_splits, split_frame  # noqa: E402
 from scorecard.stability import bootstrap_ci, psi, psi_reading  # noqa: E402
 
-METRIC_LABELS = {"auc": "AUC", "gini": "Gini", "ks": "KS", "pr_auc": "PR-AUC", "brier": "Brier", "ece": "ECE"}
+METRIC_LABELS = {"auc": "AUC", "gini": "Gini", "ks": "KS", "pr_auc": "PR-AUC", "brier": "Brier", "ece": "ECE",
+                 "cal_slope": "Calibration slope (ideal 1)", "cal_intercept": "Calibration intercept (ideal 0)"}
 
 
 def plot_holdout_calibration(y_dev, p_dev, y_test, p_test, out: Path, n_bins: int = 20) -> None:
@@ -74,6 +75,8 @@ def main() -> None:
     test[keep].assign(pd=p_test).to_parquet(cache / "holdout_pd.parquet")
 
     ci = bootstrap_ci(y_test, p_test, n_boot=1000)
+    # calibration slope and intercept sit next to ECE, with their own bootstrap intervals from the same resamples
+    ci = pd.concat([ci, bootstrap_ci(y_test, p_test, n_boot=1000, metric_fn=calibration_slope_intercept)], ignore_index=True)
     cv = json.loads((reports / "final_model_selection.json").read_text())
     chosen = next(c for c in cv["candidates"] if c["fold"] == cv["chosen_fold"])
 
@@ -98,7 +101,7 @@ def main() -> None:
         "|---|---|---|---|",
     ]
     # the development column uses the calibrated out-of-fold PDs, pooled over the five folds
-    dev_metrics = all_metrics(y_dev, p_dev)
+    dev_metrics = {**all_metrics(y_dev, p_dev), **calibration_slope_intercept(y_dev, p_dev)}
     for _, r in ci.iterrows():
         d = 5 if r["metric"] == "brier" else 4
         md.append(f"| {METRIC_LABELS[r['metric']]} | {r['value']:.{d}f} | {r['ci_low']:.{d}f} to {r['ci_high']:.{d}f} | "
@@ -112,7 +115,9 @@ def main() -> None:
         "The ECE point estimate sits below its bootstrap interval. That isn't an error: ECE is biased upward by sampling "
         "noise (any random wobble in a bin counts as miscalibration), and each bootstrap resample adds more noise, so the "
         "resampled values run high. I read the interval as an upper range: hold-out calibration error is at most about "
-        "half a percentage point.",
+        "half a percentage point. The calibration slope and intercept don't have this problem, because they are fitted "
+        "parameters rather than averaged absolute gaps: their intervals are centred on the estimate, and both include "
+        "the ideal values (slope 1, intercept 0).",
         "",
         "## Choosing the final parameters",
         "",
