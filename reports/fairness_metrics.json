@@ -955,5 +955,9 @@
     "train_seconds": 29.53118429996539,
     "platt_coef": 0.9778045299800464,
     "platt_intercept": -0.022660195967592587
-  }
+  },
+  "n_test": 61503,
+  "n_missing_gender": 2,
+  "n_features_main": 153,
+  "n_features_comparison": 155
 }

@@ -16,6 +16,9 @@ import numpy as np
 import pandas as pd
 
 from .config import SEED
+from .metrics import all_metrics, calibration_slope_intercept
+from .models import LGBMModel
+from .splits import run_cv
 
 METRICS = ("approval_rate", "default_rate_approved", "tpr", "approval_rate_repaid", "mean_pd", "default_rate")
 METRIC_LABELS = {
@@ -145,3 +148,31 @@ def gap_summary(groups: pd.Series, y, p_main, p_alt, decide_fn, n_boot: int = 10
             row[f"{k}_low"], row[f"{k}_high"] = np.quantile(draws[m][k], [0.025, 0.975])
         rows.append(row)
     return pd.DataFrame(rows)
+
+
+PERF_LABELS = {"auc": "AUC", "gini": "Gini", "ks": "KS", "pr_auc": "PR-AUC", "brier": "Brier", "ece": "ECE",
+               "cal_slope": "Calibration slope", "cal_intercept": "Calibration intercept"}
+
+
+def paired_metrics(y, P) -> dict:
+    """Metrics for two models on the same applicants, and the difference (column 1 minus column 0).
+
+    Passed to bootstrap_ci with both PD columns stacked, so every resample scores both models on the
+    same rows and the difference gets its own interval.
+    """
+    out = {}
+    for name, p in [("main", P[:, 0]), ("alt", P[:, 1])]:
+        out.update({f"{name}_{k}": v for k, v in {**all_metrics(y, p), **calibration_slope_intercept(y, p)}.items()})
+    for k in PERF_LABELS:
+        out[f"diff_{k}"] = out[f"alt_{k}"] - out[f"main_{k}"]
+    return out
+
+
+def proxy_auc(X: pd.DataFrame, target, folds) -> float:
+    """Cross-validated AUC for predicting a group label from model inputs, with default LightGBM settings.
+
+    0.5 means the inputs carry no information about the group; close to 1 means they nearly identify it.
+    """
+    target = np.asarray(target).astype(int)
+    res = run_cv(lambda: LGBMModel(), X, target, folds)
+    return all_metrics(target, res["oof"])["auc"]

@@ -7,6 +7,7 @@ overconfident and would bend the calibration.
 
 from __future__ import annotations
 
+import time
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -56,3 +57,24 @@ class FinalModel:
     @staticmethod
     def load(path: Path) -> "FinalModel":
         return joblib.load(path)
+
+
+def train_like_final(X: pd.DataFrame, y: np.ndarray, params: dict, folds, meta: dict | None = None) -> tuple[FinalModel, np.ndarray]:
+    """The final model's recipe for any feature set: Platt fit out of fold, then the booster on every row.
+
+    The whole development set is 25% bigger than a training fold, so the tree count goes up by the same
+    amount, as in the tuning step. Returns the model and its calibrated out-of-fold PDs. The fairness
+    comparisons use this so they differ from the final model only in their inputs.
+    """
+    calibrator, oof = fit_platt_on_oof(lambda: LGBMModel(params=params), X, y, folds)
+    final_params = {**params, "n_estimators": int(round(params["n_estimators"] * 1.25))}
+    start = time.perf_counter()
+    model = LGBMModel(params=final_params).fit(X, y)
+    out = FinalModel(model=model, calibrator=calibrator, features=list(X.columns), meta={
+        **(meta or {}),
+        "params": final_params,
+        "train_seconds": time.perf_counter() - start,
+        "platt_coef": float(calibrator.lr.coef_[0][0]),
+        "platt_intercept": float(calibrator.lr.intercept_[0]),
+    })
+    return out, calibrator.predict(oof)
