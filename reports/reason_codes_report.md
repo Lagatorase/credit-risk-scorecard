@@ -68,7 +68,7 @@ Officer reasons by family in the sample:
 | Average of the external bureau scores: 0.30 (lowest 10% of applicants) (`EXT_SOURCE_MEAN`, +0.59) | Credit bureau score: 0.30 (lowest 10% of applicants) |
 | Largest overdue amount ever at other lenders: 582,898 (highest 10% of applicants) (`BUREAU_MAX_OVERDUE_AMT`, +0.42) | Largest overdue amount ever at other lenders: 582,898 (highest 10% of applicants) |
 | Average yearly repayment on previous loans: 5,945 (lowest 20% of applicants) (`PREV_ANNUITY_MEAN`, +0.15) | Average yearly repayment on previous loans: 5,945 (lowest 20% of applicants) |
-| Occupation: Laborers (26.2% of applicants) (`OCCUPATION_TYPE`, +0.12) | Occupation: Laborers (26.2% of applicants) |
+| Occupation: Laborers (shared by 26.2% of applicants) (`OCCUPATION_TYPE`, +0.12) | Occupation: Laborers (shared by 26.2% of applicants) |
 
 **Applicant 290683**: PD 15.0%, band D (high), decision **review** (actual outcome: repaid).
 
@@ -77,7 +77,7 @@ Officer reasons by family in the sample:
 | Average of the external bureau scores: 0.40 (lowest 30% of applicants) (`EXT_SOURCE_MEAN`, +0.40) | Credit bureau score: 0.40 (lowest 30% of applicants) |
 | Share of previous applications refused: 60.0% (highest 10% of applicants) (`PREV_REFUSED_SHARE`, +0.26) | Share of previous applications refused: 60.0% (highest 10% of applicants) |
 | Average term of previous loans: 30 instalments (highest 10% of applicants) (`PREV_CNT_PAYMENT_MEAN`, +0.22) | Average term of previous loans: 30 instalments (highest 10% of applicants) |
-| Employer sector: Self-employed (12.4% of applicants) (`ORGANIZATION_TYPE`, +0.16) | Employer sector: Self-employed (12.4% of applicants) |
+| Employer sector: Self-employed (shared by 12.4% of applicants) (`ORGANIZATION_TYPE`, +0.16) | Employer sector: Self-employed (shared by 12.4% of applicants) |
 
 **Applicant 192711**: PD 15.5%, band D (high), decision **review** (actual outcome: defaulted).
 
@@ -93,8 +93,8 @@ Officer reasons by family in the sample:
 | Loan officer reasons | Customer reasons |
 |---|---|
 | External bureau score (source 1): not available (missing for 56.3% of applicants) (`EXT_SOURCE_1`, +0.14) | Credit bureau score: not available (missing for 56.3% of applicants) |
-| Employer sector: Self-employed (12.4% of applicants) (`ORGANIZATION_TYPE`, +0.12) | Employer sector: Self-employed (12.4% of applicants) |
-| Work phone provided: Yes (20.0% of applicants) (`FLAG_WORK_PHONE`, +0.11) | Share of previous applications refused: 50.0% (highest 10% of applicants) |
+| Employer sector: Self-employed (shared by 12.4% of applicants) (`ORGANIZATION_TYPE`, +0.12) | Employer sector: Self-employed (shared by 12.4% of applicants) |
+| Work phone provided: Yes (shared by 20.0% of applicants) (`FLAG_WORK_PHONE`, +0.11) | Share of previous applications refused: 50.0% (highest 10% of applicants) |
 | Share of previous applications refused: 50.0% (highest 10% of applicants) (`PREV_REFUSED_SHARE`, +0.10) | Average term of previous loans: 22 instalments (highest 20% of applicants) |
 
 **Applicant 363831**: PD 3.6%, band B (low), decision **approve** (actual outcome: repaid).
@@ -104,7 +104,7 @@ Officer reasons by family in the sample:
 | Average of the external bureau scores: 0.42 (lowest 30% of applicants) (`EXT_SOURCE_MEAN`, +0.22) | Credit bureau score: 0.42 (lowest 30% of applicants) |
 | Average yearly repayment on previous loans: 4,735 (lowest 10% of applicants) (`PREV_ANNUITY_MEAN`, +0.16) | Average yearly repayment on previous loans: 4,735 (lowest 10% of applicants) |
 | Loan amount as a multiple of the goods price: 1.26 times (highest 20% of applicants) (`CREDIT_GOODS_RATIO`, +0.11) | Loan amount as a multiple of the goods price: 1.26 times (highest 20% of applicants) |
-| Work phone provided: Yes (20.0% of applicants) (`FLAG_WORK_PHONE`, +0.11) | Largest overdue amount ever at other lenders: 7,213 (highest 30% of applicants) |
+| Work phone provided: Yes (shared by 20.0% of applicants) (`FLAG_WORK_PHONE`, +0.11) | Largest overdue amount ever at other lenders: 7,213 (highest 30% of applicants) |
 
 **Applicant 169973**: PD 17.0%, band D (high), decision **review** (actual outcome: repaid).
 
@@ -112,5 +112,5 @@ Officer reasons by family in the sample:
 |---|---|
 | Most recent loan opened at another lender: 22 days ago (highest 10% of applicants) (`BUREAU_DAYS_CREDIT_MAX`, +0.21) | Most recent loan opened at another lender: 22 days ago (highest 10% of applicants) |
 | Age: 64.9 years (highest 10% of applicants) (`AGE_YEARS`, +0.14) | Instalments paid on previous loans: 0 (lowest 10% of applicants) |
-| Instalments paid on previous loans: 0 (lowest 10% of applicants) (`INST_COUNT`, +0.14) | Employer sector: Not applicable (17.9% of applicants) |
-| Employer sector: Not applicable (17.9% of applicants) (`ORGANIZATION_TYPE`, +0.12) | Loan amount as a multiple of the goods price: 1.21 times (highest 20% of applicants) |
+| Instalments paid on previous loans: 0 (lowest 10% of applicants) (`INST_COUNT`, +0.14) | Employer sector: Not applicable (shared by 17.9% of applicants) |
+| Employer sector: Not applicable (shared by 17.9% of applicants) (`ORGANIZATION_TYPE`, +0.12) | Loan amount as a multiple of the goods price: 1.21 times (highest 20% of applicants) |

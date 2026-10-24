@@ -96,7 +96,7 @@ features:
 
   # Previous loans with Home Credit
   PREV_APP_COUNT: {family: previous_loans, officer: "Previous applications with Home Credit", customer: "Previous applications with us", format: count}
-  PREV_APPROVED_COUNT: {family: previous_loans, officer: "Previous loans approved by Home Credit", customer: "Previous loans with us", format: count}
+  PREV_APPROVED_COUNT: {family: previous_loans, officer: "Previous loans granted by Home Credit", customer: "Previous loans with us", format: count}
   PREV_RECENT_1Y_COUNT: {family: previous_loans, officer: "Applications in the last year", format: count}
   PREV_AMT_CREDIT_MEAN: {family: previous_loans, officer: "Average size of previous loans", format: money}
   PREV_AMT_CREDIT_MAX: {family: previous_loans, officer: "Largest previous loan", format: money}
@@ -177,7 +177,7 @@ features:
   EMERGENCYSTATE_MODE: {family: housing, officer: "Building emergency state", customer: "Building information", format: category}
 
   # Region and address
-  REGION_POPULATION_RELATIVE: {family: region, officer: "Population density of home region (normalised)", customer: "Home region", format: score}
+  REGION_POPULATION_RELATIVE: {family: region, officer: "Population density of home region (normalised)", customer: "Population density of your home region (relative scale)", format: score}
   REGION_RATING_CLIENT: {family: region, officer: "Home Credit's rating of the home region (1 best, 3 worst)", customer: "Home region rating", format: number}
   REGION_RATING_CLIENT_W_CITY: {family: region, officer: "Home Credit's rating of the home region and city (1 best, 3 worst)", customer: "Home region rating", format: number}
   REG_REGION_NOT_LIVE_REGION: {family: region, officer: "Registered address in a different region from home", format: flag}

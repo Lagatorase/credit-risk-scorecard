@@ -94,7 +94,8 @@ def format_value(value, fmt: str, currency: str = "", unit: str | None = None) -
     elif fmt == "years":
         text = f"{v:.1f} years"
     elif fmt == "days_ago":
-        days = -v
+        # adding 0.0 turns -0.0 into 0.0, so a value of zero doesn't print as "-0 days ago"
+        days = -v + 0.0
         text = f"{days:,.0f} days ago" if days < 730 else f"{days / 365.25:.1f} years ago"
     elif fmt == "days_ahead":
         if v < 0:
@@ -133,12 +134,13 @@ class ReasonCoder:
             return f"{label}: not available (missing for {ref['missing']:.1%} of applicants)"
         shown = format_value(value, entry["format"], self.currency, entry.get("unit"))
         if entry["format"] in ("category", "flag"):
-            # for categories and yes/no flags, say how common this answer is
+            # for categories and yes/no flags, say how common this answer is ("shared by" so it can't be
+            # misread as a percentile, e.g. "highest 2.2%")
             if ref["kind"] == "category":
                 share = ref["shares"].get(str(value), 0.0)
             else:
                 share = ref["mass"].get(float(value), 0.0)
-            return f"{label}: {shown} ({share:.1%} of applicants)"
+            return f"{label}: {shown} (shared by {share:.1%} of applicants)"
         return f"{label}: {shown} ({position_phrase(float(value), ref)})"
 
     def top(self, shap_row, x_row: pd.Series, features: list[str], k: int = 4, audience: str = "officer") -> list[dict]:

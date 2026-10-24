@@ -126,11 +126,12 @@ def test_full_reason_text_and_formatting():
     # 45,000 is the 36th of 100 values, 35.5% from the bottom: lowest 40%
     assert coder.text("PREV_AMT_CREDIT_MEAN", 45_000.0) == "Average size of previous loans: 45,000 (lowest 40% of applicants)"
     assert coder.text("PREV_AMT_CREDIT_MEAN", np.nan) == "Average size of previous loans: not available (missing for 20.0% of applicants)"
-    assert coder.text("ORGANIZATION_TYPE", "Self-employed") == "Employer sector: Self-employed (20.0% of applicants)"
+    assert coder.text("ORGANIZATION_TYPE", "Self-employed") == "Employer sector: Self-employed (shared by 20.0% of applicants)"
     assert format_value(1234567.4, "money") == "1,234,567"
     assert format_value(1234567.4, "money", currency="SGD ") == "SGD 1,234,567"
     assert format_value(0.1234, "share") == "12.3%"
     assert format_value(-800, "days_ago") == "2.2 years ago"
+    assert format_value(-0.0, "days_ago") == "0 days ago"
     assert format_value(3, "count", unit="days") == "3 days"
     assert format_value("N", "category") == "No"
     assert format_value("XNA", "category") == "Not applicable"
