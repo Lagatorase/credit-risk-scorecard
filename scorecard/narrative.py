@@ -30,7 +30,7 @@ DECISION_WORDS = {
     "customer": {"approve": "approved", "review": "passed to a loan officer for review", "decline": "declined"},
 }
 # labels shown above the explanation in the app and the API, so nobody mistakes a draft for a decision letter
-LLM_LABEL = "AI-drafted summary: check against the reason codes below"
+LLM_LABEL = "AI-drafted summary: check against the reason codes"
 FALLBACK_LABEL = "Template summary (the AI draft failed an automated check)"
 TEMPLATE_LABEL = "Template summary built from the reason codes"
 
@@ -311,7 +311,7 @@ def explain_both(llm: LLM | None, ex: dict, customer_llm: bool = False) -> dict:
     """Officer and customer explanations for one Explainer.explain result.
 
     The officer gets the checked LLM draft. The customer gets the template unless customer_llm is set
-    (CUSTOMER_EXPLANATION=llm), because in the eval about 1 in 6 accepted customer drafts misread a reason.
+    (CUSTOMER_EXPLANATION=llm), because in the final eval 5 of the 25 accepted customer drafts misread a reason.
     """
     return {
         "officer": write_explanation(llm, payload_from_explanation(ex, "officer")),

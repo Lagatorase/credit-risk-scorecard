@@ -108,7 +108,7 @@ def write_report(reports: Path, data: dict) -> None:
         f"{2 * len(results)} drafts in all, in {data['total_seconds'] / 60:.1f} minutes.",
         "",
         "In the app and API the officer sees the LLM draft, labelled \"AI-drafted summary: check against the reason "
-        "codes below\". The customer gets the plain template by default (`CUSTOMER_EXPLANATION=template`); the customer "
+        "codes\". The customer gets the plain template by default (`CUSTOMER_EXPLANATION=template`); the customer "
         "drafts here measure the LLM option.",
         "",
         "Each draft is checked automatically (`scorecard/narrative.py`). A draft that fails any check is replaced by a "

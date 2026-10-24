@@ -2,7 +2,7 @@
 
 **Final run.** Backend `ollama:qwen2.5:3b`, temperature 0. 50 hold-out applicants drawn at random (seed 2026) within each decision: 17 declines, 17 reviews and 16 approvals, none of them used while tuning. The prompts and checks were frozen before this run, and nothing was changed after it. Each applicant gets an officer and a customer draft, 100 drafts in all, in 2.1 minutes.
 
-In the app and API the officer sees the LLM draft, labelled "AI-drafted summary: check against the reason codes below". The customer gets the plain template by default (`CUSTOMER_EXPLANATION=template`); the customer drafts here measure the LLM option.
+In the app and API the officer sees the LLM draft, labelled "AI-drafted summary: check against the reason codes". The customer gets the plain template by default (`CUSTOMER_EXPLANATION=template`); the customer drafts here measure the LLM option.
 
 Each draft is checked automatically (`scorecard/narrative.py`). A draft that fails any check is replaced by a template built from the reason codes. There is no retry.
 
