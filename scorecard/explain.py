@@ -7,6 +7,7 @@ also raises the calibrated PD.
 
 from __future__ import annotations
 
+import warnings
 from pathlib import Path
 
 import joblib
@@ -33,7 +34,10 @@ class Explainer:
         return cls(FinalModel.load(models_dir / "final_model.joblib"), joblib.load(models_dir / "reference.joblib"))
 
     def shap_values(self, X: pd.DataFrame) -> np.ndarray:
-        values = self.tree.shap_values(X[self.model.features])
+        with warnings.catch_warnings():
+            # shap warns on every call that LightGBM's output format changed; I handle both formats below
+            warnings.simplefilter("ignore", UserWarning)
+            values = self.tree.shap_values(X[self.model.features])
         # older shap versions return one array per class for classifiers; I want the default class
         if isinstance(values, list):
             values = values[1]
