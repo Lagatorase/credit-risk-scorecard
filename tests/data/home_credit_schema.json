@@ -1,0 +1,1941 @@
+{
+ "application_train": {
+  "SK_ID_CURR": {
+   "kind": "id"
+  },
+  "TARGET": {
+   "kind": "target"
+  },
+  "NAME_CONTRACT_TYPE": {
+   "kind": "text",
+   "levels": [
+    "Cash loans",
+    "Revolving loans"
+   ],
+   "missing": 0.0
+  },
+  "CODE_GENDER": {
+   "kind": "text",
+   "levels": [
+    "F",
+    "M",
+    "XNA"
+   ],
+   "missing": 0.0
+  },
+  "FLAG_OWN_CAR": {
+   "kind": "text",
+   "levels": [
+    "N",
+    "Y"
+   ],
+   "missing": 0.0
+  },
+  "FLAG_OWN_REALTY": {
+   "kind": "text",
+   "levels": [
+    "Y",
+    "N"
+   ],
+   "missing": 0.0
+  },
+  "CNT_CHILDREN": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 3.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_INCOME_TOTAL": {
+   "kind": "number",
+   "low": 45000.0,
+   "high": 472500.0,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_CREDIT": {
+   "kind": "number",
+   "low": 76410.0,
+   "high": 1862802.0,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_ANNUITY": {
+   "kind": "number",
+   "low": 6183.0,
+   "high": 70033.5,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_GOODS_PRICE": {
+   "kind": "number",
+   "low": 67500.0,
+   "high": 1800000.0,
+   "integer": false,
+   "missing": 0.001,
+   "placeholder": 0.0
+  },
+  "NAME_TYPE_SUITE": {
+   "kind": "text",
+   "levels": [
+    "Unaccompanied",
+    "Family",
+    "Spouse, partner",
+    "Children",
+    "Other_B",
+    "Other_A",
+    "Group of people"
+   ],
+   "missing": 0.004
+  },
+  "NAME_INCOME_TYPE": {
+   "kind": "text",
+   "levels": [
+    "Working",
+    "Commercial associate",
+    "Pensioner",
+    "State servant",
+    "Unemployed",
+    "Student",
+    "Businessman",
+    "Maternity leave"
+   ],
+   "missing": 0.0
+  },
+  "NAME_EDUCATION_TYPE": {
+   "kind": "text",
+   "levels": [
+    "Secondary / secondary special",
+    "Higher education",
+    "Incomplete higher",
+    "Lower secondary",
+    "Academic degree"
+   ],
+   "missing": 0.0
+  },
+  "NAME_FAMILY_STATUS": {
+   "kind": "text",
+   "levels": [
+    "Married",
+    "Single / not married",
+    "Civil marriage",
+    "Separated",
+    "Widow",
+    "Unknown"
+   ],
+   "missing": 0.0
+  },
+  "NAME_HOUSING_TYPE": {
+   "kind": "text",
+   "levels": [
+    "House / apartment",
+    "With parents",
+    "Municipal apartment",
+    "Rented apartment",
+    "Office apartment",
+    "Co-op apartment"
+   ],
+   "missing": 0.0
+  },
+  "REGION_POPULATION_RELATIVE": {
+   "kind": "number",
+   "low": 0.002133999951183796,
+   "high": 0.07250799983739853,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "DAYS_BIRTH": {
+   "kind": "number",
+   "low": -24420.0,
+   "high": -8261.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "DAYS_EMPLOYED": {
+   "kind": "number",
+   "low": -11350.48,
+   "high": -111.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.18
+  },
+  "DAYS_REGISTRATION": {
+   "kind": "number",
+   "low": -13882.0,
+   "high": -50.0,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "DAYS_ID_PUBLISH": {
+   "kind": "number",
+   "low": -5447.0,
+   "high": -61.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "OWN_CAR_AGE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 64.0,
+   "integer": true,
+   "missing": 0.66,
+   "placeholder": 0.0
+  },
+  "FLAG_MOBIL": {
+   "kind": "number",
+   "low": 1.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_EMP_PHONE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_WORK_PHONE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_CONT_MOBILE": {
+   "kind": "number",
+   "low": 1.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_PHONE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_EMAIL": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "OCCUPATION_TYPE": {
+   "kind": "text",
+   "levels": [
+    "Laborers",
+    "Sales staff",
+    "Core staff",
+    "Managers",
+    "Drivers",
+    "High skill tech staff",
+    "Accountants",
+    "Medicine staff",
+    "Security staff",
+    "Cooking staff",
+    "Cleaning staff",
+    "Private service staff",
+    "Low-skill Laborers",
+    "Waiters/barmen staff",
+    "Secretaries",
+    "Realty agents",
+    "HR staff",
+    "IT staff"
+   ],
+   "missing": 0.313
+  },
+  "CNT_FAM_MEMBERS": {
+   "kind": "number",
+   "low": 1.0,
+   "high": 5.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "REGION_RATING_CLIENT": {
+   "kind": "number",
+   "low": 1.0,
+   "high": 3.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "REGION_RATING_CLIENT_W_CITY": {
+   "kind": "number",
+   "low": 1.0,
+   "high": 3.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "WEEKDAY_APPR_PROCESS_START": {
+   "kind": "text",
+   "levels": [
+    "TUESDAY",
+    "WEDNESDAY",
+    "MONDAY",
+    "THURSDAY",
+    "FRIDAY",
+    "SATURDAY",
+    "SUNDAY"
+   ],
+   "missing": 0.0
+  },
+  "HOUR_APPR_PROCESS_START": {
+   "kind": "number",
+   "low": 4.0,
+   "high": 19.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "REG_REGION_NOT_LIVE_REGION": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "REG_REGION_NOT_WORK_REGION": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "LIVE_REGION_NOT_WORK_REGION": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "REG_CITY_NOT_LIVE_CITY": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "REG_CITY_NOT_WORK_CITY": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "LIVE_CITY_NOT_WORK_CITY": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "ORGANIZATION_TYPE": {
+   "kind": "text",
+   "levels": [
+    "Business Entity Type 3",
+    "XNA",
+    "Self-employed",
+    "Other",
+    "Medicine",
+    "Business Entity Type 2",
+    "Government",
+    "School",
+    "Trade: type 7",
+    "Kindergarten",
+    "Construction",
+    "Business Entity Type 1",
+    "Transport: type 4",
+    "Trade: type 3",
+    "Industry: type 9",
+    "Security",
+    "Industry: type 3",
+    "Housing",
+    "Industry: type 11",
+    "Military",
+    "Bank",
+    "Agriculture",
+    "Police",
+    "Transport: type 2",
+    "Postal",
+    "Security Ministries",
+    "Trade: type 2",
+    "Restaurant",
+    "Services",
+    "University",
+    "Industry: type 7",
+    "Transport: type 3",
+    "Industry: type 1",
+    "Hotel",
+    "Electricity",
+    "Industry: type 4",
+    "Trade: type 6",
+    "Industry: type 5",
+    "Insurance",
+    "Telecom",
+    "Emergency",
+    "Industry: type 2",
+    "Advertising",
+    "Realtor",
+    "Culture",
+    "Industry: type 12",
+    "Trade: type 1",
+    "Mobile",
+    "Legal Services",
+    "Cleaning",
+    "Transport: type 1",
+    "Industry: type 6",
+    "Industry: type 10",
+    "Religion",
+    "Industry: type 13",
+    "Trade: type 4",
+    "Trade: type 5",
+    "Industry: type 8"
+   ],
+   "missing": 0.0
+  },
+  "EXT_SOURCE_1": {
+   "kind": "number",
+   "low": 0.08429337292909622,
+   "high": 0.8893649578094482,
+   "integer": false,
+   "missing": 0.564,
+   "placeholder": 0.0
+  },
+  "EXT_SOURCE_2": {
+   "kind": "number",
+   "low": 0.029430323503911497,
+   "high": 0.7827907001972199,
+   "integer": false,
+   "missing": 0.002,
+   "placeholder": 0.0
+  },
+  "EXT_SOURCE_3": {
+   "kind": "number",
+   "low": 0.06467195600271225,
+   "high": 0.8327850103378296,
+   "integer": false,
+   "missing": 0.198,
+   "placeholder": 0.0
+  },
+  "APARTMENTS_AVG": {
+   "kind": "number",
+   "low": 0.002099999925121665,
+   "high": 0.5454000234603882,
+   "integer": false,
+   "missing": 0.507,
+   "placeholder": 0.0
+  },
+  "BASEMENTAREA_AVG": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.38690000772476196,
+   "integer": false,
+   "missing": 0.585,
+   "placeholder": 0.0
+  },
+  "YEARS_BEGINEXPLUATATION_AVG": {
+   "kind": "number",
+   "low": 0.9488000273704529,
+   "high": 0.9990000128746033,
+   "integer": false,
+   "missing": 0.488,
+   "placeholder": 0.0
+  },
+  "YEARS_BUILD_AVG": {
+   "kind": "number",
+   "low": 0.3472000062465668,
+   "high": 0.9864000082015991,
+   "integer": false,
+   "missing": 0.665,
+   "placeholder": 0.0
+  },
+  "COMMONAREA_AVG": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.376800000667572,
+   "integer": false,
+   "missing": 0.698,
+   "placeholder": 0.0
+  },
+  "ELEVATORS_AVG": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.6000000238418579,
+   "integer": false,
+   "missing": 0.533,
+   "placeholder": 0.0
+  },
+  "ENTRANCES_AVG": {
+   "kind": "number",
+   "low": 0.03449999913573265,
+   "high": 0.5171999931335449,
+   "integer": false,
+   "missing": 0.503,
+   "placeholder": 0.0
+  },
+  "FLOORSMAX_AVG": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.666700005531311,
+   "integer": false,
+   "missing": 0.497,
+   "placeholder": 0.0
+  },
+  "FLOORSMIN_AVG": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.708299994468689,
+   "integer": false,
+   "missing": 0.678,
+   "placeholder": 0.0
+  },
+  "LANDAREA_AVG": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.3732999861240387,
+   "integer": false,
+   "missing": 0.594,
+   "placeholder": 0.0
+  },
+  "LIVINGAPARTMENTS_AVG": {
+   "kind": "number",
+   "low": 0.0034000000450760126,
+   "high": 0.453900009393692,
+   "integer": false,
+   "missing": 0.683,
+   "placeholder": 0.0
+  },
+  "LIVINGAREA_AVG": {
+   "kind": "number",
+   "low": 0.002199999988079071,
+   "high": 0.5511379945278143,
+   "integer": false,
+   "missing": 0.502,
+   "placeholder": 0.0
+  },
+  "NONLIVINGAPARTMENTS_AVG": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.10809999704360962,
+   "integer": false,
+   "missing": 0.694,
+   "placeholder": 0.0
+  },
+  "NONLIVINGAREA_AVG": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.3160000145435333,
+   "integer": false,
+   "missing": 0.552,
+   "placeholder": 0.0
+  },
+  "APARTMENTS_MODE": {
+   "kind": "number",
+   "low": 0.002099999925121665,
+   "high": 0.5410000085830688,
+   "integer": false,
+   "missing": 0.507,
+   "placeholder": 0.0
+  },
+  "BASEMENTAREA_MODE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.39640000462532043,
+   "integer": false,
+   "missing": 0.585,
+   "placeholder": 0.0
+  },
+  "YEARS_BEGINEXPLUATATION_MODE": {
+   "kind": "number",
+   "low": 0.9488999843597412,
+   "high": 0.9990000128746033,
+   "integer": false,
+   "missing": 0.488,
+   "placeholder": 0.0
+  },
+  "YEARS_BUILD_MODE": {
+   "kind": "number",
+   "low": 0.3662000000476837,
+   "high": 0.9868999719619751,
+   "integer": false,
+   "missing": 0.665,
+   "placeholder": 0.0
+  },
+  "COMMONAREA_MODE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.36629998683929443,
+   "integer": false,
+   "missing": 0.698,
+   "placeholder": 0.0
+  },
+  "ELEVATORS_MODE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.604200005531311,
+   "integer": false,
+   "missing": 0.533,
+   "placeholder": 0.0
+  },
+  "ENTRANCES_MODE": {
+   "kind": "number",
+   "low": 0.03449999913573265,
+   "high": 0.5171999931335449,
+   "integer": false,
+   "missing": 0.503,
+   "placeholder": 0.0
+  },
+  "FLOORSMAX_MODE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.666700005531311,
+   "integer": false,
+   "missing": 0.497,
+   "placeholder": 0.0
+  },
+  "FLOORSMIN_MODE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.708299994468689,
+   "integer": false,
+   "missing": 0.678,
+   "placeholder": 0.0
+  },
+  "LANDAREA_MODE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.3783999979496002,
+   "integer": false,
+   "missing": 0.594,
+   "placeholder": 0.0
+  },
+  "LIVINGAPARTMENTS_MODE": {
+   "kind": "number",
+   "low": 0.00279999990016222,
+   "high": 0.4884999990463257,
+   "integer": false,
+   "missing": 0.683,
+   "placeholder": 0.0
+  },
+  "LIVINGAREA_MODE": {
+   "kind": "number",
+   "low": 0.0019000000320374966,
+   "high": 0.5616999864578247,
+   "integer": false,
+   "missing": 0.502,
+   "placeholder": 0.0
+  },
+  "NONLIVINGAPARTMENTS_MODE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.09730000048875809,
+   "integer": false,
+   "missing": 0.694,
+   "placeholder": 0.0
+  },
+  "NONLIVINGAREA_MODE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.32120001316070557,
+   "integer": false,
+   "missing": 0.552,
+   "placeholder": 0.0
+  },
+  "APARTMENTS_MEDI": {
+   "kind": "number",
+   "low": 0.002099999925121665,
+   "high": 0.550599992275238,
+   "integer": false,
+   "missing": 0.507,
+   "placeholder": 0.0
+  },
+  "BASEMENTAREA_MEDI": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.3854300022125247,
+   "integer": false,
+   "missing": 0.585,
+   "placeholder": 0.0
+  },
+  "YEARS_BEGINEXPLUATATION_MEDI": {
+   "kind": "number",
+   "low": 0.9492999911308289,
+   "high": 0.9990000128746033,
+   "integer": false,
+   "missing": 0.488,
+   "placeholder": 0.0
+  },
+  "YEARS_BUILD_MEDI": {
+   "kind": "number",
+   "low": 0.35589998960494995,
+   "high": 0.9865999817848206,
+   "integer": false,
+   "missing": 0.665,
+   "placeholder": 0.0
+  },
+  "COMMONAREA_MEDI": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.3788999915122986,
+   "integer": false,
+   "missing": 0.698,
+   "placeholder": 0.0
+  },
+  "ELEVATORS_MEDI": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.6000000238418579,
+   "integer": false,
+   "missing": 0.533,
+   "placeholder": 0.0
+  },
+  "ENTRANCES_MEDI": {
+   "kind": "number",
+   "low": 0.03449999913573265,
+   "high": 0.5171999931335449,
+   "integer": false,
+   "missing": 0.503,
+   "placeholder": 0.0
+  },
+  "FLOORSMAX_MEDI": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.666700005531311,
+   "integer": false,
+   "missing": 0.497,
+   "placeholder": 0.0
+  },
+  "FLOORSMIN_MEDI": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.708299994468689,
+   "integer": false,
+   "missing": 0.678,
+   "placeholder": 0.0
+  },
+  "LANDAREA_MEDI": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.3810599982738472,
+   "integer": false,
+   "missing": 0.594,
+   "placeholder": 0.0
+  },
+  "LIVINGAPARTMENTS_MEDI": {
+   "kind": "number",
+   "low": 0.0034000000450760126,
+   "high": 0.4616999924182892,
+   "integer": false,
+   "missing": 0.683,
+   "placeholder": 0.0
+  },
+  "LIVINGAREA_MEDI": {
+   "kind": "number",
+   "low": 0.002199999988079071,
+   "high": 0.5595599937438883,
+   "integer": false,
+   "missing": 0.502,
+   "placeholder": 0.0
+  },
+  "NONLIVINGAPARTMENTS_MEDI": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.10480000078678131,
+   "integer": false,
+   "missing": 0.694,
+   "placeholder": 0.0
+  },
+  "NONLIVINGAREA_MEDI": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.3206999897956848,
+   "integer": false,
+   "missing": 0.552,
+   "placeholder": 0.0
+  },
+  "FONDKAPREMONT_MODE": {
+   "kind": "text",
+   "levels": [
+    "reg oper account",
+    "reg oper spec account",
+    "not specified",
+    "org spec account"
+   ],
+   "missing": 0.684
+  },
+  "HOUSETYPE_MODE": {
+   "kind": "text",
+   "levels": [
+    "block of flats",
+    "specific housing",
+    "terraced house"
+   ],
+   "missing": 0.502
+  },
+  "TOTALAREA_MODE": {
+   "kind": "number",
+   "low": 0.0015999999595806003,
+   "high": 0.5250999927520752,
+   "integer": false,
+   "missing": 0.483,
+   "placeholder": 0.0
+  },
+  "WALLSMATERIAL_MODE": {
+   "kind": "text",
+   "levels": [
+    "Panel",
+    "Stone, brick",
+    "Block",
+    "Wooden",
+    "Mixed",
+    "Monolithic",
+    "Others"
+   ],
+   "missing": 0.508
+  },
+  "EMERGENCYSTATE_MODE": {
+   "kind": "text",
+   "levels": [
+    "No",
+    "Yes"
+   ],
+   "missing": 0.474
+  },
+  "OBS_30_CNT_SOCIAL_CIRCLE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 10.0,
+   "integer": true,
+   "missing": 0.003,
+   "placeholder": 0.0
+  },
+  "DEF_30_CNT_SOCIAL_CIRCLE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 2.0,
+   "integer": true,
+   "missing": 0.003,
+   "placeholder": 0.0
+  },
+  "OBS_60_CNT_SOCIAL_CIRCLE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 10.0,
+   "integer": true,
+   "missing": 0.003,
+   "placeholder": 0.0
+  },
+  "DEF_60_CNT_SOCIAL_CIRCLE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 2.0,
+   "integer": true,
+   "missing": 0.003,
+   "placeholder": 0.0
+  },
+  "DAYS_LAST_PHONE_CHANGE": {
+   "kind": "number",
+   "low": -3148.02,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_2": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_3": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_4": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_5": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_6": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_7": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_8": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_9": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_10": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_11": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_12": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_13": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_14": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_15": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_16": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_17": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_18": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_19": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_20": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_DOCUMENT_21": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_REQ_CREDIT_BUREAU_HOUR": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.135,
+   "placeholder": 0.0
+  },
+  "AMT_REQ_CREDIT_BUREAU_DAY": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.135,
+   "placeholder": 0.0
+  },
+  "AMT_REQ_CREDIT_BUREAU_WEEK": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.135,
+   "placeholder": 0.0
+  },
+  "AMT_REQ_CREDIT_BUREAU_MON": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 4.0,
+   "integer": true,
+   "missing": 0.135,
+   "placeholder": 0.0
+  },
+  "AMT_REQ_CREDIT_BUREAU_QRT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 2.0,
+   "integer": true,
+   "missing": 0.135,
+   "placeholder": 0.0
+  },
+  "AMT_REQ_CREDIT_BUREAU_YEAR": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 8.0,
+   "integer": true,
+   "missing": 0.135,
+   "placeholder": 0.0
+  }
+ },
+ "bureau": {
+  "SK_ID_CURR": {
+   "kind": "id"
+  },
+  "SK_ID_BUREAU": {
+   "kind": "id"
+  },
+  "CREDIT_ACTIVE": {
+   "kind": "text",
+   "levels": [
+    "Closed",
+    "Active",
+    "Sold",
+    "Bad debt"
+   ],
+   "missing": 0.0
+  },
+  "CREDIT_CURRENCY": {
+   "kind": "text",
+   "levels": [
+    "currency 1",
+    "currency 2",
+    "currency 3",
+    "currency 4"
+   ],
+   "missing": 0.0
+  },
+  "DAYS_CREDIT": {
+   "kind": "number",
+   "low": -2864.0,
+   "high": -37.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "CREDIT_DAY_OVERDUE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "DAYS_CREDIT_ENDDATE": {
+   "kind": "number",
+   "low": -2562.0,
+   "high": 31005.0,
+   "integer": true,
+   "missing": 0.063,
+   "placeholder": 0.0
+  },
+  "DAYS_ENDDATE_FACT": {
+   "kind": "number",
+   "low": -2631.0,
+   "high": -23.0,
+   "integer": true,
+   "missing": 0.372,
+   "placeholder": 0.0
+  },
+  "AMT_CREDIT_MAX_OVERDUE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 42753.2325,
+   "integer": false,
+   "missing": 0.662,
+   "placeholder": 0.0
+  },
+  "CNT_CREDIT_PROLONG": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_CREDIT_SUM": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 3683330.1000000327,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_CREDIT_SUM_DEBT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 2244673.4399999636,
+   "integer": false,
+   "missing": 0.15,
+   "placeholder": 0.0
+  },
+  "AMT_CREDIT_SUM_LIMIT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 202500.0,
+   "integer": false,
+   "missing": 0.353,
+   "placeholder": 0.0
+  },
+  "AMT_CREDIT_SUM_OVERDUE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "CREDIT_TYPE": {
+   "kind": "text",
+   "levels": [
+    "Consumer credit",
+    "Credit card",
+    "Car loan",
+    "Mortgage",
+    "Microloan",
+    "Loan for business development",
+    "Another type of loan",
+    "Loan for working capital replenishment",
+    "Unknown type of loan",
+    "Cash loan (non-earmarked)",
+    "Real estate loan",
+    "Loan for the purchase of equipment",
+    "Mobile operator loan"
+   ],
+   "missing": 0.0
+  },
+  "DAYS_CREDIT_UPDATE": {
+   "kind": "number",
+   "low": -2519.0,
+   "high": -3.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_ANNUITY": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 121929.47999999975,
+   "integer": false,
+   "missing": 0.691,
+   "placeholder": 0.0
+  }
+ },
+ "bureau_balance": {
+  "SK_ID_BUREAU": {
+   "kind": "id"
+  },
+  "MONTHS_BALANCE": {
+   "kind": "number",
+   "low": -90.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "STATUS": {
+   "kind": "text",
+   "levels": [
+    "C",
+    "0",
+    "X",
+    "1",
+    "5",
+    "2",
+    "3",
+    "4"
+   ],
+   "missing": 0.0
+  }
+ },
+ "previous_application": {
+  "SK_ID_PREV": {
+   "kind": "id"
+  },
+  "SK_ID_CURR": {
+   "kind": "id"
+  },
+  "NAME_CONTRACT_TYPE": {
+   "kind": "text",
+   "levels": [
+    "Consumer loans",
+    "Cash loans",
+    "Revolving loans",
+    "XNA"
+   ],
+   "missing": 0.0
+  },
+  "AMT_ANNUITY": {
+   "kind": "number",
+   "low": 2114.1112670898438,
+   "high": 69130.677734375,
+   "integer": false,
+   "missing": 0.218,
+   "placeholder": 0.0
+  },
+  "AMT_APPLICATION": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1350000.0,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_CREDIT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1502941.5,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_DOWN_PAYMENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 64788.075000000026,
+   "integer": false,
+   "missing": 0.521,
+   "placeholder": 0.0
+  },
+  "AMT_GOODS_PRICE": {
+   "kind": "number",
+   "low": 15345.0,
+   "high": 1372500.0,
+   "integer": false,
+   "missing": 0.225,
+   "placeholder": 0.0
+  },
+  "WEEKDAY_APPR_PROCESS_START": {
+   "kind": "text",
+   "levels": [
+    "WEDNESDAY",
+    "TUESDAY",
+    "MONDAY",
+    "FRIDAY",
+    "THURSDAY",
+    "SATURDAY",
+    "SUNDAY"
+   ],
+   "missing": 0.0
+  },
+  "HOUR_APPR_PROCESS_START": {
+   "kind": "number",
+   "low": 5.0,
+   "high": 20.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "FLAG_LAST_APPL_PER_CONTRACT": {
+   "kind": "text",
+   "levels": [
+    "Y",
+    "N"
+   ],
+   "missing": 0.0
+  },
+  "NFLAG_LAST_APPL_IN_DAY": {
+   "kind": "number",
+   "low": 1.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "RATE_DOWN_PAYMENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.5214819252490999,
+   "integer": false,
+   "missing": 0.521,
+   "placeholder": 0.0
+  },
+  "RATE_INTEREST_PRIMARY": {
+   "kind": "number",
+   "low": 0.05913521349430084,
+   "high": 0.69617760181427,
+   "integer": false,
+   "missing": 0.996,
+   "placeholder": 0.0
+  },
+  "RATE_INTEREST_PRIVILEGED": {
+   "kind": "number",
+   "low": 0.4244185984134674,
+   "high": 0.8673361539840698,
+   "integer": false,
+   "missing": 0.996,
+   "placeholder": 0.0
+  },
+  "NAME_CASH_LOAN_PURPOSE": {
+   "kind": "text",
+   "levels": [
+    "XAP",
+    "XNA",
+    "Repairs",
+    "Other",
+    "Urgent needs",
+    "Buying a used car",
+    "Building a house or an annex",
+    "Everyday expenses",
+    "Medicine",
+    "Payments on other loans",
+    "Education",
+    "Journey",
+    "Buying a new car",
+    "Purchase of electronic equipment",
+    "Wedding / gift / holiday",
+    "Furniture",
+    "Car repairs",
+    "Buying a home",
+    "Buying a holiday home / land",
+    "Business development",
+    "Gasification / water supply",
+    "Buying a garage",
+    "Hobby",
+    "Money for a third person",
+    "Refusal to name the goal"
+   ],
+   "missing": 0.0
+  },
+  "NAME_CONTRACT_STATUS": {
+   "kind": "text",
+   "levels": [
+    "Approved",
+    "Canceled",
+    "Refused",
+    "Unused offer"
+   ],
+   "missing": 0.0
+  },
+  "DAYS_DECISION": {
+   "kind": "number",
+   "low": -2834.0099999999998,
+   "high": -15.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "NAME_PAYMENT_TYPE": {
+   "kind": "text",
+   "levels": [
+    "Cash through the bank",
+    "XNA",
+    "Non-cash from your account",
+    "Cashless from the account of the employer"
+   ],
+   "missing": 0.0
+  },
+  "CODE_REJECT_REASON": {
+   "kind": "text",
+   "levels": [
+    "XAP",
+    "HC",
+    "LIMIT",
+    "SCO",
+    "CLIENT",
+    "SCOFR",
+    "XNA",
+    "VERIF",
+    "SYSTEM"
+   ],
+   "missing": 0.0
+  },
+  "NAME_TYPE_SUITE": {
+   "kind": "text",
+   "levels": [
+    "Unaccompanied",
+    "Family",
+    "Spouse, partner",
+    "Children",
+    "Other_B",
+    "Other_A",
+    "Group of people"
+   ],
+   "missing": 0.489
+  },
+  "NAME_CLIENT_TYPE": {
+   "kind": "text",
+   "levels": [
+    "Repeater",
+    "New",
+    "Refreshed",
+    "XNA"
+   ],
+   "missing": 0.0
+  },
+  "NAME_GOODS_CATEGORY": {
+   "kind": "text",
+   "levels": [
+    "XNA",
+    "Mobile",
+    "Consumer Electronics",
+    "Computers",
+    "Audio/Video",
+    "Furniture",
+    "Construction Materials",
+    "Photo / Cinema Equipment",
+    "Clothing and Accessories",
+    "Auto Accessories",
+    "Jewelry",
+    "Homewares",
+    "Medical Supplies",
+    "Vehicles",
+    "Sport and Leisure",
+    "Gardening",
+    "Other",
+    "Office Appliances",
+    "Tourism",
+    "Medicine",
+    "Direct Sales",
+    "Fitness",
+    "Additional Service",
+    "Education",
+    "Insurance",
+    "Weapon",
+    "Animals"
+   ],
+   "missing": 0.0
+  },
+  "NAME_PORTFOLIO": {
+   "kind": "text",
+   "levels": [
+    "POS",
+    "Cash",
+    "XNA",
+    "Cards",
+    "Cars"
+   ],
+   "missing": 0.0
+  },
+  "NAME_PRODUCT_TYPE": {
+   "kind": "text",
+   "levels": [
+    "XNA",
+    "x-sell",
+    "walk-in"
+   ],
+   "missing": 0.0
+  },
+  "CHANNEL_TYPE": {
+   "kind": "text",
+   "levels": [
+    "Credit and cash offices",
+    "Country-wide",
+    "Stone",
+    "Regional / Local",
+    "Contact center",
+    "AP+ (Cash loan)",
+    "Channel of corporate sales",
+    "Car dealer"
+   ],
+   "missing": 0.0
+  },
+  "SELLERPLACE_AREA": {
+   "kind": "number",
+   "low": -1.0,
+   "high": 3560.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "NAME_SELLER_INDUSTRY": {
+   "kind": "text",
+   "levels": [
+    "XNA",
+    "Consumer electronics",
+    "Connectivity",
+    "Furniture",
+    "Construction",
+    "Clothing",
+    "Industry",
+    "Auto technology",
+    "Jewelry",
+    "MLM partners",
+    "Tourism"
+   ],
+   "missing": 0.0
+  },
+  "CNT_PAYMENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 60.0,
+   "integer": true,
+   "missing": 0.218,
+   "placeholder": 0.0
+  },
+  "NAME_YIELD_GROUP": {
+   "kind": "text",
+   "levels": [
+    "XNA",
+    "middle",
+    "high",
+    "low_normal",
+    "low_action"
+   ],
+   "missing": 0.0
+  },
+  "PRODUCT_COMBINATION": {
+   "kind": "text",
+   "levels": [
+    "Cash",
+    "POS household with interest",
+    "POS mobile with interest",
+    "Cash X-Sell: middle",
+    "Cash X-Sell: low",
+    "Card Street",
+    "POS industry with interest",
+    "POS household without interest",
+    "Card X-Sell",
+    "Cash Street: high",
+    "Cash X-Sell: high",
+    "Cash Street: middle",
+    "Cash Street: low",
+    "POS other with interest",
+    "POS mobile without interest",
+    "POS industry without interest",
+    "POS others without interest"
+   ],
+   "missing": 0.0
+  },
+  "DAYS_FIRST_DRAWING": {
+   "kind": "number",
+   "low": -2877.0,
+   "high": -40.27000000000044,
+   "integer": true,
+   "missing": 0.394,
+   "placeholder": 0.569
+  },
+  "DAYS_FIRST_DUE": {
+   "kind": "number",
+   "low": -2826.0,
+   "high": -48.0,
+   "integer": true,
+   "missing": 0.394,
+   "placeholder": 0.025
+  },
+  "DAYS_LAST_DUE_1ST_VERSION": {
+   "kind": "number",
+   "low": -2612.0,
+   "high": 1270.0,
+   "integer": true,
+   "missing": 0.394,
+   "placeholder": 0.056
+  },
+  "DAYS_LAST_DUE": {
+   "kind": "number",
+   "low": -2647.24,
+   "high": -17.0,
+   "integer": true,
+   "missing": 0.394,
+   "placeholder": 0.128
+  },
+  "DAYS_TERMINATION": {
+   "kind": "number",
+   "low": -2609.0,
+   "high": -15.0,
+   "integer": true,
+   "missing": 0.394,
+   "placeholder": 0.136
+  },
+  "NFLAG_INSURED_ON_APPROVAL": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.394,
+   "placeholder": 0.0
+  }
+ },
+ "installments_payments": {
+  "SK_ID_PREV": {
+   "kind": "id"
+  },
+  "SK_ID_CURR": {
+   "kind": "id"
+  },
+  "NUM_INSTALMENT_VERSION": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 4.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "NUM_INSTALMENT_NUMBER": {
+   "kind": "number",
+   "low": 1.0,
+   "high": 122.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "DAYS_INSTALMENT": {
+   "kind": "number",
+   "low": -2835.0,
+   "high": -22.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "DAYS_ENTRY_PAYMENT": {
+   "kind": "number",
+   "low": -2839.0,
+   "high": -28.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_INSTALMENT": {
+   "kind": "number",
+   "low": 13.364999771118164,
+   "high": 146298.66265625003,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_PAYMENT": {
+   "kind": "number",
+   "low": 3.5999999046325684,
+   "high": 179415.45000000042,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  }
+ },
+ "POS_CASH_balance": {
+  "SK_ID_PREV": {
+   "kind": "id"
+  },
+  "SK_ID_CURR": {
+   "kind": "id"
+  },
+  "MONTHS_BALANCE": {
+   "kind": "number",
+   "low": -93.0,
+   "high": -2.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "CNT_INSTALMENT": {
+   "kind": "number",
+   "low": 3.0,
+   "high": 60.0,
+   "integer": true,
+   "missing": 0.002,
+   "placeholder": 0.0
+  },
+  "CNT_INSTALMENT_FUTURE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 56.0,
+   "integer": true,
+   "missing": 0.002,
+   "placeholder": 0.0
+  },
+  "NAME_CONTRACT_STATUS": {
+   "kind": "text",
+   "levels": [
+    "Active",
+    "Completed",
+    "Signed",
+    "Approved",
+    "Returned to the store",
+    "Demand"
+   ],
+   "missing": 0.0
+  },
+  "SK_DPD": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 3.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "SK_DPD_DEF": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  }
+ },
+ "credit_card_balance": {
+  "SK_ID_PREV": {
+   "kind": "id"
+  },
+  "SK_ID_CURR": {
+   "kind": "id"
+  },
+  "MONTHS_BALANCE": {
+   "kind": "number",
+   "low": -94.0,
+   "high": -1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_BALANCE": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 458094.2128125001,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_CREDIT_LIMIT_ACTUAL": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 765000.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_DRAWINGS_ATM_CURRENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 135000.0,
+   "integer": false,
+   "missing": 0.217,
+   "placeholder": 0.0
+  },
+  "AMT_DRAWINGS_CURRENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 139500.0,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_DRAWINGS_OTHER_CURRENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": false,
+   "missing": 0.217,
+   "placeholder": 0.0
+  },
+  "AMT_DRAWINGS_POS_CURRENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 60747.70499999983,
+   "integer": false,
+   "missing": 0.217,
+   "placeholder": 0.0
+  },
+  "AMT_INST_MIN_REGULARITY": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 23026.11648437501,
+   "integer": false,
+   "missing": 0.067,
+   "placeholder": 0.0
+  },
+  "AMT_PAYMENT_CURRENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 142201.8900000002,
+   "integer": false,
+   "missing": 0.218,
+   "placeholder": 0.0
+  },
+  "AMT_PAYMENT_TOTAL_CURRENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 115159.10132812514,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_RECEIVABLE_PRINCIPAL": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 441735.05250000005,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_RECIVABLE": {
+   "kind": "number",
+   "low": -398.2950134277344,
+   "high": 456418.5565625001,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "AMT_TOTAL_RECEIVABLE": {
+   "kind": "number",
+   "low": -398.2950134277344,
+   "high": 456418.5565625001,
+   "integer": false,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "CNT_DRAWINGS_ATM_CURRENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 5.0,
+   "integer": true,
+   "missing": 0.217,
+   "placeholder": 0.0
+  },
+  "CNT_DRAWINGS_CURRENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 11.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "CNT_DRAWINGS_OTHER_CURRENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 0.0,
+   "integer": true,
+   "missing": 0.217,
+   "placeholder": 0.0
+  },
+  "CNT_DRAWINGS_POS_CURRENT": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 12.0,
+   "integer": true,
+   "missing": 0.217,
+   "placeholder": 0.0
+  },
+  "CNT_INSTALMENT_MATURE_CUM": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 82.0,
+   "integer": true,
+   "missing": 0.067,
+   "placeholder": 0.0
+  },
+  "NAME_CONTRACT_STATUS": {
+   "kind": "text",
+   "levels": [
+    "Active",
+    "Completed",
+    "Signed",
+    "Demand",
+    "Sent proposal"
+   ],
+   "missing": 0.0
+  },
+  "SK_DPD": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 213.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  },
+  "SK_DPD_DEF": {
+   "kind": "number",
+   "low": 0.0,
+   "high": 1.0,
+   "integer": true,
+   "missing": 0.0,
+   "placeholder": 0.0
+  }
+ }
+}
