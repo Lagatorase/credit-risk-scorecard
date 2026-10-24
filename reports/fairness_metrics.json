@@ -1,0 +1,959 @@
+{
+  "review_range": [
+    0.14545454545454545,
+    0.2181818181818182
+  ],
+  "performance": [
+    {
+      "metric": "main_auc",
+      "value": 0.7907698186716261,
+      "ci_low": 0.7843053585721623,
+      "ci_high": 0.7976457052230983
+    },
+    {
+      "metric": "main_gini",
+      "value": 0.5815396373432522,
+      "ci_low": 0.5686107171443248,
+      "ci_high": 0.5952914104461966
+    },
+    {
+      "metric": "main_ks",
+      "value": 0.44034640659294033,
+      "ci_low": 0.4293970504012795,
+      "ci_high": 0.4548994105004738
+    },
+    {
+      "metric": "main_pr_auc",
+      "value": 0.2927622906424258,
+      "ci_low": 0.280624107776104,
+      "ci_high": 0.3068934365714742
+    },
+    {
+      "metric": "main_brier",
+      "value": 0.065363366305611,
+      "ci_low": 0.06395533758898563,
+      "ci_high": 0.06691222380792698
+    },
+    {
+      "metric": "main_ece",
+      "value": 0.0015368593903254864,
+      "ci_low": 0.001753575725061743,
+      "ci_high": 0.004514852807896434
+    },
+    {
+      "metric": "main_cal_slope",
+      "value": 1.007686490791858,
+      "ci_low": 0.9786750340990539,
+      "ci_high": 1.0380782068461925
+    },
+    {
+      "metric": "main_cal_intercept",
+      "value": 0.0015358630531696704,
+      "ci_low": -0.02860510666468007,
+      "ci_high": 0.029431579656977395
+    },
+    {
+      "metric": "alt_auc",
+      "value": 0.7913660578594004,
+      "ci_low": 0.7848945233710737,
+      "ci_high": 0.7982800541396572
+    },
+    {
+      "metric": "alt_gini",
+      "value": 0.5827321157188008,
+      "ci_low": 0.5697890467421475,
+      "ci_high": 0.5965601082793144
+    },
+    {
+      "metric": "alt_ks",
+      "value": 0.44119566029381724,
+      "ci_low": 0.4311277420933616,
+      "ci_high": 0.4561867591975683
+    },
+    {
+      "metric": "alt_pr_auc",
+      "value": 0.2943695336934186,
+      "ci_low": 0.2819617821816657,
+      "ci_high": 0.30720424750440417
+    },
+    {
+      "metric": "alt_brier",
+      "value": 0.0652953173942081,
+      "ci_low": 0.06387086772481394,
+      "ci_high": 0.06681615907073317
+    },
+    {
+      "metric": "alt_ece",
+      "value": 0.0016823439245811443,
+      "ci_low": 0.0016017449069948638,
+      "ci_high": 0.004621578881417554
+    },
+    {
+      "metric": "alt_cal_slope",
+      "value": 1.0058186023127673,
+      "ci_low": 0.9760764994982661,
+      "ci_high": 1.0361362849363427
+    },
+    {
+      "metric": "alt_cal_intercept",
+      "value": 0.0031893494135497853,
+      "ci_low": -0.026850688877808407,
+      "ci_high": 0.03103135082381848
+    },
+    {
+      "metric": "diff_auc",
+      "value": 0.0005962391877742945,
+      "ci_low": -0.0010011074384663338,
+      "ci_high": 0.002252906630899559
+    },
+    {
+      "metric": "diff_gini",
+      "value": 0.001192478375548589,
+      "ci_low": -0.0020022148769326675,
+      "ci_high": 0.004505813261799118
+    },
+    {
+      "metric": "diff_ks",
+      "value": 0.0008492537008769063,
+      "ci_low": -0.00516862667112912,
+      "ci_high": 0.007160433066959151
+    },
+    {
+      "metric": "diff_pr_auc",
+      "value": 0.0016072430509928015,
+      "ci_low": -0.002148770245178544,
+      "ci_high": 0.005137092899386273
+    },
+    {
+      "metric": "diff_brier",
+      "value": -6.80489114028987e-05,
+      "ci_low": -0.00021073196689706426,
+      "ci_high": 8.035412588508866e-05
+    },
+    {
+      "metric": "diff_ece",
+      "value": 0.00014548453425565792,
+      "ci_low": -0.001676196993738778,
+      "ci_high": 0.0014986174407990332
+    },
+    {
+      "metric": "diff_cal_slope",
+      "value": -0.0018678884790905848,
+      "ci_low": -0.009377827073969692,
+      "ci_high": 0.005724019989166208
+    },
+    {
+      "metric": "diff_cal_intercept",
+      "value": 0.0016534863603801149,
+      "ci_low": -0.0011655823880204444,
+      "ci_high": 0.004385745062714313
+    }
+  ],
+  "dev_oof": {
+    "main": {
+      "auc": 0.788475202436298,
+      "gini": 0.576950404872596,
+      "ks": 0.4349570906350289,
+      "pr_auc": 0.2782088098237412,
+      "brier": 0.06597377619474652,
+      "ece": 0.0027957683755475016,
+      "cal_slope": 0.9993511216920001,
+      "cal_intercept": 8.522850427683335e-05
+    },
+    "alt": {
+      "auc": 0.78984024306659,
+      "gini": 0.5796804861331799,
+      "ks": 0.436299608161494,
+      "pr_auc": 0.28262555920652843,
+      "brier": 0.06579861008173428,
+      "ece": 0.002487002581549169,
+      "cal_slope": 0.999275465150529,
+      "cal_intercept": 9.102487540981125e-05
+    }
+  },
+  "groups": {
+    "Gender": {
+      "main": [
+        {
+          "group": "Men",
+          "n": 20940,
+          "share": 0.34048226858099867,
+          "approval_rate": 0.8028175740210124,
+          "default_rate_approved": 0.056748557492118254,
+          "tpr": 0.5519023015500235,
+          "approval_rate_repaid": 0.842964223060975,
+          "mean_pd": 0.09422535179345383,
+          "default_rate": 0.10167144221585482,
+          "approval_rate_low": 0.7973732121563567,
+          "approval_rate_high": 0.8081508479568557,
+          "default_rate_approved_low": 0.05335131703598941,
+          "default_rate_approved_high": 0.060348332682982654,
+          "tpr_low": 0.5307031787117381,
+          "tpr_high": 0.5729144551528677,
+          "approval_rate_repaid_low": 0.8376948468559896,
+          "approval_rate_repaid_high": 0.8480935469192733
+        },
+        {
+          "group": "Women",
+          "n": 40561,
+          "share": 0.6595177314190013,
+          "approval_rate": 0.8697024235102685,
+          "default_rate_approved": 0.04371243905204672,
+          "tpr": 0.45627644569816644,
+          "approval_rate_repaid": 0.894208084824387,
+          "mean_pd": 0.07360372813458171,
+          "default_rate": 0.06991938068588052,
+          "approval_rate_low": 0.8663912940358095,
+          "approval_rate_high": 0.8729435293497697,
+          "default_rate_approved_low": 0.04162806077221839,
+          "default_rate_approved_high": 0.04589618706907577,
+          "tpr_low": 0.4380160607893734,
+          "tpr_high": 0.47465512481478134,
+          "approval_rate_repaid_low": 0.8910640927241277,
+          "approval_rate_repaid_high": 0.8972717993590259
+        }
+      ],
+      "comparison": [
+        {
+          "group": "Men",
+          "n": 20940,
+          "share": 0.34048226858099867,
+          "approval_rate": 0.7864374403056351,
+          "default_rate_approved": 0.055744474131649256,
+          "tpr": 0.5688116486613434,
+          "approval_rate_repaid": 0.8266439849024507,
+          "mean_pd": 0.09954914727549385,
+          "default_rate": 0.10167144221585482,
+          "approval_rate_low": 0.7808342743500379,
+          "approval_rate_high": 0.7919355273467051,
+          "default_rate_approved_low": 0.05234282246722145,
+          "default_rate_approved_high": 0.059353346344892435,
+          "tpr_low": 0.5476691904651292,
+          "tpr_high": 0.589706224568036,
+          "approval_rate_repaid_low": 0.8211676616385629,
+          "approval_rate_repaid_high": 0.8319869203271976
+        },
+        {
+          "group": "Women",
+          "n": 40561,
+          "share": 0.6595177314190013,
+          "approval_rate": 0.8755701289415941,
+          "default_rate_approved": 0.043870023089485836,
+          "tpr": 0.4506346967559944,
+          "approval_rate_repaid": 0.9000927766732936,
+          "mean_pd": 0.07069365212442669,
+          "default_rate": 0.06991938068588052,
+          "approval_rate_low": 0.8723222651475524,
+          "approval_rate_high": 0.878746857725591,
+          "default_rate_approved_low": 0.04178880836784292,
+          "default_rate_approved_high": 0.046049907597374956,
+          "tpr_low": 0.4324013180722713,
+          "tpr_high": 0.4690016334162906,
+          "approval_rate_repaid_low": 0.8970258167833934,
+          "approval_rate_repaid_high": 0.9030782606235311
+        }
+      ]
+    },
+    "Age": {
+      "main": [
+        {
+          "group": "Under 25",
+          "n": 2392,
+          "share": 0.038892411752272246,
+          "approval_rate": 0.7027591973244147,
+          "default_rate_approved": 0.06484235574063058,
+          "tpr": 0.6107142857142858,
+          "approval_rate_repaid": 0.7443181818181818,
+          "mean_pd": 0.12340512292422565,
+          "default_rate": 0.11705685618729098,
+          "approval_rate_low": 0.6841297886599004,
+          "approval_rate_high": 0.7207383795862808,
+          "default_rate_approved_low": 0.054034365987727755,
+          "default_rate_approved_high": 0.07763474759541265,
+          "tpr_low": 0.5524714721137475,
+          "tpr_high": 0.6659602165464068,
+          "approval_rate_repaid_low": 0.7252808228002363,
+          "approval_rate_repaid_high": 0.7624683546429143
+        },
+        {
+          "group": "25 to 34",
+          "n": 14368,
+          "share": 0.23361462042501993,
+          "approval_rate": 0.7651726057906458,
+          "default_rate_approved": 0.05557576860105512,
+          "tpr": 0.5961665565102445,
+          "approval_rate_repaid": 0.8077012835472579,
+          "mean_pd": 0.10607100687428582,
+          "default_rate": 0.10530345211581292,
+          "approval_rate_low": 0.75817103206198,
+          "approval_rate_high": 0.7720324179955268,
+          "default_rate_approved_low": 0.05144637263524568,
+          "default_rate_approved_high": 0.060015643693485596,
+          "tpr_low": 0.5712289690001113,
+          "tpr_high": 0.6206170352234015,
+          "approval_rate_repaid_low": 0.8007968297731307,
+          "approval_rate_repaid_high": 0.814421884795995
+        },
+        {
+          "group": "35 to 44",
+          "n": 16889,
+          "share": 0.2746044908378453,
+          "approval_rate": 0.8394813192018473,
+          "default_rate_approved": 0.048666948793906054,
+          "tpr": 0.5067905646890636,
+          "approval_rate_repaid": 0.8707553260167851,
+          "mean_pd": 0.08283174925133317,
+          "default_rate": 0.08283498134880692,
+          "approval_rate_low": 0.8338678733629482,
+          "approval_rate_high": 0.8449403621916906,
+          "default_rate_approved_low": 0.045245712201559395,
+          "default_rate_approved_high": 0.0523327010279326,
+          "tpr_low": 0.4806093142919856,
+          "tpr_high": 0.5329346239544992,
+          "approval_rate_repaid_low": 0.8653802042850367,
+          "approval_rate_repaid_high": 0.8759465948736691
+        },
+        {
+          "group": "45 to 54",
+          "n": 14039,
+          "share": 0.22826528787213632,
+          "approval_rate": 0.876344468979272,
+          "default_rate_approved": 0.045192229537511175,
+          "tpr": 0.4601941747572815,
+          "approval_rate_repaid": 0.9029902375278653,
+          "mean_pd": 0.0722514657963528,
+          "default_rate": 0.07336704893510934,
+          "approval_rate_low": 0.8707958566601581,
+          "approval_rate_high": 0.8816871735550369,
+          "default_rate_approved_low": 0.04166139821229584,
+          "default_rate_approved_high": 0.04900699878730478,
+          "tpr_low": 0.4299595836112464,
+          "tpr_high": 0.49072459083095044,
+          "approval_rate_repaid_low": 0.8977845456503636,
+          "approval_rate_repaid_high": 0.9079579910143415
+        },
+        {
+          "group": "55 to 64",
+          "n": 12165,
+          "share": 0.19779522950099995,
+          "approval_rate": 0.9298808055898068,
+          "default_rate_approved": 0.04207920792079208,
+          "tpr": 0.30409356725146197,
+          "approval_rate_repaid": 0.9438202247191011,
+          "mean_pd": 0.054973540576984836,
+          "default_rate": 0.0562268803945746,
+          "approval_rate_low": 0.9252061212371246,
+          "approval_rate_high": 0.934284070499778,
+          "default_rate_approved_low": 0.038532172703772995,
+          "default_rate_approved_high": 0.04593716097795688,
+          "tpr_low": 0.2707914850762767,
+          "tpr_high": 0.33958392693718686,
+          "approval_rate_repaid_low": 0.9394577375779484,
+          "approval_rate_repaid_high": 0.9478858022754876
+        },
+        {
+          "group": "65 and over",
+          "n": 1650,
+          "share": 0.02682795961172626,
+          "approval_rate": 0.9818181818181818,
+          "default_rate_approved": 0.03333333333333333,
+          "tpr": 0.0847457627118644,
+          "approval_rate_repaid": 0.9842866121935889,
+          "mean_pd": 0.034899555528244024,
+          "default_rate": 0.03575757575757576,
+          "approval_rate_low": 0.974163093777878,
+          "approval_rate_high": 0.9872349022575344,
+          "default_rate_approved_low": 0.025636865656812145,
+          "default_rate_approved_high": 0.04323783246645309,
+          "tpr_low": 0.036741491306199775,
+          "tpr_high": 0.1835202461416055,
+          "approval_rate_repaid_low": 0.9769059080907806,
+          "approval_rate_repaid_high": 0.9893342501794827
+        }
+      ],
+      "comparison": [
+        {
+          "group": "Under 25",
+          "n": 2392,
+          "share": 0.038892411752272246,
+          "approval_rate": 0.7040133779264214,
+          "default_rate_approved": 0.06591448931116389,
+          "tpr": 0.6035714285714285,
+          "approval_rate_repaid": 0.7447916666666666,
+          "mean_pd": 0.12281346205418621,
+          "default_rate": 0.11705685618729098,
+          "approval_rate_low": 0.685404281159308,
+          "approval_rate_high": 0.7219682262719012,
+          "default_rate_approved_low": 0.05502344709661665,
+          "default_rate_approved_high": 0.07878152607148158,
+          "tpr_low": 0.5452455079198053,
+          "tpr_high": 0.6590938137300162,
+          "approval_rate_repaid_low": 0.7257647377854821,
+          "approval_rate_repaid_high": 0.7629296900015505
+        },
+        {
+          "group": "25 to 34",
+          "n": 14368,
+          "share": 0.23361462042501993,
+          "approval_rate": 0.7640590200445434,
+          "default_rate_approved": 0.055201311714337765,
+          "tpr": 0.5994712491738269,
+          "approval_rate_repaid": 0.8068455853753403,
+          "mean_pd": 0.10581152864462351,
+          "default_rate": 0.10530345211581292,
+          "approval_rate_low": 0.7570463914945363,
+          "approval_rate_high": 0.7709304823947499,
+          "default_rate_approved_low": 0.051082748305857545,
+          "default_rate_approved_high": 0.05963106858255943,
+          "tpr_low": 0.5745583841366348,
+          "tpr_high": 0.6238802662801259,
+          "approval_rate_repaid_low": 0.7999298699359382,
+          "approval_rate_repaid_high": 0.8135779595718148
+        },
+        {
+          "group": "35 to 44",
+          "n": 16889,
+          "share": 0.2746044908378453,
+          "approval_rate": 0.8389484279708687,
+          "default_rate_approved": 0.04841555508504482,
+          "tpr": 0.509649749821301,
+          "approval_rate_repaid": 0.870432537120723,
+          "mean_pd": 0.08286628235944986,
+          "default_rate": 0.08283498134880692,
+          "approval_rate_low": 0.8333276847845394,
+          "approval_rate_high": 0.8444150106776616,
+          "default_rate_approved_low": 0.0450020250758253,
+          "default_rate_approved_high": 0.052073892289962516,
+          "tpr_low": 0.48346312314155604,
+          "tpr_high": 0.5357835259455541,
+          "approval_rate_repaid_low": 0.8650518857815637,
+          "approval_rate_repaid_high": 0.8756294956519473
+        },
+        {
+          "group": "45 to 54",
+          "n": 14039,
+          "share": 0.22826528787213632,
+          "approval_rate": 0.8723555808818292,
+          "default_rate_approved": 0.043847472850494,
+          "tpr": 0.4786407766990291,
+          "approval_rate_repaid": 0.9001460527327235,
+          "mean_pd": 0.0721601321063559,
+          "default_rate": 0.07336704893510934,
+          "approval_rate_low": 0.8667335766789401,
+          "approval_rate_high": 0.8777738597646925,
+          "default_rate_approved_low": 0.04036184920719428,
+          "default_rate_approved_high": 0.04761917570459627,
+          "tpr_low": 0.44826897865792714,
+          "tpr_high": 0.5091713100671541,
+          "approval_rate_repaid_low": 0.8948753606004813,
+          "approval_rate_repaid_high": 0.9051804857720742
+        },
+        {
+          "group": "55 to 64",
+          "n": 12165,
+          "share": 0.19779522950099995,
+          "approval_rate": 0.928072338676531,
+          "default_rate_approved": 0.04278122232063773,
+          "tpr": 0.29385964912280704,
+          "approval_rate_repaid": 0.9412943123421305,
+          "mean_pd": 0.054973116736936736,
+          "default_rate": 0.0562268803945746,
+          "approval_rate_low": 0.923344601842553,
+          "approval_rate_high": 0.9325297979031056,
+          "default_rate_approved_low": 0.03920128471630176,
+          "default_rate_approved_high": 0.04667220584159662,
+          "tpr_low": 0.2609485198100032,
+          "tpr_high": 0.3290733689504324,
+          "approval_rate_repaid_low": 0.9368448828416336,
+          "approval_rate_repaid_high": 0.9454485220582651
+        },
+        {
+          "group": "65 and over",
+          "n": 1650,
+          "share": 0.02682795961172626,
+          "approval_rate": 0.9787878787878788,
+          "default_rate_approved": 0.03281733746130031,
+          "tpr": 0.1016949152542373,
+          "approval_rate_repaid": 0.9817724701445631,
+          "mean_pd": 0.034431251470874225,
+          "default_rate": 0.03575757575757576,
+          "approval_rate_low": 0.9706426733576895,
+          "approval_rate_high": 0.9847087944007705,
+          "default_rate_approved_low": 0.025176660645222268,
+          "default_rate_approved_high": 0.04267531449552035,
+          "tpr_low": 0.047447326513182495,
+          "tpr_high": 0.2046404624673654,
+          "approval_rate_repaid_low": 0.973944739997283,
+          "approval_rate_repaid_high": 0.9872792461340042
+        }
+      ]
+    },
+    "Marital status": {
+      "main": [
+        {
+          "group": "Civil marriage",
+          "n": 5963,
+          "share": 0.09695462009983252,
+          "approval_rate": 0.8197216166359215,
+          "default_rate_approved": 0.05748772504091653,
+          "tpr": 0.5121527777777778,
+          "approval_rate_repaid": 0.8552069797661036,
+          "mean_pd": 0.08966781815735798,
+          "default_rate": 0.09659567331879926,
+          "approval_rate_low": 0.8097594634884704,
+          "approval_rate_high": 0.8292720804358731,
+          "default_rate_approved_low": 0.05130292966433454,
+          "default_rate_approved_high": 0.06436753685281515,
+          "tpr_low": 0.4713863630628731,
+          "tpr_high": 0.5527581619246407,
+          "approval_rate_repaid_low": 0.8455567322990101,
+          "approval_rate_repaid_high": 0.8643509748760625
+        },
+        {
+          "group": "Married",
+          "n": 39279,
+          "share": 0.6386517730842398,
+          "approval_rate": 0.8525929886198732,
+          "default_rate_approved": 0.045149153453372746,
+          "tpr": 0.49767441860465117,
+          "approval_rate_repaid": 0.8816620254211586,
+          "mean_pd": 0.0782299156611387,
+          "default_rate": 0.07663127880037679,
+          "approval_rate_low": 0.849052558509071,
+          "approval_rate_high": 0.8560644562437517,
+          "default_rate_approved_low": 0.04297703069680696,
+          "default_rate_approved_high": 0.04742561820832504,
+          "tpr_low": 0.4798264395340478,
+          "tpr_high": 0.515528326290407,
+          "approval_rate_repaid_low": 0.8782972252614805,
+          "approval_rate_repaid_high": 0.884945983122833
+        },
+        {
+          "group": "Separated",
+          "n": 3930,
+          "share": 0.06389932198429345,
+          "approval_rate": 0.8572519083969465,
+          "default_rate_approved": 0.05609973285841496,
+          "tpr": 0.4676056338028169,
+          "approval_rate_repaid": 0.8895104895104895,
+          "mean_pd": 0.07808150876950908,
+          "default_rate": 0.09033078880407125,
+          "approval_rate_low": 0.845965784976879,
+          "approval_rate_high": 0.8678402818459438,
+          "default_rate_approved_low": 0.04882281165669491,
+          "default_rate_approved_high": 0.06438784134284116,
+          "tpr_low": 0.4163261252414565,
+          "tpr_high": 0.5195787419757224,
+          "approval_rate_repaid_low": 0.8788126816431178,
+          "approval_rate_repaid_high": 0.899372080711271
+        },
+        {
+          "group": "Single / not married",
+          "n": 9085,
+          "share": 0.14771637155911094,
+          "approval_rate": 0.8118877270225646,
+          "default_rate_approved": 0.0539587852494577,
+          "tpr": 0.5267538644470868,
+          "approval_rate_repaid": 0.846433770014556,
+          "mean_pd": 0.0927602787923668,
+          "default_rate": 0.09257017061089708,
+          "approval_rate_low": 0.8037203285745338,
+          "approval_rate_high": 0.8197914729734215,
+          "default_rate_approved_low": 0.049030865705993916,
+          "default_rate_approved_high": 0.059351081136876004,
+          "tpr_low": 0.4929641069379287,
+          "tpr_high": 0.5603003156473227,
+          "approval_rate_repaid_low": 0.8384898307362223,
+          "approval_rate_repaid_high": 0.8540549921420442
+        },
+        {
+          "group": "Widow",
+          "n": 3246,
+          "share": 0.05277791327252329,
+          "approval_rate": 0.9137399876771412,
+          "default_rate_approved": 0.03910991233985165,
+          "tpr": 0.366120218579235,
+          "approval_rate_repaid": 0.930460333006856,
+          "mean_pd": 0.06215800700766314,
+          "default_rate": 0.056377079482439925,
+          "approval_rate_low": 0.903586000518191,
+          "approval_rate_high": 0.9229158203705563,
+          "default_rate_approved_low": 0.03270845024021678,
+          "default_rate_approved_high": 0.04670373120407305,
+          "tpr_low": 0.29974088263625764,
+          "tpr_high": 0.43800488704244356,
+          "approval_rate_repaid_low": 0.9209022358582729,
+          "approval_rate_repaid_high": 0.9389400200965178
+        }
+      ],
+      "comparison": [
+        {
+          "group": "Civil marriage",
+          "n": 5963,
+          "share": 0.09695462009983252,
+          "approval_rate": 0.7990944155626363,
+          "default_rate_approved": 0.05435466946484785,
+          "tpr": 0.5503472222222222,
+          "approval_rate_repaid": 0.8364581399665862,
+          "mean_pd": 0.09665706216802467,
+          "default_rate": 0.09659567331879926,
+          "approval_rate_low": 0.7887333543721896,
+          "approval_rate_high": 0.809070348008648,
+          "default_rate_approved_low": 0.04826890061471964,
+          "default_rate_approved_high": 0.061158428655348804,
+          "tpr_low": 0.5095212930535898,
+          "tpr_high": 0.5905060247518247,
+          "approval_rate_repaid_low": 0.8263421176594642,
+          "approval_rate_repaid_high": 0.8460946313631744
+        },
+        {
+          "group": "Married",
+          "n": 39279,
+          "share": 0.6386517730842398,
+          "approval_rate": 0.8564372820081978,
+          "default_rate_approved": 0.045838287752675386,
+          "tpr": 0.4877076411960133,
+          "approval_rate_repaid": 0.8849982078358929,
+          "mean_pd": 0.07635680458095104,
+          "default_rate": 0.07663127880037679,
+          "approval_rate_low": 0.8529346955545781,
+          "approval_rate_high": 0.8598701540823687,
+          "default_rate_approved_low": 0.043654796758220975,
+          "default_rate_approved_high": 0.04812549506196164,
+          "tpr_low": 0.46987756208095866,
+          "tpr_high": 0.5055690572768736,
+          "approval_rate_repaid_low": 0.881674044782803,
+          "approval_rate_repaid_high": 0.8882408217712415
+        },
+        {
+          "group": "Separated",
+          "n": 3930,
+          "share": 0.06389932198429345,
+          "approval_rate": 0.8486005089058524,
+          "default_rate_approved": 0.05487256371814093,
+          "tpr": 0.48450704225352115,
+          "approval_rate_repaid": 0.8816783216783217,
+          "mean_pd": 0.07990467247306676,
+          "default_rate": 0.09033078880407125,
+          "approval_rate_low": 0.8370537895053443,
+          "approval_rate_high": 0.8594663754143617,
+          "default_rate_approved_low": 0.047643069844713705,
+          "default_rate_approved_high": 0.06312636587814298,
+          "tpr_low": 0.4329636423391857,
+          "tpr_high": 0.5363821637212043,
+          "approval_rate_repaid_low": 0.8706785872367947,
+          "approval_rate_repaid_high": 0.8918586538637895
+        },
+        {
+          "group": "Single / not married",
+          "n": 9085,
+          "share": 0.14771637155911094,
+          "approval_rate": 0.799009356081453,
+          "default_rate_approved": 0.05193552830968453,
+          "tpr": 0.5517241379310345,
+          "approval_rate_repaid": 0.8347889374090247,
+          "mean_pd": 0.09574673770928771,
+          "default_rate": 0.09257017061089708,
+          "approval_rate_low": 0.7906431716763769,
+          "approval_rate_high": 0.8071227746461997,
+          "default_rate_approved_low": 0.04706369286508512,
+          "default_rate_approved_high": 0.057281361280113366,
+          "tpr_low": 0.5179528248074545,
+          "tpr_high": 0.5850250588573649,
+          "approval_rate_repaid_low": 0.8266166650081798,
+          "approval_rate_repaid_high": 0.8426493402943468
+        },
+        {
+          "group": "Widow",
+          "n": 3246,
+          "share": 0.05277791327252329,
+          "approval_rate": 0.9192852741836106,
+          "default_rate_approved": 0.03853887399463807,
+          "tpr": 0.37158469945355194,
+          "approval_rate_repaid": 0.9366634018935684,
+          "mean_pd": 0.059379127692567965,
+          "default_rate": 0.056377079482439925,
+          "approval_rate_low": 0.9094111323247809,
+          "approval_rate_high": 0.9281681515393927,
+          "default_rate_approved_low": 0.032204459508189336,
+          "default_rate_approved_high": 0.04605993041127627,
+          "tpr_low": 0.3048845646521985,
+          "tpr_high": 0.4435654593253313,
+          "approval_rate_repaid_low": 0.9274786490054306,
+          "approval_rate_repaid_high": 0.9447542044944045
+        }
+      ]
+    }
+  },
+  "gaps": {
+    "Gender": [
+      {
+        "metric": "approval_rate",
+        "main": 0.0668848494892561,
+        "alt": 0.08913268863595902,
+        "change": 0.02224783914670292,
+        "main_low": 0.060644707249438934,
+        "main_high": 0.07334052718522112,
+        "alt_low": 0.0828319983509676,
+        "alt_high": 0.09563815283706611,
+        "change_low": 0.018727855328000424,
+        "change_high": 0.025827101175895976
+      },
+      {
+        "metric": "default_rate_approved",
+        "main": 0.013036118440071534,
+        "alt": 0.01187445104216342,
+        "change": -0.0011616673979081144,
+        "main_low": 0.009216884483094306,
+        "main_high": 0.016992699193403484,
+        "alt_low": 0.0077972949285806436,
+        "alt_high": 0.015915579183085143,
+        "change_low": -0.002746692377439846,
+        "change_high": 0.000487731950142454
+      },
+      {
+        "metric": "tpr",
+        "main": 0.09562585585185707,
+        "alt": 0.11817695190534899,
+        "change": 0.022551096053491926,
+        "main_low": 0.06866799523918135,
+        "main_high": 0.1234459549920806,
+        "alt_low": 0.09019872794487842,
+        "alt_high": 0.14479606336122422,
+        "change_low": 0.0073811955719447165,
+        "change_high": 0.036737953148221016
+      },
+      {
+        "metric": "approval_rate_repaid",
+        "main": 0.051243861763412,
+        "alt": 0.07344879177084285,
+        "change": 0.022204930007430845,
+        "main_low": 0.044928893009189924,
+        "main_high": 0.0574288214300365,
+        "alt_low": 0.06742529362267732,
+        "alt_high": 0.07945696245561196,
+        "change_low": 0.018784103039090155,
+        "change_high": 0.025772790048741983
+      },
+      {
+        "metric": "mean_pd",
+        "main": 0.020621623658872115,
+        "alt": 0.028855495151067168,
+        "change": 0.008233871492195052,
+        "main_low": 0.019032638404680256,
+        "main_high": 0.022335506259113447,
+        "alt_low": 0.027235492107515916,
+        "alt_high": 0.030522002780576523,
+        "change_low": 0.0078158114195364,
+        "change_high": 0.008613894784193495
+      },
+      {
+        "metric": "default_rate",
+        "main": 0.0317520615299743,
+        "alt": 0.0317520615299743,
+        "change": 0.0,
+        "main_low": 0.027146145340376054,
+        "main_high": 0.036497712068057526,
+        "alt_low": 0.027146145340376054,
+        "alt_high": 0.036497712068057526,
+        "change_low": 0.0,
+        "change_high": 0.0
+      }
+    ],
+    "Age": [
+      {
+        "metric": "approval_rate",
+        "main": 0.2790589844937671,
+        "alt": 0.2747745008614574,
+        "change": -0.00428448363230971,
+        "main_low": 0.2595886475887288,
+        "main_high": 0.2978294267515652,
+        "alt_low": 0.25550950127595207,
+        "alt_high": 0.29438132574699216,
+        "change_low": -0.015307090514103542,
+        "change_high": 0.007893003396517778
+      },
+      {
+        "metric": "default_rate_approved",
+        "main": 0.03150902240729724,
+        "alt": 0.03309715184986358,
+        "change": 0.0015881294425663384,
+        "main_low": 0.018289052555607317,
+        "main_high": 0.0455548921953242,
+        "alt_low": 0.019561067714071956,
+        "alt_high": 0.0471857361609518,
+        "change_low": -0.004283401494402098,
+        "change_high": 0.008124992094699194
+      },
+      {
+        "metric": "tpr",
+        "main": 0.5259685230024214,
+        "alt": 0.5018765133171912,
+        "change": -0.024092009685230176,
+        "main_low": 0.4462174715776311,
+        "main_high": 0.6177640652459817,
+        "alt_low": 0.4227992651045133,
+        "alt_high": 0.6025991195136725,
+        "change_low": -0.0693118037972415,
+        "change_high": 0.020343328987396794
+      },
+      {
+        "metric": "approval_rate_repaid",
+        "main": 0.23996843037540716,
+        "alt": 0.23698080347789652,
+        "change": -0.0029876268975106424,
+        "main_low": 0.22030834691530532,
+        "main_high": 0.25822706505887943,
+        "alt_low": 0.21808404440118567,
+        "alt_high": 0.25698764236641464,
+        "change_low": -0.01533631789343608,
+        "change_high": 0.008732545796198074
+      },
+      {
+        "metric": "mean_pd",
+        "main": 0.08850556739598162,
+        "alt": 0.08838221058331198,
+        "change": -0.00012335681266963106,
+        "main_low": 0.08390998232610253,
+        "main_high": 0.09315450433044929,
+        "alt_low": 0.0837545562565893,
+        "alt_high": 0.09312674760852924,
+        "change_low": -0.001371609048636644,
+        "change_high": 0.0010572097983563295
+      },
+      {
+        "metric": "default_rate",
+        "main": 0.08129928042971521,
+        "alt": 0.08129928042971521,
+        "change": 0.0,
+        "main_low": 0.06630943886682701,
+        "main_high": 0.09654473429492819,
+        "alt_low": 0.06630943886682701,
+        "alt_high": 0.09654473429492819,
+        "change_low": 0.0,
+        "change_high": 0.0
+      }
+    ],
+    "Marital status": [
+      {
+        "metric": "approval_rate",
+        "main": 0.10185226065457653,
+        "alt": 0.12027591810215765,
+        "change": 0.01842365744758112,
+        "main_low": 0.09049000633883209,
+        "main_high": 0.11355611479459711,
+        "alt_low": 0.11099055696973845,
+        "alt_high": 0.13489730493879204,
+        "change_low": 0.01283382510059219,
+        "change_high": 0.02887701909937912
+      },
+      {
+        "metric": "default_rate_approved",
+        "main": 0.01837781270106488,
+        "alt": 0.01633368972350286,
+        "change": -0.00204412297756202,
+        "main_low": 0.01213155134950874,
+        "main_high": 0.029122078797833958,
+        "alt_low": 0.009958632653010465,
+        "alt_high": 0.027593595491617388,
+        "change_low": -0.005015651442773886,
+        "change_high": 0.00175369828430179
+      },
+      {
+        "metric": "tpr",
+        "main": 0.16063364586785184,
+        "alt": 0.18013943847748254,
+        "change": 0.0195057926096307,
+        "main_low": 0.08843557410672986,
+        "main_high": 0.24292493982717908,
+        "alt_low": 0.10997815792094424,
+        "alt_high": 0.2606932338881184,
+        "change_low": -0.0148590393227817,
+        "change_high": 0.061467156335515784
+      },
+      {
+        "metric": "approval_rate_repaid",
+        "main": 0.08402656299230005,
+        "alt": 0.10187446448454374,
+        "change": 0.01784790149224369,
+        "main_low": 0.07321549166139361,
+        "main_high": 0.09529191693829388,
+        "alt_low": 0.09197457957609528,
+        "alt_high": 0.1154217717271908,
+        "change_low": 0.01224405273856429,
+        "change_high": 0.028139723611644324
+      },
+      {
+        "metric": "mean_pd",
+        "main": 0.030602271784703657,
+        "alt": 0.0372779344754567,
+        "change": 0.006675662690753044,
+        "main_low": 0.02767927007158896,
+        "main_high": 0.033756263149220866,
+        "alt_low": 0.03424521182471434,
+        "alt_high": 0.04110682937911574,
+        "change_low": 0.005200403894916384,
+        "change_high": 0.0096402517247892
+      },
+      {
+        "metric": "default_rate",
+        "main": 0.04021859383635933,
+        "alt": 0.04021859383635933,
+        "change": 0.0,
+        "main_low": 0.030499306919562437,
+        "main_high": 0.05125043072265472,
+        "alt_low": 0.030499306919562437,
+        "alt_high": 0.05125043072265472,
+        "change_low": 0.0,
+        "change_high": 0.0
+      }
+    ]
+  },
+  "decision_changes": {
+    "table": {
+      "approve": {
+        "approve": 50883,
+        "review": 1080,
+        "decline": 20
+      },
+      "review": {
+        "approve": 1173,
+        "review": 2692,
+        "decline": 699
+      },
+      "decline": {
+        "approve": 32,
+        "review": 712,
+        "decline": 4212
+      }
+    },
+    "changed": 3716
+  },
+  "gender_proxy_auc": 0.9035490637776407,
+  "comparison_shap_rank": {
+    "CODE_GENDER": {
+      "rank": 2,
+      "mean_abs_shap": 0.11472609995483765
+    },
+    "NAME_FAMILY_STATUS": {
+      "rank": 17,
+      "mean_abs_shap": 0.06952735941009609
+    }
+  },
+  "comparison_meta": {
+    "params": {
+      "learning_rate": 0.046095654581465355,
+      "num_leaves": 27,
+      "min_child_samples": 101,
+      "colsample_bytree": 0.3986469574823338,
+      "subsample": 0.9208787923016158,
+      "reg_alpha": 0.0019870215385428634,
+      "reg_lambda": 8.862326508576253,
+      "subsample_freq": 1,
+      "n_estimators": 1160
+    },
+    "train_seconds": 29.53118429996539,
+    "platt_coef": 0.9778045299800464,
+    "platt_intercept": -0.022660195967592587
+  }
+}
