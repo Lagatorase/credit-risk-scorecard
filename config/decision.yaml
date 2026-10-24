@@ -1,0 +1,23 @@
+# Decision rule settings.
+# These are ASSUMPTIONS chosen for a portfolio project, not real bank figures.
+
+# Loss given default: the share of the loan amount lost when a borrower defaults.
+# Assumption: 45%, the Basel foundation IRB value for senior unsecured exposures.
+lgd: 0.45
+
+# Margin: the profit given up when a good applicant is declined, as a share of the loan amount.
+# Assumption: 10% over the life of the loan.
+margin: 0.10
+
+# Manual review band: if approving or declining changes the expected cost by less than this share
+# of the loan amount, the applicant goes to a loan officer instead of an automatic decision.
+# Assumption: 2% of the loan amount.
+review_band: 0.02
+
+# Risk bands shown next to the PD (upper bounds, exclusive). Labels are for display only.
+pd_bands:
+  - {band: A, label: very low, upper: 0.025}
+  - {band: B, label: low, upper: 0.05}
+  - {band: C, label: moderate, upper: 0.10}
+  - {band: D, label: high, upper: 0.20}
+  - {band: E, label: very high, upper: 1.01}
