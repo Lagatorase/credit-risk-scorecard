@@ -218,3 +218,19 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Credit Risk Scorecard
+# raw Kaggle files and processed parquet stay local (the data belongs to Home Credit)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+# my local settings and keys
+.env
+# trained models and report caches
+models/
+*.joblib
+*.pkl
+*.lgb
+reports/cache/
+reports/*.parquet
