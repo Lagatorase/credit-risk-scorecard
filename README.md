@@ -238,3 +238,7 @@ tests/         unit tests, API tests and the end-to-end synthetic test
 ## License
 
 MIT. The Home Credit data is subject to the Kaggle competition rules and is not included.
+
+## Related project
+
+[CiteBank](https://github.com/Lagatorase/citebank): a RAG system over the DBS, OCBC and UOB annual reports, built with the same evaluation-first approach.
