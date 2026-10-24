@@ -1,0 +1,52 @@
+# Each experiment changes one thing from the one before it. All use the same 5 stratified folds
+# of the development set; the hold-out set is never touched here.
+#
+# model: scorecard | lgbm | lgbm_tuned | lgbm_calibrated
+# features: any of application, bureau, previous, installments, pos_cash, credit_card
+# Gender and marital status are never inputs (see docs/features.md).
+
+n_trials: 30          # Optuna trials per training fold (about 12 s each on my laptop, so about 6 min per fold)
+
+experiments:
+  - name: scorecard_app
+    description: Logistic regression on WoE bins, features selected by IV
+    model: scorecard
+    features: [application]
+
+  - name: lgbm_app
+    description: LightGBM, default parameters
+    model: lgbm
+    features: [application]
+
+  - name: lgbm_app_bureau
+    description: + credit bureau features
+    model: lgbm
+    features: [application, bureau]
+
+  - name: lgbm_all
+    description: + all other side tables
+    model: lgbm
+    features: [application, bureau, previous, installments, pos_cash, credit_card]
+
+  - name: lgbm_all_balanced
+    description: lgbm_all with balanced class weights
+    model: lgbm
+    class_weight: balanced
+    features: [application, bureau, previous, installments, pos_cash, credit_card]
+
+  - name: lgbm_all_tuned
+    description: lgbm_all tuned with Optuna inside each training fold
+    model: lgbm_tuned
+    features: [application, bureau, previous, installments, pos_cash, credit_card]
+
+  - name: lgbm_all_tuned_isotonic
+    description: lgbm_all_tuned with isotonic calibration
+    model: lgbm_calibrated
+    method: isotonic
+    features: [application, bureau, previous, installments, pos_cash, credit_card]
+
+  - name: lgbm_all_tuned_platt
+    description: lgbm_all_tuned with Platt scaling
+    model: lgbm_calibrated
+    method: platt
+    features: [application, bureau, previous, installments, pos_cash, credit_card]

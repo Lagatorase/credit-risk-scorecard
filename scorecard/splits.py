@@ -66,14 +66,14 @@ def cv_folds(y: np.ndarray, n_splits: int = N_FOLDS, seed: int = SEED) -> list[t
 
 
 def run_cv(make_model: Callable[[], object], X: pd.DataFrame, y: np.ndarray,
-           folds: list[tuple[np.ndarray, np.ndarray]]) -> dict:
+           folds: list[tuple[np.ndarray, np.ndarray]], keep_models: bool = False) -> dict:
     """Fits a fresh model on each training fold and predicts the matching validation fold.
 
     The model object owns all of its preprocessing (binning, encoding, calibration), so anything
     it learns comes from the training fold only. Returns out-of-fold predictions and timings.
     """
     oof = np.full(len(y), np.nan)
-    fold_preds, fit_seconds = [], []
+    fold_preds, fit_seconds, models = [], [], []
     for train_idx, val_idx in folds:
         model = make_model()
         start = time.perf_counter()
@@ -83,4 +83,7 @@ def run_cv(make_model: Callable[[], object], X: pd.DataFrame, y: np.ndarray,
         p = model.predict_proba(X.iloc[val_idx])[:, 1]
         oof[val_idx] = p
         fold_preds.append((val_idx, p))
-    return {"oof": oof, "fold_preds": fold_preds, "fit_seconds": fit_seconds}
+        # the fitted models are kept only when asked, e.g. to read feature importances afterwards
+        if keep_models:
+            models.append(model)
+    return {"oof": oof, "fold_preds": fold_preds, "fit_seconds": fit_seconds, "models": models}
