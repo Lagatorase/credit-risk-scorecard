@@ -82,7 +82,7 @@ flowchart LR
 
 | Experiment | Inputs | AUC | Gini | KS | Brier | ECE |
 |---|---|---|---|---|---|---|
-| Scorecard (WoE logistic), application | 81 | 0.7395 ± 0.0013 | 0.4790 | 0.3585 | 0.06916 | 0.0024 |
+| Scorecard (WoE logistic), application | 81 (17 kept) | 0.7395 ± 0.0013 | 0.4790 | 0.3585 | 0.06916 | 0.0024 |
 | LightGBM, application | 81 | 0.7605 ± 0.0008 | 0.5209 | 0.3900 | 0.06782 | 0.0031 |
 | LightGBM, + bureau | 105 | 0.7666 ± 0.0016 | 0.5332 | 0.3994 | 0.06743 | 0.0041 |
 | LightGBM, all tables | 153 | 0.7802 ± 0.0008 | 0.5603 | 0.4219 | 0.06652 | 0.0040 |

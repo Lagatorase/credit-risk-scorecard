@@ -46,8 +46,14 @@ def results_table(rows: list[dict]) -> str:
     for r in rows:
         model = r["model"] + (f" ({r['method']})" if r.get("method") else "") + (
             f", {r['class_weight']} weights" if r.get("class_weight") else "")
+        inputs = str(r["n_features"])
+        if r.get("selected_features"):
+            # the scorecard drops features by IV inside each fold, so I also show how many every fold kept
+            sel = r["selected_features"]
+            kept = pd.Series([f for fold in sel for f in fold]).value_counts()
+            inputs += f" ({int((kept == len(sel)).sum())} kept)"
         lines.append(
-            f"| {r['name']} | {model} | {_features_label(r['features'])} | {r['n_features']} | "
+            f"| {r['name']} | {model} | {_features_label(r['features'])} | {inputs} | "
             f"{_pm(r, 'auc', 4)} | {_pm(r, 'gini', 4)} | {_pm(r, 'ks', 4)} | {_pm(r, 'pr_auc', 4)} | "
             f"{_pm(r, 'brier', 5)} | {_pm(r, 'ece', 4)} | {r['fit_seconds_mean']:.1f} |"
         )
