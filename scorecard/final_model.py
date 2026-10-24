@@ -36,8 +36,6 @@ class FinalModel:
     model: LGBMModel
     calibrator: _Platt
     features: list[str]
-    # medians on the development set, used to say whether a value is high or low in a reason code
-    medians: dict[str, float]
     meta: dict = field(default_factory=dict)
 
     def raw_pd(self, X: pd.DataFrame) -> np.ndarray:

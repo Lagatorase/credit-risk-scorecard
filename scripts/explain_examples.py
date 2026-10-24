@@ -23,15 +23,18 @@ import shap  # noqa: E402
 from scorecard.config import SEED, get_settings  # noqa: E402
 from scorecard.explain import Explainer  # noqa: E402
 from scorecard.features import AGE_FEATURES  # noqa: E402
-from scorecard.final_model import FinalModel  # noqa: E402
 from scorecard.splits import load_splits, split_frame  # noqa: E402
+
+# seven hold-out applicants first picked at random (seed 42): two declines, two reviews, two approvals and
+# one with an age factor; fixed by ID so the report stays comparable when the wording changes
+EXAMPLE_IDS = [323877, 140957, 290683, 192711, 302776, 363831, 169973]
 
 
 def main() -> None:
     settings = get_settings()
     reports = settings.reports_dir
-    model = FinalModel.load(settings.models_dir / "final_model.joblib")
-    explainer = Explainer(model)
+    explainer = Explainer.from_files(settings.models_dir)
+    features = explainer.model.features
 
     df = pd.read_parquet(settings.processed_dir / "features.parquet")
     _, test = split_frame(df, load_splits())
@@ -40,10 +43,9 @@ def main() -> None:
     # SHAP on a random 5,000 hold-out applicants is plenty for the global picture
     sample = test.sample(5000, random_state=SEED)
     values = explainer.shap_values(sample)
-    X = sample[model.features]
 
     # the beeswarm plot can't colour categorical columns, so I show category codes there
-    X_plot = X.copy()
+    X_plot = sample[features].copy()
     for c in X_plot.columns:
         if not pd.api.types.is_numeric_dtype(X_plot[c]):
             X_plot[c] = X_plot[c].cat.codes.replace(-1, np.nan)
@@ -52,26 +54,17 @@ def main() -> None:
     plt.tight_layout()
     plt.savefig(reports / "figures" / "shap_summary.png", dpi=150)
     plt.close()
+    mean_abs = pd.Series(np.abs(values).mean(axis=0), index=features).sort_values(ascending=False)
 
-    mean_abs = pd.Series(np.abs(values).mean(axis=0), index=model.features).sort_values(ascending=False)
-
-    # reason codes for the whole sample, to count how often each factor and age appear
+    # reason codes for the whole sample, to count families and how often officer-only factors are held back
     results = explainer.explain(sample)
-    officer_counts = pd.Series([r["feature"] for res in results for r in res["reasons_officer"]]).value_counts()
+    officer_families = pd.Series([r["family"] for res in results for r in res["reasons_officer"]]).value_counts()
     age_in_officer = np.mean([any(r["feature"] in AGE_FEATURES for r in res["reasons_officer"]) for res in results])
+    held_back = np.mean([any(explainer.coder.officer_only(r["feature"]) for r in res["reasons_officer"]) for res in results])
+    n_officer = np.mean([len(res["reasons_officer"]) for res in results])
     n_customer = np.mean([len(res["reasons_customer"]) for res in results])
-    sample = sample.assign(pd=[r["pd"] for r in results], decision=[r["decision"] for r in results])
 
-    # a few example applicants: two declines, two reviews and two approvals, picked at random
-    picks = []
-    for decision in ("decline", "review", "approve"):
-        pool = sample[sample["decision"] == decision]
-        picks += list(pool.sample(min(2, len(pool)), random_state=SEED).index)
-    # plus one applicant with an age-based factor, to show the customer version leaving it out
-    has_age = [idx for idx, res in zip(sample.index, results)
-               if any(r["feature"] in AGE_FEATURES for r in res["reasons_officer"]) and res["decision"] != "approve"]
-    picks.append(pd.Series(has_age).sample(1, random_state=SEED).iloc[0])
-    examples = explainer.explain(test.loc[picks])
+    examples = explainer.explain(test.set_index("SK_ID_CURR").loc[EXAMPLE_IDS].reset_index())
 
     md = [
         "# Explainability and reason codes",
@@ -91,28 +84,37 @@ def main() -> None:
         "",
         "## How reason codes are built",
         "",
-        "For each applicant I take the features with the largest positive SHAP values (the ones that pushed the PD up), "
-        "up to four, and turn each into text with `config/reason_codes.yaml`. Numeric features say high or low against the "
-        "development median, flags say yes or no, and categorical features name the category. The loan officer sees all "
-        "factors. The customer version skips age-based factors (`AGE_YEARS`, `EMPLOYED_TO_AGE_RATIO`) and takes the next "
-        "factor instead. Gender and marital status are not model inputs, so they can never appear.",
+        "1. SHAP picks the factors that pushed this applicant's PD up (positive SHAP values), largest first.",
+        "2. Each factor belongs to one family in `config/reason_codes.yaml` (external bureau scores, late payment history, "
+        "refusals, loan size and term, employment, and so on). Only the strongest factor in each family is shown, so the "
+        "four reasons are always about four different things.",
+        "3. Each reason states the applicant's actual value and where it sits among the 246,008 development applicants, "
+        "for example \"Average size of previous loans: 45,000 (lowest 40% of applicants)\". The text never says \"high\" or "
+        "\"low risk\", because tree models aren't always one-directional: SHAP says this value raised this applicant's risk, "
+        "and the percentile says how unusual the value is. When 10% or more of applicants share the exact value (for example "
+        "zero late payments), the text gives that share instead of a percentile.",
+        "4. The customer list uses plainer labels (\"Credit bureau score\" instead of \"External bureau score (source 2)\") and "
+        "skips officer-only factors: age, social circle, and application, contact and document details such as which phone "
+        "numbers were given. The next eligible factor takes their place. Gender and marital status are not model inputs, so "
+        "they can never appear.",
         "",
-        f"On the 5,000 sampled hold-out applicants, an age-based factor was in the officer's top four for {age_in_officer:.1%} of "
-        f"applicants, and customers got {n_customer:.2f} reasons on average.",
+        "Home Credit doesn't state the currency of the amounts, so none is shown (`currency` in the config adds one).",
         "",
-        "Most frequent officer reasons in the sample:",
+        f"On 5,000 sampled hold-out applicants the officer saw {n_officer:.2f} reasons on average and the customer {n_customer:.2f}. "
+        f"An officer-only factor was in the officer's list for {held_back:.1%} of applicants (an age factor for {age_in_officer:.1%}).",
         "",
-        "| Feature | Applicants (of 5,000) |",
+        "Officer reasons by family in the sample:",
+        "",
+        "| Family | Reasons (of 5,000 applicants) |",
         "|---|---|",
     ]
-    md += [f"| `{f}` | {n:,} |" for f, n in officer_counts.head(10).items()]
-    md += ["", "## Examples (random hold-out applicants)", ""]
-    for idx, ex in zip(picks, examples):
-        row = test.loc[idx]
+    md += [f"| {explainer.coder.families[f]} | {n:,} |" for f, n in officer_families.items()]
+    md += ["", "## Examples (hold-out applicants)", ""]
+    for app_id, ex in zip(EXAMPLE_IDS, examples):
+        target = int(test.loc[test["SK_ID_CURR"] == app_id, "TARGET"].iloc[0])
         md += [
-            f"**Applicant {int(row['SK_ID_CURR'])}**: PD {ex['pd']:.1%}, band {ex['risk_band']['band']} "
-            f"({ex['risk_band']['label']}), decision **{ex['decision']}** (actual outcome: "
-            f"{'defaulted' if row['TARGET'] == 1 else 'repaid'}).",
+            f"**Applicant {app_id}**: PD {ex['pd']:.1%}, band {ex['risk_band']['band']} ({ex['risk_band']['label']}), "
+            f"decision **{ex['decision']}** (actual outcome: {'defaulted' if target == 1 else 'repaid'}).",
             "",
             "| Loan officer reasons | Customer reasons |",
             "|---|---|",
@@ -123,7 +125,7 @@ def main() -> None:
             md.append(f"| {officer[i] if i < len(officer) else ''} | {customer[i] if i < len(customer) else ''} |")
         md.append("")
     (reports / "reason_codes_report.md").write_text("\n".join(md), encoding="utf-8")
-    print("\n".join(md[-60:]))
+    print("\n".join(md[-75:]).encode("ascii", "replace").decode())
 
 
 if __name__ == "__main__":

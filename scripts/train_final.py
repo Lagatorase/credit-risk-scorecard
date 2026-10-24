@@ -6,7 +6,8 @@
    cross-validated on the same five folds, and the one with the best mean CV AUC is kept.
 2. The Platt calibrator is fit on that run's out-of-fold predictions.
 3. The booster is retrained on the whole development set with those parameters.
-The hold-out set is not touched here.
+The hold-out set is not touched here. Afterwards, scripts/build_reference.py saves the development
+distributions used to word the reason codes.
 """
 
 from __future__ import annotations
@@ -71,8 +72,7 @@ def main() -> None:
     final_params = {**params, "n_estimators": int(round(params["n_estimators"] * 1.25))}
     start = time.perf_counter()
     model = LGBMModel(params=final_params).fit(X, y)
-    medians = {c: float(X[c].median()) for c in features if pd.api.types.is_numeric_dtype(X[c])}
-    final = FinalModel(model=model, calibrator=calibrator, features=features, medians=medians, meta={
+    final = FinalModel(model=model, calibrator=calibrator, features=features, meta={
         "chosen_fold": best["fold"],
         "params": final_params,
         "train_rows": int(len(y)),

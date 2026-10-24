@@ -1,189 +1,218 @@
-# Plain-English reason code text for every model feature.
+# Reason code text for every model feature.
 #
-# Numeric features: "name" gives the default texts "High <name>" and "Low <name>", used when the
-# applicant's value is above or at-or-below the development median. "high", "low" and "missing"
-# override those defaults where the plain version would read badly (day counts are negative, so
-# "high" means more recent).
-# Yes/no flags: "flag_yes" is shown when the value is 1, "flag_no" when it is 0 (plain yes/no keys would load as booleans).
-# Categorical features: "text" with {value} replaced by the applicant's category, or "values" with one text per category.
-# customer: false means the reason can be shown to a loan officer but never to the customer.
+# Each reason states the applicant's actual value and where it sits among development applicants,
+# for example "Average size of previous loans: 45,000 (lowest 20% of applicants)". The SHAP value only
+# decides which features pushed this applicant's risk up; the text itself never claims a direction.
+#
+# family:       reasons are grouped, and a list shows at most one reason per family
+# officer:      label in the loan officer's view
+# customer:     plainer label in the customer's view (defaults to the officer label)
+# format:       money, percent, share, times, years, days_ago, days_ahead, count, score, number, flag or category
+# unit:         optional word after a count or number, such as days
+# officer_only: true keeps the reason out of the customer's list (age, process and contact details)
+#
 # Gender and marital status are not model inputs, so they never appear here.
 
-# Loan and applicant details
-NAME_CONTRACT_TYPE: {text: "Loan product type ({value})"}
-AMT_CREDIT: {name: "loan amount"}
-AMT_ANNUITY: {name: "yearly repayment amount"}
-AMT_GOODS_PRICE: {name: "price of the goods being financed", missing: "Price of the goods being financed not stated"}
-AMT_INCOME_TOTAL: {name: "stated income"}
-INCOME_PER_PERSON: {name: "income per household member"}
-CNT_CHILDREN: {high: "Several dependent children", low: "No dependent children"}
-CNT_FAM_MEMBERS: {name: "household size"}
-NAME_TYPE_SUITE: {text: "Accompanied when applying ({value})", missing: "Not recorded who accompanied the applicant"}
-NAME_INCOME_TYPE: {text: "Income source ({value})"}
-NAME_EDUCATION_TYPE: {text: "Education level ({value})"}
-NAME_HOUSING_TYPE: {text: "Housing situation ({value})"}
-OCCUPATION_TYPE: {text: "Occupation ({value})", missing: "Occupation not stated"}
-ORGANIZATION_TYPE: {text: "Employer sector ({value})"}
-FLAG_OWN_CAR: {values: {"Y": "Owns a car", "N": "Does not own a car"}}
-FLAG_OWN_REALTY: {values: {"Y": "Owns property", "N": "Does not own property"}}
-OWN_CAR_AGE: {high: "Owns an older car", low: "Owns a recent car", missing: "No car recorded"}
+# Home Credit doesn't state the currency of the amounts, so none is shown. Set this (e.g. "SGD ") to add one.
+currency: ""
 
-# Affordability ratios
-CREDIT_INCOME_RATIO: {high: "Loan amount is high relative to income", low: "Loan amount is low relative to income"}
-ANNUITY_INCOME_RATIO: {high: "Repayments are high relative to income", low: "Repayments are low relative to income"}
-ANNUITY_CREDIT_RATIO: {high: "Short repayment term (high repayment relative to the loan)", low: "Long repayment term (low repayment relative to the loan)"}
-CREDIT_GOODS_RATIO: {high: "Loan amount is high relative to the price of the goods", low: "Loan amount is close to the price of the goods", missing: "Price of the goods being financed not stated"}
+families:
+  external_scores: External credit bureau scores
+  late_payments: Overdue and late payment history
+  refusals: Previous application refusals
+  other_lenders: Credit with other lenders
+  previous_loans: Previous loans with Home Credit
+  credit_card: Credit card use
+  loan_terms: Loan size and term
+  affordability: Income and affordability
+  employment: Employment
+  demographics: Age and household
+  housing: Housing and assets
+  region: Region and address
+  enquiries: Recent credit enquiries
+  social_circle: Social circle
+  application_details: Application, contact and document details
 
-# Age and employment (age-based reasons are for the loan officer only)
-AGE_YEARS: {name: "applicant age", customer: false}
-EMPLOYED_TO_AGE_RATIO: {high: "Long employment relative to age", low: "Short employment relative to age", missing: "No current employment recorded", customer: false}
-EMPLOYED_YEARS: {high: "Long time with current employer", low: "Short time with current employer", missing: "No current employment recorded"}
-DAYS_EMPLOYED_PLACEHOLDER: {flag_yes: "No current employment recorded (for example retired)", flag_no: "Currently employed"}
+features:
+  # External credit bureau scores
+  EXT_SOURCE_1: {family: external_scores, officer: "External bureau score (source 1)", customer: "Credit bureau score", format: score}
+  EXT_SOURCE_2: {family: external_scores, officer: "External bureau score (source 2)", customer: "Credit bureau score", format: score}
+  EXT_SOURCE_3: {family: external_scores, officer: "External bureau score (source 3)", customer: "Credit bureau score", format: score}
+  EXT_SOURCE_MEAN: {family: external_scores, officer: "Average of the external bureau scores", customer: "Credit bureau score", format: score}
+  EXT_SOURCE_MIN: {family: external_scores, officer: "Lowest of the external bureau scores", customer: "Credit bureau score", format: score}
 
-# External credit scores
-EXT_SOURCE_1: {name: "score from external credit bureau (source 1)", missing: "No score from external credit bureau (source 1)"}
-EXT_SOURCE_2: {name: "score from external credit bureau (source 2)", missing: "No score from external credit bureau (source 2)"}
-EXT_SOURCE_3: {name: "score from external credit bureau (source 3)", missing: "No score from external credit bureau (source 3)"}
-EXT_SOURCE_MEAN: {name: "average score from external credit bureaus", missing: "No scores from external credit bureaus"}
-EXT_SOURCE_MIN: {name: "lowest score from external credit bureaus", missing: "No scores from external credit bureaus"}
+  # Overdue and late payment history, at other lenders and at Home Credit
+  BUREAU_OVERDUE_TOTAL: {family: late_payments, officer: "Amount currently overdue at other lenders", format: money}
+  BUREAU_OVERDUE_SHARE: {family: late_payments, officer: "Share of loans at other lenders currently overdue", format: share}
+  BUREAU_DAYS_OVERDUE_MAX: {family: late_payments, officer: "Longest current overdue at other lenders", format: count, unit: days}
+  BUREAU_MAX_OVERDUE_AMT: {family: late_payments, officer: "Largest overdue amount ever at other lenders", format: money}
+  BUREAU_BAD_DEBT_OR_SOLD_COUNT: {family: late_payments, officer: "Loans at other lenders written off or sold", format: count}
+  BUREAU_PROLONG_COUNT: {family: late_payments, officer: "Loans at other lenders that needed extending", format: count}
+  BB_DPD_SHARE_MEAN: {family: late_payments, officer: "Share of months paid late at other lenders (average per loan)", customer: "Share of months paid late at other lenders", format: share}
+  BB_DPD_SHARE_MAX: {family: late_payments, officer: "Share of months paid late at other lenders (worst loan)", customer: "Share of months paid late at other lenders", format: share}
+  BB_WORST_STATUS_MAX: {family: late_payments, officer: "Worst arrears level at other lenders (0 none, 5 over 120 days)", customer: "Worst arrears level at other lenders", format: number}
+  BB_RECENT_DPD_SHARE_MAX: {family: late_payments, officer: "Share of months paid late at other lenders in the last year", format: share}
+  INST_LATE_SHARE: {family: late_payments, officer: "Share of instalments paid late", format: share}
+  INST_LATE_30_SHARE: {family: late_payments, officer: "Share of instalments paid more than 30 days late", format: share}
+  INST_DAYS_LATE_MEAN: {family: late_payments, officer: "Average days late per instalment", format: number, unit: days}
+  INST_DAYS_LATE_MAX: {family: late_payments, officer: "Most days late on any instalment", format: count, unit: days}
+  INST_UNDERPAID_SHARE: {family: late_payments, officer: "Share of instalments underpaid", format: share}
+  INST_SHORTFALL_TOTAL: {family: late_payments, officer: "Total amount underpaid on instalments", format: money}
+  INST_RECENT_1Y_LATE_SHARE: {family: late_payments, officer: "Share of instalments paid late in the last year", format: share}
+  INST_RECENT_1Y_UNDERPAID_SHARE: {family: late_payments, officer: "Share of instalments underpaid in the last year", format: share}
+  INST_PAY_RATIO_MEAN: {family: late_payments, officer: "Average payment as a share of the instalment due", format: share}
+  POS_DPD_MAX: {family: late_payments, officer: "Most days past due on a point-of-sale or cash loan", format: count, unit: days}
+  POS_DPD_MEAN: {family: late_payments, officer: "Average days past due on point-of-sale and cash loans", format: number, unit: days}
+  POS_DPD_SHARE: {family: late_payments, officer: "Share of months past due on point-of-sale and cash loans", format: share}
+  POS_DPD_DEF_SHARE: {family: late_payments, officer: "Share of months in arrears on point-of-sale and cash loans", format: share}
+  POS_RECENT_1Y_DPD_SHARE: {family: late_payments, officer: "Share of months past due on point-of-sale and cash loans in the last year", format: share}
+  CC_DPD_MAX: {family: late_payments, officer: "Most days past due on a credit card", format: count, unit: days}
+  CC_DPD_SHARE: {family: late_payments, officer: "Share of months a credit card was past due", format: share}
+  CC_MISSED_MIN_SHARE: {family: late_payments, officer: "Share of months paying less than the credit card minimum", format: share}
+  CC_RECENT_1Y_MISSED_MIN_SHARE: {family: late_payments, officer: "Share of months paying less than the credit card minimum in the last year", format: share}
 
-# Region, contact details and application process
-REGION_POPULATION_RELATIVE: {high: "Lives in a densely populated region", low: "Lives in a sparsely populated region"}
-REGION_RATING_CLIENT: {high: "Lives in a region with a weaker risk rating", low: "Lives in a region with a stronger risk rating"}
-REGION_RATING_CLIENT_W_CITY: {high: "Lives in a city and region with a weaker risk rating", low: "Lives in a city and region with a stronger risk rating"}
-REG_REGION_NOT_LIVE_REGION: {flag_yes: "Registered address is in a different region from home", flag_no: "Registered address is in the home region"}
-REG_REGION_NOT_WORK_REGION: {flag_yes: "Registered address is in a different region from work", flag_no: "Registered address is in the work region"}
-LIVE_REGION_NOT_WORK_REGION: {flag_yes: "Lives in a different region from work", flag_no: "Lives in the same region as work"}
-REG_CITY_NOT_LIVE_CITY: {flag_yes: "Registered address is in a different city from home", flag_no: "Registered address is in the home city"}
-REG_CITY_NOT_WORK_CITY: {flag_yes: "Registered address is in a different city from work", flag_no: "Registered address is in the work city"}
-LIVE_CITY_NOT_WORK_CITY: {flag_yes: "Lives in a different city from work", flag_no: "Lives in the same city as work"}
-DAYS_REGISTRATION: {high: "Recently changed registration details", low: "Registration details unchanged for a long time"}
-DAYS_ID_PUBLISH: {high: "Identity document issued recently", low: "Identity document issued long ago"}
-DAYS_LAST_PHONE_CHANGE: {high: "Recently changed phone number", low: "Has had the same phone number for a long time", missing: "Phone change date not recorded"}
-FLAG_MOBIL: {flag_yes: "Mobile phone provided", flag_no: "No mobile phone provided"}
-FLAG_EMP_PHONE: {flag_yes: "Employer phone number provided", flag_no: "No employer phone number provided"}
-FLAG_WORK_PHONE: {flag_yes: "Work phone number provided", flag_no: "No work phone number provided"}
-FLAG_CONT_MOBILE: {flag_yes: "Mobile phone was reachable", flag_no: "Mobile phone was not reachable"}
-FLAG_PHONE: {flag_yes: "Home phone number provided", flag_no: "No home phone number provided"}
-FLAG_EMAIL: {flag_yes: "Email address provided", flag_no: "No email address provided"}
-WEEKDAY_APPR_PROCESS_START: {text: "Day the application was started ({value})", customer: false}
-HOUR_APPR_PROCESS_START: {high: "Application started late in the day", low: "Application started early in the day", customer: false}
-FLAG_DOCUMENT_3: {flag_yes: "Provided the standard supporting document (document 3)", flag_no: "Did not provide the standard supporting document (document 3)"}
-DOCUMENT_COUNT: {high: "Provided many supporting documents", low: "Provided few supporting documents"}
+  # Previous application refusals and cancellations
+  PREV_REFUSED_COUNT: {family: refusals, officer: "Previous applications refused", format: count}
+  PREV_REFUSED_SHARE: {family: refusals, officer: "Share of previous applications refused", format: share}
+  PREV_REFUSED_RECENT_2Y_COUNT: {family: refusals, officer: "Applications refused in the last two years", format: count}
+  PREV_CANCELED_SHARE: {family: refusals, officer: "Share of previous applications cancelled", format: share}
+  PREV_APP_CREDIT_RATIO_MEAN: {family: refusals, officer: "Amount requested as a multiple of the amount granted (previous loans)", customer: "Amount requested compared with the amount granted on previous loans", format: times}
 
-# Credit enquiries in the period before applying
-AMT_REQ_CREDIT_BUREAU_HOUR: {name: "number of credit checks in the hour before applying", missing: "Recent credit check history not available"}
-AMT_REQ_CREDIT_BUREAU_DAY: {name: "number of credit checks in the day before applying", missing: "Recent credit check history not available"}
-AMT_REQ_CREDIT_BUREAU_WEEK: {name: "number of credit checks in the week before applying", missing: "Recent credit check history not available"}
-AMT_REQ_CREDIT_BUREAU_MON: {name: "number of credit checks in the month before applying", missing: "Recent credit check history not available"}
-AMT_REQ_CREDIT_BUREAU_QRT: {name: "number of credit checks in the three months before applying", missing: "Recent credit check history not available"}
-AMT_REQ_CREDIT_BUREAU_YEAR: {name: "number of credit checks in the year before applying", missing: "Recent credit check history not available"}
+  # Credit with other lenders
+  BUREAU_LOAN_COUNT: {family: other_lenders, officer: "Loans reported by other lenders", format: count}
+  BUREAU_ACTIVE_COUNT: {family: other_lenders, officer: "Open loans at other lenders", format: count}
+  BUREAU_ACTIVE_SHARE: {family: other_lenders, officer: "Share of loans at other lenders still open", format: share}
+  BUREAU_CREDIT_TYPE_COUNT: {family: other_lenders, officer: "Types of credit held at other lenders", format: count}
+  BUREAU_DAYS_CREDIT_MAX: {family: other_lenders, officer: "Most recent loan opened at another lender", format: days_ago}
+  BUREAU_DAYS_CREDIT_MIN: {family: other_lenders, officer: "Oldest loan opened at another lender", format: days_ago}
+  BUREAU_DAYS_CREDIT_MEAN: {family: other_lenders, officer: "Average age of loans at other lenders", format: days_ago}
+  BUREAU_RECENT_2Y_COUNT: {family: other_lenders, officer: "Loans opened at other lenders in the last two years", format: count}
+  BUREAU_CREDIT_SUM_TOTAL: {family: other_lenders, officer: "Total credit granted by other lenders", format: money}
+  BUREAU_DEBT_TOTAL: {family: other_lenders, officer: "Debt outstanding at other lenders", format: money}
+  BUREAU_ACTIVE_ANNUITY_TOTAL: {family: other_lenders, officer: "Repayments due on open loans at other lenders", format: money}
+  BUREAU_ACTIVE_ENDDATE_MAX: {family: other_lenders, officer: "Time until the last open loan at another lender ends", format: days_ahead}
+  BUREAU_ACTIVE_DEBT_RATIO: {family: other_lenders, officer: "Share of credit at other lenders still owed", format: share}
+  BUREAU_DEBT_INCOME_RATIO: {family: other_lenders, officer: "Debt at other lenders as a multiple of income", format: times}
 
-# Social circle
-OBS_30_CNT_SOCIAL_CIRCLE: {name: "number of social contacts with a credit history", missing: "Social circle information not available"}
-OBS_60_CNT_SOCIAL_CIRCLE: {name: "number of social contacts with a credit history", missing: "Social circle information not available"}
-DEF_30_CNT_SOCIAL_CIRCLE: {high: "Social contacts with recent payment problems", low: "No social contacts with recent payment problems", missing: "Social circle information not available"}
-DEF_60_CNT_SOCIAL_CIRCLE: {high: "Social contacts with past payment problems", low: "No social contacts with past payment problems", missing: "Social circle information not available"}
+  # Previous loans with Home Credit
+  PREV_APP_COUNT: {family: previous_loans, officer: "Previous applications with Home Credit", customer: "Previous applications with us", format: count}
+  PREV_APPROVED_COUNT: {family: previous_loans, officer: "Previous loans approved by Home Credit", customer: "Previous loans with us", format: count}
+  PREV_RECENT_1Y_COUNT: {family: previous_loans, officer: "Applications in the last year", format: count}
+  PREV_AMT_CREDIT_MEAN: {family: previous_loans, officer: "Average size of previous loans", format: money}
+  PREV_AMT_CREDIT_MAX: {family: previous_loans, officer: "Largest previous loan", format: money}
+  PREV_ANNUITY_MEAN: {family: previous_loans, officer: "Average yearly repayment on previous loans", format: money}
+  PREV_CNT_PAYMENT_MEAN: {family: previous_loans, officer: "Average term of previous loans", format: number, unit: instalments}
+  PREV_DOWN_PAYMENT_RATE_MEAN: {family: previous_loans, officer: "Average down payment on previous loans", format: share}
+  PREV_DAYS_DECISION_MAX: {family: previous_loans, officer: "Most recent previous application", format: days_ago}
+  PREV_DAYS_DECISION_MEAN: {family: previous_loans, officer: "Average age of previous applications", format: days_ago}
+  PREV_HIGH_YIELD_SHARE: {family: previous_loans, officer: "Share of previous loans on higher-rate products", format: share}
+  INST_COUNT: {family: previous_loans, officer: "Instalments paid on previous loans", format: count}
+  POS_MONTH_COUNT: {family: previous_loans, officer: "Months of point-of-sale and cash loan history", format: count}
+  POS_LOAN_COUNT: {family: previous_loans, officer: "Previous point-of-sale and cash loans", format: count}
+  POS_COMPLETED_SHARE: {family: previous_loans, officer: "Share of point-of-sale and cash loans completed", format: share}
+  POS_FUTURE_INSTALMENTS_TOTAL: {family: previous_loans, officer: "Instalments still to pay on open loans", format: count}
 
-# Housing and building information (normalised statistics from the application)
-APARTMENTS_AVG: {name: "apartment size in the applicant's building", missing: "Building information not available"}
-BASEMENTAREA_AVG: {name: "basement area in the applicant's building", missing: "Building information not available"}
-YEARS_BEGINEXPLUATATION_AVG: {name: "time the applicant's building has been in use", missing: "Building information not available"}
-YEARS_BUILD_AVG: {high: "Lives in a newer building", low: "Lives in an older building", missing: "Building information not available"}
-COMMONAREA_AVG: {name: "common area in the applicant's building", missing: "Building information not available"}
-ELEVATORS_AVG: {name: "number of lifts in the applicant's building", missing: "Building information not available"}
-ENTRANCES_AVG: {name: "number of entrances in the applicant's building", missing: "Building information not available"}
-FLOORSMAX_AVG: {high: "Lives in a taller building", low: "Lives in a lower building", missing: "Building information not available"}
-FLOORSMIN_AVG: {high: "Lives in a taller building", low: "Lives in a lower building", missing: "Building information not available"}
-LANDAREA_AVG: {name: "land area of the applicant's building", missing: "Building information not available"}
-LIVINGAPARTMENTS_AVG: {name: "number of living apartments in the applicant's building", missing: "Building information not available"}
-LIVINGAREA_AVG: {name: "living area in the applicant's building", missing: "Building information not available"}
-NONLIVINGAPARTMENTS_AVG: {name: "number of non-residential units in the applicant's building", missing: "Building information not available"}
-NONLIVINGAREA_AVG: {name: "non-residential area in the applicant's building", missing: "Building information not available"}
-TOTALAREA_MODE: {name: "total area of the applicant's building", missing: "Building information not available"}
-FONDKAPREMONT_MODE: {text: "Building repair fund type ({value})", missing: "Building information not available"}
-HOUSETYPE_MODE: {text: "Building type ({value})", missing: "Building information not available"}
-WALLSMATERIAL_MODE: {text: "Building wall material ({value})", missing: "Building information not available"}
-EMERGENCYSTATE_MODE: {text: "Building emergency state ({value})", missing: "Building information not available"}
+  # Credit card use with Home Credit
+  CC_MONTH_COUNT: {family: credit_card, officer: "Months of credit card history", format: count}
+  CC_CARD_COUNT: {family: credit_card, officer: "Credit cards held", format: count}
+  CC_UTIL_MEAN: {family: credit_card, officer: "Average credit card balance as a share of the limit", format: share}
+  CC_UTIL_MAX: {family: credit_card, officer: "Highest credit card balance as a share of the limit", format: share}
+  CC_RECENT_1Y_UTIL_MEAN: {family: credit_card, officer: "Average credit card balance as a share of the limit in the last year", format: share}
+  CC_BALANCE_MEAN: {family: credit_card, officer: "Average credit card balance", format: money}
+  CC_LIMIT_MAX: {family: credit_card, officer: "Credit card limit", format: money}
+  CC_DRAWINGS_MEAN: {family: credit_card, officer: "Average monthly credit card spending and withdrawals", format: money}
+  CC_ATM_DRAWINGS_SHARE: {family: credit_card, officer: "Share of credit card drawings taken as cash", format: share}
 
-# Credit bureau: loans at other lenders
-BUREAU_LOAN_COUNT: {name: "number of loans at other lenders"}
-BUREAU_ACTIVE_COUNT: {name: "number of open loans at other lenders"}
-BUREAU_ACTIVE_SHARE: {high: "Most loans at other lenders are still open", low: "Most loans at other lenders are closed", missing: "No credit history at other lenders"}
-BUREAU_BAD_DEBT_OR_SOLD_COUNT: {high: "Loans at other lenders written off or sold", low: "No loans at other lenders written off or sold"}
-BUREAU_CREDIT_TYPE_COUNT: {name: "variety of credit types at other lenders"}
-BUREAU_DAYS_CREDIT_MAX: {high: "Recently opened a loan at another lender", low: "Has not opened a loan at another lender recently", missing: "No credit history at other lenders"}
-BUREAU_DAYS_CREDIT_MIN: {high: "Short credit history at other lenders", low: "Long credit history at other lenders", missing: "No credit history at other lenders"}
-BUREAU_DAYS_CREDIT_MEAN: {high: "Loans at other lenders are mostly recent", low: "Loans at other lenders are mostly long-standing", missing: "No credit history at other lenders"}
-BUREAU_RECENT_2Y_COUNT: {name: "number of loans opened at other lenders in the last two years"}
-BUREAU_CREDIT_SUM_TOTAL: {name: "total credit granted by other lenders", missing: "No credit history at other lenders"}
-BUREAU_DEBT_TOTAL: {name: "outstanding debt at other lenders", missing: "No credit history at other lenders"}
-BUREAU_ACTIVE_ANNUITY_TOTAL: {name: "repayments due on open loans at other lenders", missing: "No open loans at other lenders"}
-BUREAU_ACTIVE_ENDDATE_MAX: {high: "Open loans at other lenders run for a long time yet", low: "Open loans at other lenders end soon", missing: "No open loans at other lenders"}
-BUREAU_ACTIVE_DEBT_RATIO: {high: "Much of the credit at other lenders is still owed", low: "Little of the credit at other lenders is still owed", missing: "No open loans at other lenders"}
-BUREAU_DEBT_INCOME_RATIO: {high: "Debt at other lenders is high relative to income", low: "Debt at other lenders is low relative to income", missing: "No credit history at other lenders"}
-BUREAU_OVERDUE_TOTAL: {name: "overdue amount at other lenders", missing: "No credit history at other lenders"}
-BUREAU_OVERDUE_SHARE: {high: "Loans currently overdue at other lenders", low: "No loans currently overdue at other lenders", missing: "No credit history at other lenders"}
-BUREAU_DAYS_OVERDUE_MAX: {high: "Long overdue payments at other lenders", low: "No long overdue payments at other lenders", missing: "No credit history at other lenders"}
-BUREAU_MAX_OVERDUE_AMT: {high: "Large overdue amounts at other lenders in the past", low: "Small or no overdue amounts at other lenders in the past", missing: "No overdue history recorded at other lenders"}
-BUREAU_PROLONG_COUNT: {high: "Loans at other lenders needed extending", low: "No loans at other lenders needed extending"}
-BB_DPD_SHARE_MEAN: {high: "Frequent late payments at other lenders", low: "Few or no late payments at other lenders", missing: "No monthly payment history from other lenders"}
-BB_DPD_SHARE_MAX: {high: "A loan at another lender was often paid late", low: "No loan at another lender was often paid late", missing: "No monthly payment history from other lenders"}
-BB_WORST_STATUS_MAX: {high: "Serious arrears at another lender in the past", low: "No serious arrears at other lenders", missing: "No monthly payment history from other lenders"}
-BB_RECENT_DPD_SHARE_MAX: {high: "Late payments at other lenders in the last year", low: "No late payments at other lenders in the last year", missing: "No recent monthly payment history from other lenders"}
+  # Loan size and term
+  AMT_CREDIT: {family: loan_terms, officer: "Loan amount", format: money}
+  AMT_ANNUITY: {family: loan_terms, officer: "Yearly repayment", format: money}
+  AMT_GOODS_PRICE: {family: loan_terms, officer: "Price of the goods being financed", format: money}
+  ANNUITY_CREDIT_RATIO: {family: loan_terms, officer: "Yearly repayment as a share of the loan", format: percent}
+  CREDIT_GOODS_RATIO: {family: loan_terms, officer: "Loan amount as a multiple of the goods price", format: times}
+  NAME_CONTRACT_TYPE: {family: loan_terms, officer: "Loan product", format: category}
 
-# Previous applications with Home Credit
-PREV_APP_COUNT: {name: "number of previous applications with Home Credit"}
-PREV_APPROVED_COUNT: {name: "number of previous approved loans with Home Credit"}
-PREV_REFUSED_COUNT: {high: "Previous applications refused", low: "No or few previous applications refused"}
-PREV_REFUSED_SHARE: {high: "High share of previous applications refused", low: "Low share of previous applications refused", missing: "No previous applications with Home Credit"}
-PREV_CANCELED_SHARE: {high: "Many previous applications cancelled", low: "Few previous applications cancelled", missing: "No previous applications with Home Credit"}
-PREV_REFUSED_RECENT_2Y_COUNT: {high: "Applications refused in the last two years", low: "No applications refused in the last two years"}
-PREV_RECENT_1Y_COUNT: {name: "number of applications in the last year"}
-PREV_AMT_CREDIT_MEAN: {name: "average size of previous loans", missing: "No previous applications with Home Credit"}
-PREV_AMT_CREDIT_MAX: {name: "largest previous loan", missing: "No previous applications with Home Credit"}
-PREV_ANNUITY_MEAN: {name: "average repayment on previous loans", missing: "No previous applications with Home Credit"}
-PREV_CNT_PAYMENT_MEAN: {high: "Previous loans had long terms", low: "Previous loans had short terms", missing: "No previous applications with Home Credit"}
-PREV_DOWN_PAYMENT_RATE_MEAN: {high: "Large down payments on previous loans", low: "Small or no down payments on previous loans", missing: "No down payment history"}
-PREV_DAYS_DECISION_MAX: {high: "Applied to Home Credit recently", low: "Last applied to Home Credit long ago", missing: "No previous applications with Home Credit"}
-PREV_DAYS_DECISION_MEAN: {high: "Previous applications are mostly recent", low: "Previous applications are mostly long ago", missing: "No previous applications with Home Credit"}
-PREV_HIGH_YIELD_SHARE: {high: "Previous loans were mostly higher-rate products", low: "Previous loans were mostly standard-rate products", missing: "No previous applications with Home Credit"}
-PREV_APP_CREDIT_RATIO_MEAN: {high: "Previous loans were often granted for less than requested", low: "Previous loans were granted for more than requested", missing: "No previous applications with Home Credit"}
+  # Income and affordability
+  AMT_INCOME_TOTAL: {family: affordability, officer: "Stated yearly income", format: money}
+  INCOME_PER_PERSON: {family: affordability, officer: "Income per household member", format: money}
+  CREDIT_INCOME_RATIO: {family: affordability, officer: "Loan amount as a multiple of yearly income", format: times}
+  ANNUITY_INCOME_RATIO: {family: affordability, officer: "Yearly repayment as a share of income", format: percent}
+  NAME_INCOME_TYPE: {family: affordability, officer: "Income source", format: category}
 
-# Repayment history on previous Home Credit loans
-INST_COUNT: {name: "number of instalments paid on previous loans"}
-INST_LATE_SHARE: {high: "Instalments on previous loans often paid late", low: "Instalments on previous loans rarely paid late", missing: "No repayment history with Home Credit"}
-INST_LATE_30_SHARE: {high: "Instalments paid more than 30 days late", low: "No instalments paid more than 30 days late", missing: "No repayment history with Home Credit"}
-INST_DAYS_LATE_MEAN: {high: "Instalments paid late on average", low: "Instalments paid on time on average", missing: "No repayment history with Home Credit"}
-INST_DAYS_LATE_MAX: {high: "An instalment was paid very late", low: "No instalment was paid very late", missing: "No repayment history with Home Credit"}
-INST_UNDERPAID_SHARE: {high: "Instalments often underpaid", low: "Instalments rarely underpaid", missing: "No repayment history with Home Credit"}
-INST_SHORTFALL_TOTAL: {name: "total amount underpaid on instalments", missing: "No repayment history with Home Credit"}
-INST_RECENT_1Y_LATE_SHARE: {high: "Late instalment payments in the last year", low: "Few or no late instalment payments in the last year", missing: "No recent repayment history with Home Credit"}
-INST_RECENT_1Y_UNDERPAID_SHARE: {high: "Instalments underpaid in the last year", low: "Few or no instalments underpaid in the last year", missing: "No recent repayment history with Home Credit"}
-INST_PAY_RATIO_MEAN: {high: "Usually pays more than the instalment due", low: "Usually pays less than the instalment due", missing: "No repayment history with Home Credit"}
+  # Employment
+  EMPLOYED_YEARS: {family: employment, officer: "Time with current employer", format: years}
+  DAYS_EMPLOYED_PLACEHOLDER: {family: employment, officer: "No current employment recorded", format: flag}
+  OCCUPATION_TYPE: {family: employment, officer: "Occupation", format: category}
+  ORGANIZATION_TYPE: {family: employment, officer: "Employer sector", format: category}
 
-# Point of sale and cash loan history
-POS_MONTH_COUNT: {name: "length of point-of-sale and cash loan history"}
-POS_LOAN_COUNT: {name: "number of previous point-of-sale and cash loans"}
-POS_COMPLETED_SHARE: {high: "Most previous point-of-sale and cash loans completed", low: "Few previous point-of-sale and cash loans completed", missing: "No point-of-sale or cash loan history"}
-POS_DPD_MAX: {high: "A point-of-sale or cash loan was far past due", low: "No point-of-sale or cash loan was far past due", missing: "No point-of-sale or cash loan history"}
-POS_DPD_MEAN: {high: "Point-of-sale and cash loans often past due", low: "Point-of-sale and cash loans rarely past due", missing: "No point-of-sale or cash loan history"}
-POS_DPD_SHARE: {high: "Many months past due on point-of-sale and cash loans", low: "Few months past due on point-of-sale and cash loans", missing: "No point-of-sale or cash loan history"}
-POS_DPD_DEF_SHARE: {high: "Months in real arrears on point-of-sale and cash loans", low: "No months in real arrears on point-of-sale and cash loans", missing: "No point-of-sale or cash loan history"}
-POS_RECENT_1Y_DPD_SHARE: {high: "Point-of-sale or cash loans past due in the last year", low: "No point-of-sale or cash loans past due in the last year", missing: "No recent point-of-sale or cash loan history"}
-POS_FUTURE_INSTALMENTS_TOTAL: {high: "Many instalments still to pay on open loans", low: "Few instalments still to pay on open loans", missing: "No point-of-sale or cash loan history"}
+  # Age and household (age-based reasons are for the loan officer only)
+  AGE_YEARS: {family: demographics, officer: "Age", format: years, officer_only: true}
+  EMPLOYED_TO_AGE_RATIO: {family: demographics, officer: "Employment length as a share of age", format: share, officer_only: true}
+  CNT_CHILDREN: {family: demographics, officer: "Children", format: count}
+  CNT_FAM_MEMBERS: {family: demographics, officer: "Household size", format: count}
+  NAME_EDUCATION_TYPE: {family: demographics, officer: "Education", format: category}
 
-# Credit card history with Home Credit
-CC_MONTH_COUNT: {name: "length of credit card history"}
-CC_CARD_COUNT: {name: "number of credit cards with Home Credit"}
-CC_UTIL_MEAN: {high: "Credit card balance usually close to the limit", low: "Credit card balance usually well below the limit", missing: "No credit card history with Home Credit"}
-CC_UTIL_MAX: {high: "Credit card balance has reached or passed the limit", low: "Credit card balance has stayed below the limit", missing: "No credit card history with Home Credit"}
-CC_RECENT_1Y_UTIL_MEAN: {high: "High credit card use in the last year", low: "Low credit card use in the last year", missing: "No recent credit card history with Home Credit"}
-CC_BALANCE_MEAN: {name: "average credit card balance", missing: "No credit card history with Home Credit"}
-CC_LIMIT_MAX: {name: "credit card limit", missing: "No credit card history with Home Credit"}
-CC_DRAWINGS_MEAN: {name: "monthly credit card spending and withdrawals", missing: "No credit card history with Home Credit"}
-CC_ATM_DRAWINGS_SHARE: {high: "Frequent cash withdrawals on the credit card", low: "Few cash withdrawals on the credit card", missing: "No credit card withdrawals recorded"}
-CC_DPD_MAX: {high: "Credit card was far past due", low: "Credit card was never far past due", missing: "No credit card history with Home Credit"}
-CC_DPD_SHARE: {high: "Credit card often past due", low: "Credit card rarely past due", missing: "No credit card history with Home Credit"}
-CC_MISSED_MIN_SHARE: {high: "Often paid less than the minimum on the credit card", low: "Usually paid at least the minimum on the credit card", missing: "No minimum payment history on a credit card"}
-CC_RECENT_1Y_MISSED_MIN_SHARE: {high: "Paid less than the minimum on the credit card in the last year", low: "Paid at least the minimum on the credit card in the last year", missing: "No recent minimum payment history on a credit card"}
+  # Housing and assets
+  NAME_HOUSING_TYPE: {family: housing, officer: "Housing situation", format: category}
+  FLAG_OWN_CAR: {family: housing, officer: "Owns a car", format: category}
+  FLAG_OWN_REALTY: {family: housing, officer: "Owns property", format: category}
+  OWN_CAR_AGE: {family: housing, officer: "Age of car", format: years}
+  APARTMENTS_AVG: {family: housing, officer: "Apartment size in the building (normalised)", customer: "Building information", format: score}
+  BASEMENTAREA_AVG: {family: housing, officer: "Basement area in the building (normalised)", customer: "Building information", format: score}
+  YEARS_BEGINEXPLUATATION_AVG: {family: housing, officer: "Time the building has been in use (normalised)", customer: "Building information", format: score}
+  YEARS_BUILD_AVG: {family: housing, officer: "Building age (normalised, higher is newer)", customer: "Building information", format: score}
+  COMMONAREA_AVG: {family: housing, officer: "Common area in the building (normalised)", customer: "Building information", format: score}
+  ELEVATORS_AVG: {family: housing, officer: "Lifts in the building (normalised)", customer: "Building information", format: score}
+  ENTRANCES_AVG: {family: housing, officer: "Entrances in the building (normalised)", customer: "Building information", format: score}
+  FLOORSMAX_AVG: {family: housing, officer: "Building height, most floors (normalised)", customer: "Building information", format: score}
+  FLOORSMIN_AVG: {family: housing, officer: "Building height, fewest floors (normalised)", customer: "Building information", format: score}
+  LANDAREA_AVG: {family: housing, officer: "Land area of the building (normalised)", customer: "Building information", format: score}
+  LIVINGAPARTMENTS_AVG: {family: housing, officer: "Living apartments in the building (normalised)", customer: "Building information", format: score}
+  LIVINGAREA_AVG: {family: housing, officer: "Living area in the building (normalised)", customer: "Building information", format: score}
+  NONLIVINGAPARTMENTS_AVG: {family: housing, officer: "Non-residential units in the building (normalised)", customer: "Building information", format: score}
+  NONLIVINGAREA_AVG: {family: housing, officer: "Non-residential area in the building (normalised)", customer: "Building information", format: score}
+  TOTALAREA_MODE: {family: housing, officer: "Total area of the building (normalised)", customer: "Building information", format: score}
+  FONDKAPREMONT_MODE: {family: housing, officer: "Building repair fund type", customer: "Building information", format: category}
+  HOUSETYPE_MODE: {family: housing, officer: "Building type", customer: "Building information", format: category}
+  WALLSMATERIAL_MODE: {family: housing, officer: "Building wall material", customer: "Building information", format: category}
+  EMERGENCYSTATE_MODE: {family: housing, officer: "Building emergency state", customer: "Building information", format: category}
+
+  # Region and address
+  REGION_POPULATION_RELATIVE: {family: region, officer: "Population density of home region (normalised)", customer: "Home region", format: score}
+  REGION_RATING_CLIENT: {family: region, officer: "Home Credit's rating of the home region (1 best, 3 worst)", customer: "Home region rating", format: number}
+  REGION_RATING_CLIENT_W_CITY: {family: region, officer: "Home Credit's rating of the home region and city (1 best, 3 worst)", customer: "Home region rating", format: number}
+  REG_REGION_NOT_LIVE_REGION: {family: region, officer: "Registered address in a different region from home", format: flag}
+  REG_REGION_NOT_WORK_REGION: {family: region, officer: "Registered address in a different region from work", format: flag}
+  LIVE_REGION_NOT_WORK_REGION: {family: region, officer: "Lives in a different region from work", format: flag}
+  REG_CITY_NOT_LIVE_CITY: {family: region, officer: "Registered address in a different city from home", format: flag}
+  REG_CITY_NOT_WORK_CITY: {family: region, officer: "Registered address in a different city from work", format: flag}
+  LIVE_CITY_NOT_WORK_CITY: {family: region, officer: "Lives in a different city from work", format: flag}
+
+  # Recent credit enquiries
+  AMT_REQ_CREDIT_BUREAU_HOUR: {family: enquiries, officer: "Credit checks in the hour before applying", format: count}
+  AMT_REQ_CREDIT_BUREAU_DAY: {family: enquiries, officer: "Credit checks in the day before applying", format: count}
+  AMT_REQ_CREDIT_BUREAU_WEEK: {family: enquiries, officer: "Credit checks in the week before applying", format: count}
+  AMT_REQ_CREDIT_BUREAU_MON: {family: enquiries, officer: "Credit checks in the month before applying", format: count}
+  AMT_REQ_CREDIT_BUREAU_QRT: {family: enquiries, officer: "Credit checks in the three months before applying", format: count}
+  AMT_REQ_CREDIT_BUREAU_YEAR: {family: enquiries, officer: "Credit checks in the year before applying", format: count}
+
+  # Social circle: about other people, so officer only
+  OBS_30_CNT_SOCIAL_CIRCLE: {family: social_circle, officer: "Social contacts with a credit history (30 days)", format: count, officer_only: true}
+  OBS_60_CNT_SOCIAL_CIRCLE: {family: social_circle, officer: "Social contacts with a credit history (60 days)", format: count, officer_only: true}
+  DEF_30_CNT_SOCIAL_CIRCLE: {family: social_circle, officer: "Social contacts who defaulted (30 days past due)", format: count, officer_only: true}
+  DEF_60_CNT_SOCIAL_CIRCLE: {family: social_circle, officer: "Social contacts who defaulted (60 days past due)", format: count, officer_only: true}
+
+  # Application, contact and document details: officer only
+  NAME_TYPE_SUITE: {family: application_details, officer: "Accompanied when applying by", format: category, officer_only: true}
+  WEEKDAY_APPR_PROCESS_START: {family: application_details, officer: "Day the application was started", format: category, officer_only: true}
+  HOUR_APPR_PROCESS_START: {family: application_details, officer: "Hour the application was started", format: count, officer_only: true}
+  DAYS_REGISTRATION: {family: application_details, officer: "Registration details last changed", format: days_ago, officer_only: true}
+  DAYS_ID_PUBLISH: {family: application_details, officer: "Identity document issued", format: days_ago, officer_only: true}
+  DAYS_LAST_PHONE_CHANGE: {family: application_details, officer: "Phone number last changed", format: days_ago, officer_only: true}
+  FLAG_MOBIL: {family: application_details, officer: "Mobile phone provided", format: flag, officer_only: true}
+  FLAG_EMP_PHONE: {family: application_details, officer: "Employer phone provided", format: flag, officer_only: true}
+  FLAG_WORK_PHONE: {family: application_details, officer: "Work phone provided", format: flag, officer_only: true}
+  FLAG_CONT_MOBILE: {family: application_details, officer: "Mobile phone reachable", format: flag, officer_only: true}
+  FLAG_PHONE: {family: application_details, officer: "Home phone provided", format: flag, officer_only: true}
+  FLAG_EMAIL: {family: application_details, officer: "Email provided", format: flag, officer_only: true}
+  FLAG_DOCUMENT_3: {family: application_details, officer: "Standard supporting document (document 3) provided", format: flag, officer_only: true}
+  DOCUMENT_COUNT: {family: application_details, officer: "Supporting documents provided", format: count, officer_only: true}
