@@ -90,5 +90,11 @@ def download(api, raw_dir: Path) -> None:
 
 if __name__ == "__main__":
     settings = get_settings()
-    download(authenticate(), settings.raw_dir)
+    # if the files were downloaded by hand from the Kaggle website, I don't need credentials at all
+    missing = [name for name in FILES if not (settings.raw_dir / name).exists()]
+    if not missing:
+        print("All seven files are already in data/raw, skipping the download.")
+    else:
+        print(f"Missing: {', '.join(missing)}")
+        download(authenticate(), settings.raw_dir)
     print("Done. Next: python scripts/convert_to_parquet.py")
