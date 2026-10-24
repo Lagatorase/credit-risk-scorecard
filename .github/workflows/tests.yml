@@ -24,3 +24,12 @@ jobs:
       # so they need no Home Credit data, no trained model and no API keys
       - name: Run tests
         run: pytest -q
+
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # builds the image only, to check the Dockerfile and its dependencies; nothing is pushed or run
+      - name: Build the image
+        run: docker build -t credit-risk-scorecard:ci .
