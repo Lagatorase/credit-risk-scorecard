@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+# lets the tests import scorecard, api and app from the project root
+pythonpath = ["."]
+testpaths = ["tests"]
