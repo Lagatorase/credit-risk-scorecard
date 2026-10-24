@@ -41,6 +41,8 @@ class Settings:
     openai_base_url: str = field(default_factory=lambda: _env("OPENAI_BASE_URL", "https://api.openai.com/v1"))
     anthropic_api_key: str = field(default_factory=lambda: _env("ANTHROPIC_API_KEY", ""))
     anthropic_model: str = field(default_factory=lambda: _env("ANTHROPIC_MODEL", "claude-haiku-5-5"))
+    # the customer gets the plain template unless this is "llm"; the officer always gets the checked LLM draft
+    customer_explanation: str = field(default_factory=lambda: _env("CUSTOMER_EXPLANATION", "template"))
 
     # folders
     raw_dir: Path = field(default_factory=lambda: _path("RAW_DIR", "data/raw"))

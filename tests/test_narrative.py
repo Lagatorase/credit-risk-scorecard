@@ -1,4 +1,4 @@
-"""Tests for the LLM explanation layer: the checks, the retry and fallback, and the backends (no real calls)."""
+"""Tests for the LLM explanation layer: the checks, the template fallback, and the backends (no real calls)."""
 
 from __future__ import annotations
 
@@ -30,7 +30,7 @@ def _failed(text, payload):
 
 
 class ScriptedLLM:
-    """Returns the given replies in order, so I can test the retry and fallback without a model."""
+    """Returns the given replies in order, so I can test the fallback without a model."""
 
     name = "scripted"
 
@@ -85,6 +85,7 @@ def test_customer_checks_cover_officer_only_details():
     assert _failed(ok, p) == set()
     assert "officer_only" in _failed(ok + " Your age was also considered.", p)
     assert "officer_only" in _failed(ok + " You did not give a work phone.", p)
+    assert "officer_only" in _failed(ok + " Your home region was also considered.", p)
     # the customer never gets the PD, so quoting it is an unsupported number
     assert _failed(ok + " Your PD is 29.3%.", p) == {"numbers"}
     # "age of your car" is about the car, and is fine when it's one of the reasons
@@ -95,7 +96,7 @@ def test_customer_checks_cover_officer_only_details():
 
 def test_format_check_catches_lists_and_echoed_prompts():
     p = _payload()
-    # an echoed retry prompt holds the old draft, so it can pass the other checks; format must catch it
+    # an echoed feedback prompt holds the old draft, so it can pass the other checks; format must catch it
     echo = 'Recommendation: decline. Your previous draft was: """' + GOOD.split(". ", 1)[1] + '""" Corrected version: ' + GOOD.split(". ", 1)[1]
     assert "format" in _failed(echo, p)
     echoed = "Recommendation: decline. Reasons (each one increased the assessed risk): " + GOOD.split(". ", 1)[1]
@@ -103,9 +104,9 @@ def test_format_check_catches_lists_and_echoed_prompts():
     assert _failed("Recommendation: decline.\n- " + GOOD.split(". ", 1)[1], p) == {"format"}
 
 
-def test_customer_may_quote_a_registered_address_reason():
-    # the officer-only "registration" term is about the registration date, which is never a customer reason;
-    # a customer reason that itself mentions the registered address can be repeated, in any case
+def test_customer_may_quote_a_term_from_its_own_reasons():
+    # the officer-only check counts terms the model added; a term inside a reason given to the customer is
+    # fine to repeat (location reasons are officer-only now, so this reason is made up for the test)
     p = _payload("customer", "approve", reasons=["Registered address in a different city from home: Yes (7.8% of applicants)"])
     assert _failed("Your application has been approved. Your registered address is in a different city from home, "
                    "as for 7.8% of applicants.", p) == set()
@@ -138,7 +139,8 @@ def test_templates_pass_every_check(seed):
 
 def test_first_draft_passes():
     out = write_explanation(ScriptedLLM([GOOD]), _payload())
-    assert out["source"] == "llm" and not out["retried"] and not out["fell_back"] and out["text"] == GOOD
+    assert out["source"] == "llm" and not out["fell_back"] and out["text"] == GOOD
+    assert out["label"].startswith("AI-drafted summary")
 
 
 def test_the_opening_sentence_is_added_by_the_code():
@@ -147,19 +149,34 @@ def test_the_opening_sentence_is_added_by_the_code():
     assert out["text"] == GOOD and out["source"] == "llm"
 
 
-def test_retry_gets_the_failures_and_can_recover():
-    llm = ScriptedLLM([GOOD.replace("582,898", "600,000"), GOOD])
+def test_a_failed_draft_goes_straight_to_the_template():
+    llm = ScriptedLLM(["He should be declined.", GOOD])
     out = write_explanation(llm, _payload())
-    assert out["source"] == "llm_retry" and out["retried"] and not out["fell_back"]
-    # the second prompt quotes the bad draft and names the failed check
-    assert "600,000" in llm.prompts[1] and "numbers" in llm.prompts[1]
+    # one call only: no retry, even though a good second reply was waiting
+    assert len(llm.prompts) == 1 and len(out["attempts"]) == 1
+    assert out["source"] == "template_fallback" and out["fell_back"] and out["text"] == template(_payload())
+    assert "failed an automated check" in out["label"]
 
 
-def test_falls_back_to_the_template_after_one_retry():
-    llm = ScriptedLLM(["He should be declined.", "Approve this applicant."])
-    out = write_explanation(llm, _payload())
-    assert out["source"] == "template_fallback" and out["fell_back"] and len(out["attempts"]) == 2
-    assert out["text"] == template(_payload())
+def test_a_backend_error_falls_back_too():
+    class Broken:
+        def generate(self, *args, **kwargs):
+            raise RuntimeError("Can't reach Ollama")
+
+    out = write_explanation(Broken(), _payload())
+    assert out["source"] == "template_fallback" and "Ollama" in out["attempts"][0]["error"]
+
+
+def test_customers_get_the_template_unless_the_setting_is_on():
+    ex = {"decision": "decline", "pd": 0.293, "risk_band": {"band": "E", "label": "very high"},
+          "reasons_officer": [{"text": t} for t in _payload()["reasons"]],
+          "reasons_customer": [{"text": "Credit bureau score: lowest 10% of applicants"}]}
+    customer_text = "Your credit bureau score is in the lowest 10% of applicants."
+    out = explain_both(ScriptedLLM([GOOD, customer_text]), ex)
+    assert out["officer"]["source"] == "llm" and out["customer"]["source"] == "template"
+    out = explain_both(ScriptedLLM([GOOD, customer_text]), ex, customer_llm=True)
+    assert out["customer"]["source"] == "llm"
+    assert out["customer"]["text"] == "Your application has been declined. " + customer_text
 
 
 def test_customer_prompt_never_sees_officer_only_reasons_or_the_pd():

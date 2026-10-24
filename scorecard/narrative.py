@@ -6,14 +6,14 @@ The LLM only rewords the reason codes into a few sentences. Every draft goes thr
                 numbers in one sentence all come from the same reason, so a figure can't move to another factor
   factors       no risk factor that isn't in the reason codes given to that reader
   protected     no mention or guess of gender, marital status, race, religion or nationality
-  officer_only  (customer only) nothing about age, contact details or documents
+  officer_only  (customer only) nothing about age, location, contact details or documents
   coverage      every reason's value appears in the text, so the reasons aren't blurred into vague summaries
   judgement     no judgement words of the model's own (significant, poor, below average, ...)
   format        plain prose: no list markers and no prompt text or feedback echoed back
 The opening sentence that states the decision is added by the code, not written by the model, so the
 decision check is really checking that the rest of the text doesn't contradict it.
-A draft that fails gets one retry with the failures spelled out. If the retry fails too, the reader
-gets a plain template built from the reason codes, and the result records that it fell back.
+A draft that fails any check is replaced by a plain template built from the reason codes, and the
+result records that it fell back. By default only the officer gets LLM text; the customer gets the template.
 
 The customer prompt is only ever given the customer reasons, so officer-only facts can't leak through
 the prompt; the officer_only check is there in case the model invents them.
@@ -29,6 +29,11 @@ DECISION_WORDS = {
     "officer": {"approve": "approve", "review": "manual review", "decline": "decline"},
     "customer": {"approve": "approved", "review": "passed to a loan officer for review", "decline": "declined"},
 }
+# labels shown above the explanation in the app and the API, so nobody mistakes a draft for a decision letter
+LLM_LABEL = "AI-drafted summary: check against the reason codes below"
+FALLBACK_LABEL = "Template summary (the AI draft failed an automated check)"
+TEMPLATE_LABEL = "Template summary built from the reason codes"
+
 # the first sentence is added by the code, so the decision is always stated the same way
 OPENING = {
     "officer": "Recommendation: {words}.",
@@ -56,6 +61,7 @@ OFFICER_ONLY = {
     "social circle": re.compile(r"\bsocial circle\b|\bacquaint\w*", re.I),
     "registration": re.compile(r"\bregist\w*", re.I),
     "application time": re.compile(r"\bweekday\b|\bhour\b", re.I),
+    "location": re.compile(r"\bregion\w*|\bcity\b|\bcities\b|\baddress\w*|\bpopulation\b|\bneighbourhood\b", re.I),
     "accompanied": re.compile(r"\baccompan\w*", re.I),
 }
 
@@ -272,40 +278,42 @@ def _failures(checks: dict) -> list[str]:
 
 
 def write_explanation(llm: LLM | None, payload: dict) -> dict:
-    """One reader's explanation: a checked LLM draft, one retry with feedback, then the template if needed.
+    """One reader's explanation: a checked LLM draft, or the template if the draft fails any check.
 
-    Returns the final text, its source ("llm", "llm_retry", "template_fallback" or "template"), and
-    every attempt with its checks, so the eval can count pass, retry and fallback rates.
+    There is no retry. In the development runs a retry with the failures quoted back fixed none of them,
+    and the model often echoed the feedback prompt. Returns the final text, its source ("llm",
+    "template_fallback" or "template"), a display label, and the draft with its checks so the eval can
+    count pass and fallback rates.
     """
     if llm is None:
-        return {"text": template(payload), "source": "template", "attempts": [], "retried": False, "fell_back": False}
+        return {"text": template(payload), "source": "template", "label": TEMPLATE_LABEL, "attempts": [],
+                "fell_back": False}
     system, user = build_prompt(payload)
-    attempts = []
-    for attempt in range(2):
-        try:
-            res = llm.generate(system, user)
-        except Exception as exc:  # noqa: BLE001
-            # a backend error counts as a failed attempt rather than crashing the scoring request
-            attempts.append({"text": "", "checks": {}, "error": str(exc), "latency_s": 0.0})
-            break
+    try:
+        res = llm.generate(system, user)
+    except Exception as exc:  # noqa: BLE001
+        # a backend error falls back to the template rather than failing the scoring request
+        attempt = {"text": "", "checks": {}, "error": str(exc), "latency_s": 0.0}
+    else:
         body = _clean(res.text)
         # the model sometimes repeats the opening anyway, so I drop it before adding mine
         if body.startswith(opening(payload)):
             body = body[len(opening(payload)):].strip()
         text = f"{opening(payload)} {body}"
-        checks = run_checks(text, payload)
-        attempts.append({"text": text, "checks": checks, "latency_s": res.latency_s})
-        if not _failures(checks):
-            return {"text": text, "source": "llm" if attempt == 0 else "llm_retry", "attempts": attempts,
-                    "retried": attempt == 1, "fell_back": False}
-        # the retry repeats the task with the draft and what was wrong with it
-        user = (f"{build_prompt(payload)[1]}\n\nYour previous draft was:\n\"\"\"{body}\"\"\"\n"
-                f"It broke these rules: {'; '.join(_failures(checks))}.\n"
-                "Reply with the corrected text only. Do not repeat the draft, these instructions or any labels.")
-    return {"text": template(payload), "source": "template_fallback", "attempts": attempts,
-            "retried": len(attempts) == 2, "fell_back": True}
+        attempt = {"text": text, "checks": run_checks(text, payload), "latency_s": res.latency_s}
+        if not _failures(attempt["checks"]):
+            return {"text": text, "source": "llm", "label": LLM_LABEL, "attempts": [attempt], "fell_back": False}
+    return {"text": template(payload), "source": "template_fallback", "label": FALLBACK_LABEL, "attempts": [attempt],
+            "fell_back": True}
 
 
-def explain_both(llm: LLM | None, ex: dict) -> dict:
-    """Officer and customer explanations for one Explainer.explain result."""
-    return {aud: write_explanation(llm, payload_from_explanation(ex, aud)) for aud in ("officer", "customer")}
+def explain_both(llm: LLM | None, ex: dict, customer_llm: bool = False) -> dict:
+    """Officer and customer explanations for one Explainer.explain result.
+
+    The officer gets the checked LLM draft. The customer gets the template unless customer_llm is set
+    (CUSTOMER_EXPLANATION=llm), because in the eval about 1 in 6 accepted customer drafts misread a reason.
+    """
+    return {
+        "officer": write_explanation(llm, payload_from_explanation(ex, "officer")),
+        "customer": write_explanation(llm if customer_llm else None, payload_from_explanation(ex, "customer")),
+    }
