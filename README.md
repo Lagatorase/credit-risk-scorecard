@@ -23,6 +23,17 @@ The main part of this project is the evaluation. Every modelling choice was comp
 - Writes a short explanation with a local LLM (qwen2.5:3b in Ollama), checks it automatically, and falls back to a template when a check fails.
 - Serves everything through a FastAPI service and a Streamlit demo with what-if sliders.
 
+## Key findings
+
+All numbers are from real runs. CV numbers are means over five folds (fold standard deviation of AUC about 0.001); hold-out intervals are 95% bootstrap CIs.
+
+- **The final model is accurate and well calibrated on the hold-out set.** AUC 0.7908 (0.7843 to 0.7976), Gini 0.582 and KS 0.440, in line with its CV AUC of 0.7885. Calibration slope 1.008 (0.979 to 1.038) and intercept 0.002 (-0.029 to 0.029) both include the ideal values, and ECE is 0.0015.
+- **More data beat more tuning.** The five history tables lifted CV AUC from 0.7605 (application only) to 0.7802, and Optuna tuning added 0.008 more (to 0.7882) at about 8 minutes per fold against 4.5 seconds, while balanced class weights moved AUC by +0.0003 (noise) but raised ECE from 0.004 to 0.298.
+- **Leaving gender out doesn't make the model blind to it.** The model's own inputs predict gender with AUC 0.904. It approves 80.3% of men and 87.0% of women. Part of that gap follows real default rates (10.2% against 7.0%), but it persists among applicants who repaid (84.3% against 89.4%). Adding gender back didn't help: AUC +0.0006 (-0.0010 to +0.0023), with a gender approval gap 2.2 points wider.
+- **Removing age would hurt young applicants.** Without age, AUC changes by -0.0010 (-0.0024 to +0.0006), within noise. The age approval gap widens by 3.6 points (+2.5 to +4.8), and under-25s' approval rate falls from 70.3% to 66.7%. The model stays calibrated within 0.6 points in every age band.
+- **The small LLM is good enough for officers, not for customers.** On 50 new hold-out applicants with frozen prompts and checks, officer drafts passed every check 80% of the time, and my manual read of the 40 accepted officer texts found 1 misstatement. Customer drafts passed only 50% of the time, mostly by dropping a reason's value, and 5 of the 25 accepted customer texts misread a reason (for example "instalments still to pay on 25 open loans" when the reason was 25 instalments). The text also isn't reproducible: at temperature 0 with a fixed seed, 18 of 100 texts still changed between two development runs.
+- **The scorecard is a readable challenger.** The logistic WoE scorecard uses 17 features read off a points table and reaches a CV AUC of 0.7395, about 0.05 below LightGBM, with the lowest ECE of any model (0.0024).
+
 ## How it works
 
 ```mermaid
@@ -65,16 +76,7 @@ flowchart LR
 
 **Customers get the template by default.** The officer sees the LLM draft, labelled "AI-drafted summary: check against the reason codes", with the reason codes next to it. The customer gets the template, because in my manual read 5 of 25 accepted customer drafts misstated a reason. `CUSTOMER_EXPLANATION=llm` turns the LLM option on.
 
-## Key findings
-
-All numbers are from real runs. CV numbers are means over five folds (fold standard deviation of AUC about 0.001); hold-out intervals are 95% bootstrap CIs.
-
-- **The final model is accurate and well calibrated on the hold-out set.** AUC 0.7908 (0.7843 to 0.7976), Gini 0.582 and KS 0.440, in line with its CV AUC of 0.7885. Calibration slope 1.008 (0.979 to 1.038) and intercept 0.002 (-0.029 to 0.029) both include the ideal values, and ECE is 0.0015.
-- **More data beat more tuning.** The five history tables lifted CV AUC from 0.7605 (application only) to 0.7802, and Optuna tuning added 0.008 more (to 0.7882) at about 8 minutes per fold against 4.5 seconds, while balanced class weights moved AUC by +0.0003 (noise) but raised ECE from 0.004 to 0.298.
-- **Leaving gender out doesn't make the model blind to it.** The model's own inputs predict gender with AUC 0.904. It approves 80.3% of men and 87.0% of women. Part of that gap follows real default rates (10.2% against 7.0%), but it persists among applicants who repaid (84.3% against 89.4%). Adding gender back didn't help: AUC +0.0006 (-0.0010 to +0.0023), with a gender approval gap 2.2 points wider.
-- **Removing age would hurt young applicants.** Without age, AUC changes by -0.0010 (-0.0024 to +0.0006), within noise. The age approval gap widens by 3.6 points (+2.5 to +4.8), and under-25s' approval rate falls from 70.3% to 66.7%. The model stays calibrated within 0.6 points in every age band.
-- **The small LLM is good enough for officers, not for customers.** On 50 new hold-out applicants with frozen prompts and checks, officer drafts passed every check 80% of the time, and my manual read of the 40 accepted officer texts found 1 misstatement. Customer drafts passed only 50% of the time, mostly by dropping a reason's value, and 5 of the 25 accepted customer texts misread a reason (for example "instalments still to pay on 25 open loans" when the reason was 25 instalments). The text also isn't reproducible: at temperature 0 with a fixed seed, 18 of 100 texts still changed between two development runs.
-- **The scorecard is a readable challenger.** The logistic WoE scorecard uses 17 features read off a points table and reaches a CV AUC of 0.7395, about 0.05 below LightGBM, with the lowest ECE of any model (0.0024).
+## Results
 
 ### Model comparison (5-fold CV on the development set)
 
