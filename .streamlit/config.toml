@@ -1,0 +1,32 @@
+# Theme for the demo app: navy primary, one teal accent, neutral greys.
+# Light is the default; the dark palette is used when the viewer's system or Streamlit setting asks for it.
+
+[theme]
+font = "sans-serif"
+baseRadius = "medium"
+showWidgetBorder = true
+
+[theme.light]
+base = "light"
+primaryColor = "#1F3A5F"
+backgroundColor = "#F5F7FA"
+secondaryBackgroundColor = "#E9EDF2"
+textColor = "#1C2430"
+borderColor = "#D5DBE3"
+linkColor = "#1C7C8C"
+
+[theme.dark]
+base = "dark"
+primaryColor = "#7FA6D6"
+backgroundColor = "#0F1620"
+secondaryBackgroundColor = "#18212D"
+textColor = "#E4E9F0"
+borderColor = "#2C3846"
+linkColor = "#5FC0CF"
+
+[client]
+# hides the developer options in the menu; the CSS in the app hides the rest
+toolbarMode = "viewer"
+
+[browser]
+gatherUsageStats = false
