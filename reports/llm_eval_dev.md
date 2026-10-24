@@ -1,4 +1,6 @@
-# LLM explanation eval
+# LLM explanation eval: development run 4 (tuning)
+
+This is the last of the four runs I used to design the prompts and checks, with a feedback retry that has since been removed. The headline results are in `llm_eval.md`.
 
 Backend: `ollama:qwen2.5:3b`, temperature 0. 50 hold-out applicants drawn at random (seed 42) within each decision: 17 declines, 17 reviews and 16 approvals. Each gets an officer and a customer explanation, so 100 explanations in all. Total time 2.7 minutes.
 
