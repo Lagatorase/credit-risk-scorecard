@@ -2,3 +2,11 @@
 # lets the tests import scorecard, api and app from the project root
 pythonpath = ["."]
 testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+# ruff's default rules (pyflakes and the basic pycodestyle errors), which include F401 for unused imports
+select = ["E4", "E7", "E9", "F"]

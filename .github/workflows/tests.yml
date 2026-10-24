@@ -20,6 +20,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Lint
+        run: ruff check .
+
       # the tests use synthetic tables built from a schema with no real rows, a small made-up model and no LLM,
       # so they need no Home Credit data, no trained model and no API keys
       - name: Run tests

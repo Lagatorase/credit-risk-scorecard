@@ -19,7 +19,7 @@ import pandas as pd  # noqa: E402
 from experiments.plots import REFERENCE, SERIES, TEXT_MUTED, new_figure, save, style_axes  # noqa: E402
 from scorecard.config import get_settings  # noqa: E402
 from scorecard.decision import decide, expected_cost, load_decision_config, realised_cost  # noqa: E402
-from scorecard.splits import load_splits, split_frame  # noqa: E402
+from scorecard.splits import load_splits  # noqa: E402
 
 THRESHOLDS = np.round(np.arange(0.01, 0.601, 0.005), 3)
 
