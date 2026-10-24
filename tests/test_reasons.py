@@ -56,6 +56,24 @@ def test_age_and_contact_flags_are_officer_only():
         assert ENTRIES[f].get("officer_only") is True, f
 
 
+def test_location_features_are_officer_only():
+    # location-based reasons raise fair-lending concerns, so a customer never gets one
+    region = [f for f, e in ENTRIES.items() if e["family"] == "region"]
+    location = [f for f in ENTRIES if f.startswith(("REGION_", "REG_", "LIVE_"))]
+    assert set(location) <= set(region) and len(region) >= 9
+    for f in region:
+        assert ENTRIES[f].get("officer_only") is True, f
+
+
+def test_customers_see_only_the_percentile_of_an_opaque_score():
+    X = pd.DataFrame({"EXT_SOURCE_MEAN": np.linspace(0.01, 0.99, 100)})
+    coder = ReasonCoder(build_reference(X), CONFIG)
+    value = float(X["EXT_SOURCE_MEAN"].iloc[14])
+    assert coder.text("EXT_SOURCE_MEAN", value, "customer") == "Credit bureau score: lowest 20% of applicants"
+    # the officer keeps the value
+    assert coder.text("EXT_SOURCE_MEAN", value, "officer").startswith(f"Average of the external bureau scores: {value:.2f} (")
+
+
 def test_customer_labels_avoid_opaque_source_names():
     for f in ["EXT_SOURCE_1", "EXT_SOURCE_2", "EXT_SOURCE_3", "EXT_SOURCE_MEAN", "EXT_SOURCE_MIN"]:
         assert ENTRIES[f]["customer"] == "Credit bureau score"

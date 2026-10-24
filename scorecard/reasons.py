@@ -132,6 +132,10 @@ class ReasonCoder:
         ref = self.reference[feature]
         if pd.isna(value):
             return f"{label}: not available (missing for {ref['missing']:.1%} of applicants)"
+        if audience == "customer" and entry["format"] == "score":
+            # opaque scores (the bureau scores and the normalised building statistics) mean nothing to a
+            # customer as raw numbers, so the customer sees only where they sit among applicants
+            return f"{label}: {position_phrase(float(value), ref)}"
         shown = format_value(value, entry["format"], self.currency, entry.get("unit"))
         if entry["format"] in ("category", "flag"):
             # for categories and yes/no flags, say how common this answer is ("shared by" so it can't be

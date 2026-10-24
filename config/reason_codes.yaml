@@ -176,16 +176,16 @@ features:
   WALLSMATERIAL_MODE: {family: housing, officer: "Building wall material", customer: "Building information", format: category}
   EMERGENCYSTATE_MODE: {family: housing, officer: "Building emergency state", customer: "Building information", format: category}
 
-  # Region and address
-  REGION_POPULATION_RELATIVE: {family: region, officer: "Population density of home region (normalised)", customer: "Population density of your home region (relative scale)", format: score}
-  REGION_RATING_CLIENT: {family: region, officer: "Home Credit's rating of the home region (1 best, 3 worst)", customer: "Home region rating", format: number}
-  REGION_RATING_CLIENT_W_CITY: {family: region, officer: "Home Credit's rating of the home region and city (1 best, 3 worst)", customer: "Home region rating", format: number}
-  REG_REGION_NOT_LIVE_REGION: {family: region, officer: "Registered address in a different region from home", format: flag}
-  REG_REGION_NOT_WORK_REGION: {family: region, officer: "Registered address in a different region from work", format: flag}
-  LIVE_REGION_NOT_WORK_REGION: {family: region, officer: "Lives in a different region from work", format: flag}
-  REG_CITY_NOT_LIVE_CITY: {family: region, officer: "Registered address in a different city from home", format: flag}
-  REG_CITY_NOT_WORK_CITY: {family: region, officer: "Registered address in a different city from work", format: flag}
-  LIVE_CITY_NOT_WORK_CITY: {family: region, officer: "Lives in a different city from work", format: flag}
+  # Region and address: officer only, because location-based reasons raise fair-lending concerns (see docs/features.md)
+  REGION_POPULATION_RELATIVE: {family: region, officer: "Population density of home region (normalised)", customer: "Population density of your home region (relative scale)", format: score, officer_only: true}
+  REGION_RATING_CLIENT: {family: region, officer: "Home Credit's rating of the home region (1 best, 3 worst)", customer: "Home region rating", format: number, officer_only: true}
+  REGION_RATING_CLIENT_W_CITY: {family: region, officer: "Home Credit's rating of the home region and city (1 best, 3 worst)", customer: "Home region rating", format: number, officer_only: true}
+  REG_REGION_NOT_LIVE_REGION: {family: region, officer: "Registered address in a different region from home", format: flag, officer_only: true}
+  REG_REGION_NOT_WORK_REGION: {family: region, officer: "Registered address in a different region from work", format: flag, officer_only: true}
+  LIVE_REGION_NOT_WORK_REGION: {family: region, officer: "Lives in a different region from work", format: flag, officer_only: true}
+  REG_CITY_NOT_LIVE_CITY: {family: region, officer: "Registered address in a different city from home", format: flag, officer_only: true}
+  REG_CITY_NOT_WORK_CITY: {family: region, officer: "Registered address in a different city from work", format: flag, officer_only: true}
+  LIVE_CITY_NOT_WORK_CITY: {family: region, officer: "Lives in a different city from work", format: flag, officer_only: true}
 
   # Recent credit enquiries
   AMT_REQ_CREDIT_BUREAU_HOUR: {family: enquiries, officer: "Credit checks in the hour before applying", format: count}

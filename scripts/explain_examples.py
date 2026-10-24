@@ -94,9 +94,11 @@ def main() -> None:
         "and the percentile says how unusual the value is. When 10% or more of applicants share the exact value (for example "
         "zero late payments), the text gives that share instead of a percentile.",
         "4. The customer list uses plainer labels (\"Credit bureau score\" instead of \"External bureau score (source 2)\") and "
-        "skips officer-only factors: age, social circle, and application, contact and document details such as which phone "
-        "numbers were given. The next eligible factor takes their place. Gender and marital status are not model inputs, so "
-        "they can never appear.",
+        "skips officer-only factors: age, location (region ratings and address mismatches, a fair-lending concern), social "
+        "circle, and application, contact and document details such as which phone numbers were given. The next eligible "
+        "factor takes their place. For opaque scores (the bureau scores and normalised building statistics) the customer "
+        "sees only the percentile, not the raw value. Gender and marital status are not model inputs, so they can never "
+        "appear.",
         "",
         "Home Credit doesn't state the currency of the amounts, so none is shown (`currency` in the config adds one).",
         "",
