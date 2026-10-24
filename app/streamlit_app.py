@@ -68,7 +68,7 @@ CSS = """
   font-size: 0.95rem;}
 .band {display: inline-block; white-space: nowrap; border: 1px solid rgba(128,128,128,0.45); border-radius: 6px; padding: 4px 10px;
   font-size: 0.9rem;}
-.delta {margin-top: 10px; font-size: 0.95rem; font-weight: 550;}
+.delta {margin: 10px 0 18px 0; font-size: 0.95rem; font-weight: 550;}
 .reason {display: grid; grid-template-columns: 22px 1fr 120px; gap: 10px; align-items: center; padding: 8px 0;
   border-top: 1px solid rgba(128,128,128,0.2); font-size: 0.92rem;}
 .reason:first-of-type {border-top: none;}
