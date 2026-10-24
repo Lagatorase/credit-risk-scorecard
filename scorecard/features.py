@@ -58,6 +58,33 @@ def _share(mask: pd.Series, keys: pd.Series) -> pd.Series:
     return mask.astype("float32").groupby(keys).mean()
 
 
+def add_derived_ratios(df: pd.DataFrame) -> pd.DataFrame:
+    """Ratios built from the raw application amounts, in place.
+
+    Kept in one function so the what-if tool in the app recomputes them exactly as training did when
+    an officer changes the loan amount, income or years employed.
+    """
+    df["EMPLOYED_TO_AGE_RATIO"] = _safe_div(df["EMPLOYED_YEARS"], df["AGE_YEARS"])
+
+    # affordability ratios that lenders commonly look at
+    df["CREDIT_INCOME_RATIO"] = _safe_div(df["AMT_CREDIT"], df["AMT_INCOME_TOTAL"])
+    df["ANNUITY_INCOME_RATIO"] = _safe_div(df["AMT_ANNUITY"], df["AMT_INCOME_TOTAL"])
+    df["CREDIT_GOODS_RATIO"] = _safe_div(df["AMT_CREDIT"], df["AMT_GOODS_PRICE"])
+    # annuity over credit is the yearly repayment rate, roughly one over the loan term
+    df["ANNUITY_CREDIT_RATIO"] = _safe_div(df["AMT_ANNUITY"], df["AMT_CREDIT"])
+    df["INCOME_PER_PERSON"] = _safe_div(df["AMT_INCOME_TOTAL"], df["CNT_FAM_MEMBERS"])
+
+    # the three external scores are the strongest single predictors, and their mean and minimum help further
+    ext = df[["EXT_SOURCE_1", "EXT_SOURCE_2", "EXT_SOURCE_3"]]
+    df["EXT_SOURCE_MEAN"] = ext.mean(axis=1)
+    df["EXT_SOURCE_MIN"] = ext.min(axis=1)
+
+    # one cross-table ratio, once the bureau totals are joined on: total bureau debt against income
+    if "BUREAU_DEBT_TOTAL" in df:
+        df["BUREAU_DEBT_INCOME_RATIO"] = _safe_div(df["BUREAU_DEBT_TOTAL"], df["AMT_INCOME_TOTAL"])
+    return df
+
+
 def application_features(app: pd.DataFrame) -> pd.DataFrame:
     """Cleans the main application table and adds well-known affordability ratios."""
     df = app.copy()
@@ -74,20 +101,7 @@ def application_features(app: pd.DataFrame) -> pd.DataFrame:
     # ages and durations in years read better than negative day counts
     df["AGE_YEARS"] = -df["DAYS_BIRTH"] / 365.25
     df["EMPLOYED_YEARS"] = -df["DAYS_EMPLOYED"] / 365.25
-    df["EMPLOYED_TO_AGE_RATIO"] = _safe_div(df["EMPLOYED_YEARS"], df["AGE_YEARS"])
-
-    # affordability ratios that lenders commonly look at
-    df["CREDIT_INCOME_RATIO"] = _safe_div(df["AMT_CREDIT"], df["AMT_INCOME_TOTAL"])
-    df["ANNUITY_INCOME_RATIO"] = _safe_div(df["AMT_ANNUITY"], df["AMT_INCOME_TOTAL"])
-    df["CREDIT_GOODS_RATIO"] = _safe_div(df["AMT_CREDIT"], df["AMT_GOODS_PRICE"])
-    # annuity over credit is the yearly repayment rate, roughly one over the loan term
-    df["ANNUITY_CREDIT_RATIO"] = _safe_div(df["AMT_ANNUITY"], df["AMT_CREDIT"])
-    df["INCOME_PER_PERSON"] = _safe_div(df["AMT_INCOME_TOTAL"], df["CNT_FAM_MEMBERS"])
-
-    # the three external scores are the strongest single predictors, and their mean and minimum help further
-    ext = df[["EXT_SOURCE_1", "EXT_SOURCE_2", "EXT_SOURCE_3"]]
-    df["EXT_SOURCE_MEAN"] = ext.mean(axis=1)
-    df["EXT_SOURCE_MIN"] = ext.min(axis=1)
+    add_derived_ratios(df)
 
     # twenty document flags, most almost always zero: I keep their count and the one common flag
     doc_cols = [c for c in df.columns if c.startswith("FLAG_DOCUMENT_")]
@@ -344,7 +358,7 @@ def build_features(processed_dir: Path, log=print) -> pd.DataFrame:
     count_cols = [c for c in df.columns if c.endswith("_COUNT") and c.startswith(sum(SIDE_PREFIXES.values(), ()))]
     df[count_cols] = df[count_cols].fillna(0)
 
-    # one cross-table ratio: total bureau debt against income
+    # the cross-table ratio (bureau debt against income) needs the bureau totals, so I add it now
     df["BUREAU_DEBT_INCOME_RATIO"] = _safe_div(df["BUREAU_DEBT_TOTAL"], df["AMT_INCOME_TOTAL"])
 
     # float32 everywhere numeric keeps the final table small
