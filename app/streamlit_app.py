@@ -336,6 +336,8 @@ with right:
                                         label_visibility="collapsed") or "Loan officer"
         key = "reasons_officer" if audience == "Loan officer" else "reasons_customer"
         st.markdown(reasons_html(result[key]), unsafe_allow_html=True)
+        st.caption("Bar length shows how much each factor raised the risk score (in log-odds; the average "
+                   "applicant is the starting point).")
         if audience == "Customer":
             st.caption("The customer's list leaves out officer-only inputs (age, location, contact and document "
                        "details) and shows bureau scores only as a percentile.")
@@ -345,6 +347,8 @@ with right:
     with tab_shap:
         st.plotly_chart(waterfall(result, row, service.explainer.coder), width="stretch",
                         config={"displayModeBar": False}, theme="streamlit")
+        st.caption(f"The bars start at {result['base_value']:.2f}, the log-odds of the average development "
+                   "applicant before calibration, and end at this applicant's own log-odds.")
         st.caption("Each bar is one input's SHAP value: how far it moves this applicant's log-odds from the "
                    "average applicant's. Red raises the risk, green lowers it. The PD above is these log-odds "
                    "after Platt calibration, which keeps the order.")
