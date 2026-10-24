@@ -22,6 +22,13 @@ from .data import load_table
 # Home Credit uses 365243 days (about 1,000 years) as a placeholder for "not applicable"
 DAYS_PLACEHOLDER = 365243
 
+# gender and marital status stay in the data for the fairness analysis but are never model inputs by default,
+# because using them in lending decisions is hard to justify under MAS's FEAT principles
+PROTECTED_INPUTS = ("CODE_GENDER", "NAME_FAMILY_STATUS")
+
+# age-based features are model inputs and can be shown to a loan officer, but never to the customer as a reason
+AGE_FEATURES = ("AGE_YEARS", "EMPLOYED_TO_AGE_RATIO")
+
 SIDE_PREFIXES = {
     "bureau": ("BUREAU_", "BB_"),
     "previous": ("PREV_",),
@@ -356,7 +363,14 @@ def feature_groups(columns) -> dict[str, list[str]]:
     return groups
 
 
-def select_features(columns, group_names: list[str]) -> list[str]:
-    """Feature list for an experiment, e.g. ["application", "bureau"]."""
+def select_features(columns, group_names: list[str], include_protected: bool = False) -> list[str]:
+    """Feature list for an experiment, e.g. ["application", "bureau"].
+
+    Gender and marital status are left out unless include_protected is set, which only the
+    fairness comparison in Step 9 does.
+    """
     groups = feature_groups(columns)
-    return [c for g in group_names for c in groups[g]]
+    selected = [c for g in group_names for c in groups[g]]
+    if not include_protected:
+        selected = [c for c in selected if c not in PROTECTED_INPUTS]
+    return selected

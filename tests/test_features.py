@@ -11,10 +11,12 @@ from scorecard.features import (
     application_features,
     bureau_features,
     credit_card_features,
+    PROTECTED_INPUTS,
     feature_groups,
     installments_features,
     pos_cash_features,
     previous_features,
+    select_features,
 )
 
 
@@ -173,3 +175,13 @@ def test_feature_groups_split_by_prefix():
     assert g["application"] == ["EXT_SOURCE_2"]
     assert g["bureau"] == ["BUREAU_LOAN_COUNT", "BB_WORST_STATUS_MAX"]
     assert g["credit_card"] == ["CC_UTIL_MEAN"]
+
+
+def test_protected_attributes_are_not_model_inputs_by_default():
+    cols = ["SK_ID_CURR", "TARGET", "CODE_GENDER", "NAME_FAMILY_STATUS", "AGE_YEARS", "EXT_SOURCE_2", "INST_COUNT"]
+    default = select_features(cols, ["application", "installments"])
+    # gender and marital status are dropped, while age stays an input
+    assert not set(PROTECTED_INPUTS) & set(default)
+    assert "AGE_YEARS" in default and "INST_COUNT" in default
+    # only the Step 9 comparison adds them back
+    assert set(PROTECTED_INPUTS) <= set(select_features(cols, ["application"], include_protected=True))

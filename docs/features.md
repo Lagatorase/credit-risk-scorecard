@@ -1,21 +1,23 @@
 # Features
 
-`scripts/build_features.py` builds one row per labelled applicant (307,511 rows, 155 features) from the seven tables. Each side table has its own aggregation function in `scorecard/features.py`. Each feature only uses that applicant's own records and none use the default label, so building them once for everyone can't leak labels between CV folds. Anything learned from labels (WoE bins, calibration) is fit inside each fold.
+`scripts/build_features.py` builds one row per labelled applicant (307,511 rows, 155 columns, of which 153 are model inputs) from the seven tables. Each side table has its own aggregation function in `scorecard/features.py`. Each feature only uses that applicant's own records and none use the default label, so building them once for everyone can't leak labels between CV folds. Anything learned from labels (WoE bins, calibration) is fit inside each fold.
 
 The "AUC" column is each feature's univariate AUC on all labelled applicants, for orientation only: below 0.5 means higher values go with lower risk.
 
-## Application (83 features, no prefix)
+## Application (83 columns, 81 model inputs, no prefix)
 
 | Group | Examples | Why it should predict default |
 |---|---|---|
 | External scores | `EXT_SOURCE_1..3`, `EXT_SOURCE_MEAN` (AUC 0.28), `EXT_SOURCE_MIN` | Scores from outside credit bureaus already summarise repayment history elsewhere. They are the strongest single predictors |
 | Affordability ratios | `CREDIT_INCOME_RATIO`, `ANNUITY_INCOME_RATIO`, `ANNUITY_CREDIT_RATIO`, `CREDIT_GOODS_RATIO` (0.57), `INCOME_PER_PERSON` | A larger repayment relative to income leaves less room for shocks. Borrowing more than the goods cost (credit/goods above 1) often means fees or insurance were added to the loan |
 | Age and employment | `AGE_YEARS` (0.42), `EMPLOYED_YEARS` (0.42), `EMPLOYED_TO_AGE_RATIO`, `DAYS_EMPLOYED_PLACEHOLDER` | Older applicants with longer, stabler employment default less. The placeholder flag marks the 18% with `DAYS_EMPLOYED = 365243`, mostly pensioners |
-| Loan and applicant details | `AMT_CREDIT`, `AMT_ANNUITY`, `NAME_CONTRACT_TYPE`, `NAME_INCOME_TYPE`, `NAME_EDUCATION_TYPE`, `OCCUPATION_TYPE`, `ORGANIZATION_TYPE`, `CODE_GENDER`, `NAME_FAMILY_STATUS` | Loan size, product type, income source and job type all relate to income stability. Gender and family status are kept as inputs for the fairness comparison in Step 9, but never shown as reasons |
+| Loan and applicant details | `AMT_CREDIT`, `AMT_ANNUITY`, `NAME_CONTRACT_TYPE`, `NAME_INCOME_TYPE`, `NAME_EDUCATION_TYPE`, `OCCUPATION_TYPE`, `ORGANIZATION_TYPE` | Loan size, product type, income source and job type all relate to income stability. `CODE_GENDER` and `NAME_FAMILY_STATUS` are in the table but not model inputs (see below) |
 | Region and contact | `REGION_RATING_CLIENT`, `REGION_POPULATION_RELATIVE`, `REG_CITY_NOT_WORK_CITY`, `FLAG_EMP_PHONE`, `DAYS_LAST_PHONE_CHANGE` | Regional economic conditions, and signs of instability such as a recent phone change or living away from the work city |
 | Housing | 14 `*_AVG` building statistics, `TOTALAREA_MODE`, `FLAG_OWN_REALTY`, `NAME_HOUSING_TYPE` | Housing quality and ownership are rough proxies for wealth. About 50 to 70% missing, and whether they're missing is itself a signal |
 | Documents and enquiries | `FLAG_DOCUMENT_3`, `DOCUMENT_COUNT`, `AMT_REQ_CREDIT_BUREAU_*` | Paperwork provided, and how often other lenders recently checked the applicant's credit |
 | Social circle | `DEF_30_CNT_SOCIAL_CIRCLE`, `OBS_60_CNT_SOCIAL_CIRCLE` | Defaults among people in the applicant's social circle |
+
+**Protected attributes.** `CODE_GENDER` and `NAME_FAMILY_STATUS` stay in the feature table but are not inputs to any model in the experiments or the final model (`PROTECTED_INPUTS` in `scorecard/features.py`). Using gender or marital status in a lending decision is hard to justify under MAS's FEAT principles (Fairness, Ethics, Accountability, Transparency). They are kept only for the fairness analysis, which also trains a comparison model with both added back to show what they would add. Age (`AGE_YEARS`, and `EMPLOYED_TO_AGE_RATIO`, which is derived from it) is a model input and can appear in the loan officer's reason codes, but is never given to a customer as a reason.
 
 Cleaning: `DAYS_EMPLOYED = 365243` becomes missing (with a flag), `CODE_GENDER = XNA` (4 rows) becomes missing, and day counts become years. I kept only the AVG version of each housing statistic, since the MODE and MEDI versions mostly repeat it. Of the 20 document flags I kept their count and `FLAG_DOCUMENT_3`, the only common one.
 
