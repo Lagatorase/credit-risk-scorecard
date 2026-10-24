@@ -68,7 +68,7 @@ def csv_to_parquet(csv_path: Path, parquet_path: Path, block_mb: int = 64) -> in
 
 def load_table(processed_dir: Path, name: str, columns: list[str] | None = None) -> pd.DataFrame:
     """Loads one Parquet table, turning text columns into pandas categories to save memory."""
-    df = pd.read_parquet(processed_dir / f"{name}.parquet", columns=columns)
+    df = pd.read_parquet(Path(processed_dir) / f"{name}.parquet", columns=columns)
     for col in df.columns:
         if not pd.api.types.is_numeric_dtype(df[col].dtype):
             df[col] = df[col].astype("category")
