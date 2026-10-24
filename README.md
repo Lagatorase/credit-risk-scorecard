@@ -70,16 +70,11 @@ flowchart LR
 All numbers are from real runs. CV numbers are means over five folds (fold standard deviation of AUC about 0.001); hold-out intervals are 95% bootstrap CIs.
 
 - **The final model is accurate and well calibrated on the hold-out set.** AUC 0.7908 (0.7843 to 0.7976), Gini 0.582 and KS 0.440, in line with its CV AUC of 0.7885. Calibration slope 1.008 (0.979 to 1.038) and intercept 0.002 (-0.029 to 0.029) both include the ideal values, and ECE is 0.0015.
-- **More data beat more tuning.** The five history tables lifted CV AUC from 0.7605 (application only) to 0.7802. Optuna tuning added 0.008 more (to 0.7882), at about 8 minutes per fold against 4.5 seconds.
-- **Class weights ruined calibration for no gain.** Balanced weights moved AUC by +0.0003 (noise) but raised ECE from 0.004 to 0.298.
-- **The scorecard is a fair challenger.** The logistic WoE scorecard uses 17 features read off a points table and reaches a CV AUC of 0.7395, about 0.05 below LightGBM, with the lowest ECE of any model (0.0024).
-- **The cost-based rule works because the PDs are calibrated.** On the hold-out set it approves 84.7% of applicants, and 4.8% of them default, against 8.1% overall. Applicants sent to review default at 17.7% and declines at 34.0%. The cost curve is flat near break-even: 2.80%, 2.78% and 2.81% of the amount applied for at thresholds of 14.5%, 18.2% and 21.8%.
+- **More data beat more tuning.** The five history tables lifted CV AUC from 0.7605 (application only) to 0.7802, and Optuna tuning added 0.008 more (to 0.7882) at about 8 minutes per fold against 4.5 seconds, while balanced class weights moved AUC by +0.0003 (noise) but raised ECE from 0.004 to 0.298.
 - **Leaving gender out doesn't make the model blind to it.** The model's own inputs predict gender with AUC 0.904. It approves 80.3% of men and 87.0% of women. Part of that gap follows real default rates (10.2% against 7.0%), but it persists among applicants who repaid (84.3% against 89.4%). Adding gender back didn't help: AUC +0.0006 (-0.0010 to +0.0023), with a gender approval gap 2.2 points wider.
 - **Removing age would hurt young applicants.** Without age, AUC changes by -0.0010 (-0.0024 to +0.0006), within noise. The age approval gap widens by 3.6 points (+2.5 to +4.8), and under-25s' approval rate falls from 70.3% to 66.7%. The model stays calibrated within 0.6 points in every age band.
-- **The small LLM is good enough for officers, not for customers.** On 50 new hold-out applicants with frozen prompts and checks:
-  - Officer drafts passed every check 80% of the time. My manual read of the 40 accepted officer texts found 1 misstatement.
-  - Customer drafts passed only 50% of the time, mostly by dropping a reason's value. 5 of the 25 accepted customer texts misread a reason, for example "instalments still to pay on 25 open loans" when the reason was 25 instalments.
-- **The LLM text isn't reproducible.** At temperature 0 with a fixed seed, 18 of 100 texts still changed between two development runs. The reason codes are deterministic and always shown alongside.
+- **The small LLM is good enough for officers, not for customers.** On 50 new hold-out applicants with frozen prompts and checks, officer drafts passed every check 80% of the time, and my manual read of the 40 accepted officer texts found 1 misstatement. Customer drafts passed only 50% of the time, mostly by dropping a reason's value, and 5 of the 25 accepted customer texts misread a reason (for example "instalments still to pay on 25 open loans" when the reason was 25 instalments). The text also isn't reproducible: at temperature 0 with a fixed seed, 18 of 100 texts still changed between two development runs.
+- **The scorecard is a readable challenger.** The logistic WoE scorecard uses 17 features read off a points table and reaches a CV AUC of 0.7395, about 0.05 below LightGBM, with the lowest ECE of any model (0.0024).
 
 ### Model comparison (5-fold CV on the development set)
 
@@ -106,7 +101,19 @@ Full detail: [`reports/experiment_report.md`](reports/experiment_report.md).
 | Calibration slope (ideal 1) | 1.0077 | 0.9787 to 1.0381 | 0.9994 |
 | PSI of the PD | 0.0004 | | stable |
 
-The PSI only confirms the split is consistent: the data has no application dates, so there's no out-of-time test. Full detail: [`reports/holdout_report.md`](reports/holdout_report.md) and [`reports/threshold_report.md`](reports/threshold_report.md).
+The PSI only confirms the split is consistent: the data has no application dates, so there's no out-of-time test. Full detail: [`reports/holdout_report.md`](reports/holdout_report.md).
+
+### Decision rule (hold-out set)
+
+The cost-based rule works because the PDs are calibrated. On the hold-out set it approves 84.7% of applicants, and 4.8% of them default, against 8.1% overall. Applicants sent to review default at 17.7% and declines at 34.0%. The cost curve is flat near break-even: 2.80%, 2.78% and 2.81% of the amount applied for at thresholds of 14.5%, 18.2% and 21.8%.
+
+| Decision | Applicants | Share | Mean PD | Actual default rate |
+|---|---|---|---|---|
+| approve | 52,088 | 84.7% | 4.8% | 4.8% |
+| review | 4,484 | 7.3% | 17.8% | 17.7% |
+| decline | 4,931 | 8.0% | 33.7% | 34.0% |
+
+Full detail, including how the approval rate moves with the margin assumption: [`reports/threshold_report.md`](reports/threshold_report.md).
 
 ### Fairness (hold-out set)
 
@@ -195,13 +202,15 @@ Or run both with Docker (build the model on the host first, since the containers
 docker compose up --build
 ```
 
+The image build is tested in CI on every push. I haven't run the containers myself, since Docker isn't installed on my machine.
+
 ### Tests
 
 ```powershell
 pytest -q
 ```
 
-The tests don't need the Home Credit data or a trained model. They train a small model on made-up data, and run the whole feature pipeline on synthetic tables generated from [`tests/data/home_credit_schema.json`](tests/data/home_credit_schema.json). That file holds column names, types, category levels and rough value ranges, but no rows.
+The tests don't need the Home Credit data or a trained model. They train a small model on made-up data, and run the whole feature pipeline on synthetic tables generated from [`tests/data/home_credit_schema.json`](tests/data/home_credit_schema.json). That file holds only derived summary statistics (column names, types, category levels, 1st and 99th percentiles and missing shares), with no rows, and is used only to generate the synthetic test data.
 
 ## Project layout
 
@@ -222,7 +231,7 @@ tests/         unit tests, API tests and the end-to-end synthetic test
 - **No out-of-time test.** The data has no application dates, so the hold-out set is a random 20% of the same period. Real performance on later applicants would likely be lower.
 - **Cost assumptions.** LGD, margin and the review band are my assumptions, not bank figures. The amounts' currency isn't stated in the data either.
 - **Limited fairness checks.** The data records gender (as two values), age and marital status only. Race, religion and other protected attributes can't be checked, and the results are associations, not causes.
-- **A small local LLM.** qwen2.5:3b misread some reasons that passed every automated check. A larger hosted model (the OpenAI and Anthropic backends are set up) might do better, but I haven't run it because it costs money. The Docker setup is written but untested, since Docker isn't installed on my machine.
+- **A small local LLM.** qwen2.5:3b misread some reasons that passed every automated check. A larger hosted model (the OpenAI and Anthropic backends are set up) might do better, but I haven't run it because it costs money.
 
 ## License
 
