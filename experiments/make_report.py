@@ -148,8 +148,10 @@ def main() -> None:
         for n in ["lgbm_all_tuned", *cal]:
             r = results[n]
             md.append(f"| {n} | {_pm(r, 'brier', 5)} | {_pm(r, 'ece', 4)} | {_pm(r, 'auc', 4)} |")
-        best = min(cal, key=lambda n: (round(results[n]["ece_mean"], 4), results[n]["brier_mean"]))
-        md += ["", f"Lower ECE (then Brier) picks **{best}**."]
+        # I report which version wins on each calibration metric; the choice itself is argued in the notes
+        by_ece = min(cal, key=lambda n: results[n]["ece_mean"])
+        by_brier = min(cal, key=lambda n: results[n]["brier_mean"])
+        md += ["", f"Lowest ECE: {by_ece}. Lowest Brier: {by_brier}. The choice is explained in the notes below."]
 
     # what Optuna found in each training fold
     if "lgbm_all_tuned" in results:
