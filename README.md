@@ -152,7 +152,7 @@ Full detail, including every age band and marital status: [`reports/fairness_rep
 
 Full detail, the failure examples and the earlier tuning runs: [`reports/llm_eval.md`](reports/llm_eval.md).
 
-## Setup (Windows)
+## Setup
 
 You need Python 3.11 or newer, about 4 GB of free disk space for the data, and [Ollama](https://ollama.com) if you want the LLM explanations.
 
@@ -164,6 +164,19 @@ python -m venv .venv
 pip install -r requirements.txt
 
 copy .env.example .env
+ollama pull qwen2.5:3b
+```
+
+On macOS or Linux (I haven't tested these commands):
+
+```bash
+git clone https://github.com/Lagatorase/credit-risk-scorecard
+cd credit-risk-scorecard
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+cp .env.example .env
 ollama pull qwen2.5:3b
 ```
 
