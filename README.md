@@ -24,7 +24,7 @@ The main part of this project is the evaluation. Every modelling choice was comp
 
 ## What it does
 
-- Builds 153 features from the application and five history tables: credit bureau, previous applications, instalments, POS/cash loans and credit cards.
+- Builds 153 features from 7 tables: the application plus six history tables (credit bureau, monthly bureau balances, previous applications, instalments, POS/cash loans and credit cards).
 - Compares a logistic WoE scorecard with LightGBM, with and without tuning, class weights and calibration, all under the same 5-fold CV.
 - Calibrates the final model with Platt scaling fitted on out-of-fold predictions, so the PDs are real probabilities.
 - Sets the approve/decline threshold from expected cost (LGD and margin), with a manual review band around the break-even PD.
