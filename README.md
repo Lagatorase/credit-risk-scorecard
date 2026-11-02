@@ -6,6 +6,11 @@ An explainable probability of default (PD) model for consumer loans, built on th
 
 The main part of this project is the evaluation. Every modelling choice was compared with 5-fold cross-validation on a fixed development set, and the hold-out set was used once, for the final model. The fairness and explanation checks report what didn't work as plainly as what did.
 
+**Results at a glance** (hold-out set, used once)
+- AUC 0.7908 (95% CI 0.7843 to 0.7976), Gini 0.58, KS 0.44.
+- Calibration slope 1.008, so the predicted default rates match the real ones.
+- Leaving gender out isn't enough: the other inputs predict it with AUC 0.904.
+
 ![The demo app scoring a hold-out applicant who is referred for review](docs/screenshot.png)
 
 ![Lowering the loan amount in the what-if panel and watching the PD and decision change](docs/demo.gif)
