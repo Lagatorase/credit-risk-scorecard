@@ -1,6 +1,11 @@
 # Credit Risk Scorecard
 
 [![tests](https://github.com/Lagatorase/credit-risk-scorecard/actions/workflows/tests.yml/badge.svg)](https://github.com/Lagatorase/credit-risk-scorecard/actions/workflows/tests.yml)
+[![License: MIT](https://img.shields.io/github/license/Lagatorase/credit-risk-scorecard)](LICENSE)
+![Python 3.11+](https://img.shields.io/badge/Python-3.11%2B-3776AB?logo=python&logoColor=white)
+![LightGBM](https://img.shields.io/badge/LightGBM-Optuna-2E8B57)
+![FastAPI](https://img.shields.io/badge/FastAPI-backend-009688?logo=fastapi&logoColor=white)
+![Data: Home Credit](https://img.shields.io/badge/data-Home%20Credit-lightgrey)
 
 An explainable probability of default (PD) model for consumer loans, built on the Home Credit Default Risk data. It turns each PD into an approve, review or decline decision using expected cost, and explains every score with reason codes for the loan officer and the customer. It also checks how the model treats gender and age groups, and tests whether a small local LLM can write the explanations safely.
 
